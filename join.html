@@ -3,346 +3,273 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>加入 Watch Party ｜ Good Neighbor 好鄰舍 ｜ The Hope</title>
+<title>找一場加入 ｜ Good Neighbor 好鄰舍 ｜ The Hope</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Archivo:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
   :root{
     --ink:#1D292E;
     --gold:#FFCC32;
     --paper:#FAF8F3;
     --muted:#5C6A70;
-    --line:#E6E1D8;
+    --line:#E9E3D8;
+    --r:26px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
     font-family:"Noto Sans TC",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     color:var(--ink);background:var(--paper);line-height:1.75;
-    -webkit-font-smoothing:antialiased;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
   }
-  .wrap{max-width:560px;margin:0 auto;padding:0 22px}
+  .wrap{max-width:600px;margin:0 auto;padding:0 22px}
+  .wide{max-width:980px;margin:0 auto;padding:0 22px}
+  .en{font-family:"Archivo",sans-serif}
   .icon{width:22px;height:22px;stroke-width:2;flex:none}
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .rv.in{opacity:1;transform:none}
 
   /* NAV */
-  .topnav{background:var(--ink);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-  .topnav .brand{color:var(--gold);font-weight:700;font-size:13px;letter-spacing:.14em;text-decoration:none;text-transform:uppercase}
-  .topnav .nav-link{color:rgba(255,255,255,.6);font-size:13px;text-decoration:none;display:flex;align-items:center;gap:5px}
-  .topnav .nav-link:active{color:#fff}
+  .topnav{background:var(--ink);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1000}
+  .topnav .brand{color:var(--gold);font-weight:800;font-size:13px;letter-spacing:.12em;text-decoration:none;text-transform:uppercase;font-family:"Archivo",sans-serif;display:flex;align-items:center;gap:7px}
+  .topnav .nav-link{color:rgba(255,255,255,.62);font-size:13px;text-decoration:none;display:flex;align-items:center;gap:5px;font-weight:500}
 
-  /* COMING SOON BANNER */
-  .banner{background:var(--gold);padding:11px 22px;text-align:center;
-    font-size:13.5px;font-weight:700;color:var(--ink);
-    display:flex;align-items:center;justify-content:center;gap:8px}
+  /* BANNER */
+  .banner{background:var(--gold);padding:11px 22px;text-align:center;font-size:13.5px;font-weight:800;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:8px;font-family:"Archivo",sans-serif}
   .banner .icon{width:16px;height:16px}
 
   /* HERO */
-  .hero{background:var(--ink);color:#fff;padding:56px 0 52px;text-align:center}
-  .kicker{display:inline-flex;align-items:center;gap:7px;font-size:12px;letter-spacing:.2em;
-    color:var(--gold);font-weight:700;text-transform:uppercase;margin-bottom:18px}
-  .kicker .dot{width:5px;height:5px;border-radius:50%;background:var(--gold)}
-  .hero h1{font-size:32px;line-height:1.3;font-weight:900}
-  .hero h1 .en{display:block;font-size:14px;font-weight:500;letter-spacing:.28em;
-    color:rgba(255,255,255,.45);margin-top:12px;text-transform:uppercase}
-  .hero p{margin-top:18px;font-size:15.5px;color:rgba(255,255,255,.78);padding:0 8px;line-height:1.85}
-  .hero .open-date{display:inline-flex;align-items:center;gap:7px;margin-top:24px;
-    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
-    border-radius:999px;padding:9px 18px;font-size:14px;color:rgba(255,255,255,.7)}
-  .hero .open-date strong{color:var(--gold);font-weight:700}
+  .hero{background:var(--ink);color:#fff;padding:48px 0 42px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;top:-120px;left:-90px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(255,204,50,.16),transparent 70%)}
+  .kicker{display:inline-flex;align-items:center;gap:7px;font-size:12px;letter-spacing:.22em;color:var(--gold);font-weight:800;text-transform:uppercase;margin-bottom:18px;font-family:"Archivo",sans-serif;position:relative}
+  .kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .hero h1{font-size:40px;line-height:1.15;font-weight:900;letter-spacing:-.01em;position:relative}
+  .hero h1 .swash{color:var(--gold)}
+  .hero .sub{margin-top:18px;font-size:15.5px;color:rgba(255,255,255,.8);line-height:1.85;position:relative;padding:0 6px}
+
+  /* FINDER */
+  .finder{background:var(--ink);padding:0 0 56px}
+  .finder-inner{background:#fff;border-radius:28px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 60px -30px rgba(0,0,0,.4)}
+  .finder-head{padding:20px 20px 16px}
+  .finder-head .count{font-size:12.5px;font-weight:800;color:var(--muted);font-family:"Archivo",sans-serif;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+  .finder-head .count b{color:var(--ink)}
+  .search{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 16px}
+  .search input{border:none;background:none;outline:none;font-family:inherit;font-size:15px;color:var(--ink);width:100%}
+  .search .icon{color:var(--muted);width:19px;height:19px}
+
+  .finder-body{display:flex;flex-direction:column}
+  #map{width:100%;height:300px;background:#E8E4DC;z-index:1}
+  .list{overflow-y:auto;border-top:1px solid var(--line)}
+
+  .loc{display:flex;gap:14px;padding:16px 20px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .15s;align-items:center}
+  .loc:last-child{border-bottom:none}
+  .loc:hover,.loc.active{background:var(--paper)}
+  .loc.active{box-shadow:inset 4px 0 0 var(--gold)}
+  .loc .thumb{width:62px;height:62px;border-radius:14px;flex:none;background:repeating-linear-gradient(45deg,#ECE7DD,#ECE7DD 8px,#E6E0D4 8px,#E6E0D4 16px);border:1px dashed #CDBfA6;display:flex;align-items:center;justify-content:center;color:#B6A88C}
+  .loc .thumb .icon{width:22px;height:22px}
+  .loc .info{flex:1;min-width:0}
+  .loc .info h4{font-size:16px;font-weight:800;margin-bottom:2px}
+  .loc .info .meta{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .loc .info .meta .ch-tag{background:var(--gold);color:var(--ink);font-size:11px;font-weight:800;padding:2px 9px;border-radius:999px;font-family:"Archivo",sans-serif}
+  .loc .info .meta .week{display:inline-flex;align-items:center;gap:4px}
+  .loc .go{flex:none;width:34px;height:34px;border-radius:50%;background:var(--paper);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink)}
+  .loc .go .icon{width:17px;height:17px}
+  .empty{padding:40px 20px;text-align:center;color:var(--muted);font-size:14px}
+
+  /* leaflet custom pin */
+  .pin{width:30px;height:30px;border-radius:50% 50% 50% 0;background:var(--gold);border:2.5px solid var(--ink);transform:rotate(-45deg);box-shadow:0 4px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center}
+  .pin span{transform:rotate(45deg);width:8px;height:8px;border-radius:50%;background:var(--ink)}
+  .pin.active{background:var(--ink);border-color:var(--gold);transform:rotate(-45deg) scale(1.2)}
+  .pin.active span{background:var(--gold)}
+  .leaflet-popup-content-wrapper{border-radius:16px}
+  .leaflet-popup-content{margin:14px 16px;font-family:"Noto Sans TC",sans-serif}
+  .pop h4{font-size:15px;font-weight:800;margin-bottom:3px;color:var(--ink)}
+  .pop p{font-size:12.5px;color:var(--muted);margin-bottom:10px}
+  .pop button{background:var(--gold);color:var(--ink);border:none;font-family:inherit;font-weight:800;font-size:13px;padding:9px 16px;border-radius:999px;cursor:pointer;width:100%}
 
   /* SECTION */
-  section{padding:44px 0;border-bottom:1px solid var(--line)}
-  section:last-of-type{border-bottom:none}
-  .eyebrow{display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:700;
-    font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px}
-  h2{font-size:22px;font-weight:900;line-height:1.4;margin-bottom:12px}
-  p.lead{font-size:15.5px;color:#39474D;line-height:1.85}
+  section{padding:52px 0}
+  .alt{background:#fff}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--ink);font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;font-family:"Archivo",sans-serif;background:var(--gold);padding:6px 13px;border-radius:999px}
+  h2{font-size:30px;font-weight:900;line-height:1.28;margin-bottom:14px;letter-spacing:-.01em}
+  p.lead{font-size:16.5px;color:#39474D;line-height:1.9}
 
   /* STEPS */
-  .steps{margin-top:10px}
-  .step{display:flex;gap:16px;padding:0 0 22px;position:relative}
+  .steps{margin-top:20px}
+  .step{display:flex;gap:18px;padding:0 0 26px;position:relative}
   .step:last-child{padding-bottom:0}
-  .step .num{width:36px;height:36px;border-radius:50%;background:var(--gold);color:var(--ink);
-    font-weight:900;display:flex;align-items:center;justify-content:center;
-    flex:none;font-size:14px;z-index:1}
-  .step:not(:last-child)::before{content:"";position:absolute;left:18px;top:36px;bottom:0;
-    width:2px;background:var(--line)}
-  .step .body h3{font-size:15.5px;font-weight:700;margin-bottom:3px;padding-top:6px}
-  .step .body p{font-size:14px;color:var(--muted);line-height:1.75}
-
-  /* MAP PLACEHOLDER */
-  .map-wrap{margin-top:14px;border-radius:16px;overflow:hidden;
-    border:1px solid var(--line);background:#E8E4DC;
-    aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;
-    flex-direction:column;gap:10px;color:var(--muted)}
-  .map-wrap .icon{width:32px;height:32px;color:var(--muted)}
-  .map-wrap p{font-size:14px;text-align:center;line-height:1.6;padding:0 24px}
-  /* 實際地圖：把上面那幾行刪掉，換成 iframe */
-  /* <iframe src="Google My Maps URL" style="border:0;width:100%;height:100%" allowfullscreen></iframe> */
+  .step .num{width:44px;height:44px;border-radius:50%;background:var(--gold);color:var(--ink);font-weight:900;display:flex;align-items:center;justify-content:center;flex:none;font-size:18px;z-index:1;font-family:"Archivo",sans-serif}
+  .step:not(:last-child)::before{content:"";position:absolute;left:21px;top:46px;bottom:0;width:2px;background:var(--line)}
+  .step .body h3{font-size:17px;font-weight:800;margin-bottom:4px;padding-top:8px}
+  .step .body p{font-size:14.5px;color:var(--muted);line-height:1.8}
 
   /* CARDS */
-  .cards{display:grid;gap:12px;margin-top:10px}
-  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;
-    display:flex;gap:14px;align-items:flex-start}
-  .badge{width:40px;height:40px;border-radius:11px;background:var(--ink);color:var(--gold);
-    display:flex;align-items:center;justify-content:center;flex:none}
-  .card h3{font-size:15px;font-weight:700;margin-bottom:3px}
-  .card p{font-size:14px;color:var(--muted);line-height:1.75}
+  .cards{display:grid;gap:14px;margin-top:18px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;gap:16px;align-items:flex-start;transition:transform .2s,box-shadow .2s}
+  .alt .card{background:#fff}
+  .card:hover{transform:translateY(-3px);box-shadow:0 14px 30px -16px rgba(29,41,46,.3)}
+  .badge{width:46px;height:46px;border-radius:14px;background:var(--ink);color:var(--gold);display:flex;align-items:center;justify-content:center;flex:none}
+  .card h3{font-size:16.5px;font-weight:800;margin-bottom:4px}
+  .card p{font-size:14.5px;color:var(--muted);line-height:1.75}
+
+  /* PHOTO PLACEHOLDER */
+  .ph{background:repeating-linear-gradient(45deg,#ECE7DD,#ECE7DD 12px,#E6E0D4 12px,#E6E0D4 24px);border:1px dashed #CDBfA6;border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#A89A80;text-align:center}
+  .ph .icon{width:28px;height:28px;color:#B6A88C}
+  .ph span{font-size:12px;font-weight:700}
+  .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+  .gallery .ph{aspect-ratio:1}
 
   /* FAQ */
-  .faq{margin-top:10px}
-  .faq-item{border-bottom:1px solid var(--line)}
-  .faq-item:first-child{border-top:1px solid var(--line)}
-  .faq-q{width:100%;text-align:left;background:none;border:none;cursor:pointer;
-    padding:16px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;
-    font-size:15px;font-weight:700;color:var(--ink);line-height:1.5;font-family:inherit}
-  .faq-q .chev{flex:none;transition:transform .2s;color:var(--muted);width:18px;height:18px}
+  .faq{margin-top:18px}
+  .faq-item{border:1px solid var(--line);border-radius:18px;margin-bottom:10px;overflow:hidden;background:#fff}
+  .alt .faq-item{background:var(--paper)}
+  .faq-q{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:15.5px;font-weight:800;color:var(--ink);line-height:1.5;font-family:inherit}
+  .faq-q .chev{flex:none;transition:transform .25s;color:var(--muted);width:19px;height:19px}
   .faq-q.open .chev{transform:rotate(180deg)}
-  .faq-a{overflow:hidden;max-height:0;transition:max-height .28s ease}
-  .faq-a p{padding:0 0 16px;font-size:14.5px;color:var(--muted);line-height:1.85}
+  .faq-a{overflow:hidden;max-height:0;transition:max-height .3s ease}
+  .faq-a p{padding:0 20px 18px;font-size:14.5px;color:var(--muted);line-height:1.85}
 
-  /* CTA BLOCK */
-  .cta-block{background:var(--ink);padding:52px 0;text-align:center;border:none}
-  .cta-block h2{color:#fff;margin-bottom:8px;font-size:24px}
-  .cta-block .sub{color:rgba(255,255,255,.65);font-size:14.5px;margin-bottom:26px;line-height:1.8}
-  /* 報名開放前：btn-soon 樣式 */
-  .btn-soon{display:inline-flex;align-items:center;gap:9px;
-    background:rgba(255,255,255,.12);color:rgba(255,255,255,.5);
-    border:1.5px solid rgba(255,255,255,.2);
-    font-weight:700;font-size:15px;padding:15px 30px;border-radius:999px;cursor:default}
-  /* 報名開放後：把 .btn-soon 換成 .btn-apply */
-  .btn-apply{display:inline-flex;align-items:center;gap:9px;background:var(--gold);color:var(--ink);
-    text-decoration:none;font-weight:700;font-size:16px;padding:16px 32px;border-radius:999px}
-  .btn-apply:active{opacity:.85}
-  .open-note{margin-top:16px;font-size:13px;color:rgba(255,255,255,.4)}
-
-  /* HOST TEASER */
-  .teaser-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
-    border-radius:16px;padding:20px;display:flex;gap:14px;align-items:center;margin-top:16px}
+  /* CTA */
+  .cta-block{background:var(--ink);padding:58px 0;text-align:center;position:relative;overflow:hidden}
+  .cta-block h2{color:#fff;margin-bottom:10px;font-size:28px}
+  .cta-block .sub{color:rgba(255,255,255,.66);font-size:14.5px;margin-bottom:26px;line-height:1.85}
+  .btn-soon{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.5);border:1.5px solid rgba(255,255,255,.2);font-weight:800;font-size:15px;padding:16px 32px;border-radius:999px;cursor:default;font-family:"Archivo",sans-serif}
+  .open-note{margin-top:18px;font-size:13px;color:rgba(255,255,255,.42)}
+  .teaser-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:var(--r);padding:22px;display:flex;gap:15px;align-items:center;margin-top:22px}
   .teaser-card .body{flex:1;min-width:0}
-  .teaser-card h3{font-size:15px;font-weight:700;margin-bottom:2px;color:#fff}
+  .teaser-card h3{font-size:15.5px;font-weight:800;margin-bottom:3px;color:#fff}
   .teaser-card p{font-size:13.5px;color:rgba(255,255,255,.55)}
-  .teaser-link{color:var(--gold);font-weight:700;font-size:14px;text-decoration:none;
-    white-space:nowrap;display:flex;align-items:center;gap:4px;flex:none}
+  .teaser-link{color:var(--ink);font-weight:800;font-size:14px;text-decoration:none;white-space:nowrap;display:flex;align-items:center;gap:5px;flex:none;background:var(--gold);padding:10px 16px;border-radius:999px}
 
-  footer{text-align:center;padding:28px 0 48px;color:var(--muted);font-size:13px}
-  footer .brand-en{letter-spacing:.28em;color:var(--ink);font-weight:700;margin-bottom:5px;font-size:12px}
+  footer{text-align:center;padding:34px 0 50px;color:var(--muted);font-size:13px;background:#fff}
+  footer .brand-en{letter-spacing:.26em;color:var(--ink);font-weight:900;margin-bottom:6px;font-size:13px;font-family:"Archivo",sans-serif}
+
+  /* MODAL */
+  .modal-bg{position:fixed;inset:0;background:rgba(29,41,46,.55);z-index:2000;display:none;align-items:flex-end;justify-content:center}
+  .modal-bg.show{display:flex}
+  .modal{background:var(--paper);width:100%;max-width:600px;border-radius:24px 24px 0 0;padding:26px 22px 34px;animation:up .3s ease}
+  @keyframes up{from{transform:translateY(100%)}to{transform:none}}
+  .modal .close{float:right;background:none;border:none;cursor:pointer;color:var(--muted)}
+  .modal h3{font-size:21px;font-weight:900;margin-bottom:4px}
+  .modal .loc-meta{font-size:13.5px;color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:6px}
+  .field{margin-bottom:13px}
+  .field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
+  .field input{width:100%;border:1px solid var(--line);border-radius:13px;padding:13px 15px;font-family:inherit;font-size:15px;outline:none;background:#fff}
+  .field input:focus{border-color:var(--gold)}
+  .modal .submit{width:100%;background:var(--gold);color:var(--ink);border:none;font-family:inherit;font-weight:800;font-size:16px;padding:16px;border-radius:999px;cursor:pointer;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+  .modal .demo-tip{font-size:12px;color:var(--muted);text-align:center;margin-top:12px;background:#fff;border:1px dashed var(--line);border-radius:10px;padding:8px}
+  .modal .done{text-align:center;padding:14px 0}
+  .modal .done .ic{width:60px;height:60px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+  .modal .done h3{margin-bottom:8px}
+  .modal .done p{font-size:14px;color:var(--muted);line-height:1.8}
+
+  @media(min-width:760px){
+    .hero h1{font-size:48px}
+    .finder-body{flex-direction:row-reverse}
+    #map{flex:1;height:520px}
+    .list{width:380px;flex:none;border-top:none;border-left:1px solid var(--line);max-height:520px}
+  }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav class="topnav">
-  <a href="index.html" class="brand">Good Neighbor</a>
-  <a href="host.html" class="nav-link">
-    <i class="icon" data-lucide="home" style="width:16px;height:16px;stroke-width:2"></i>
-    我要 Host
-  </a>
+  <a href="index.html" class="brand"><i class="icon" data-lucide="anchor" style="width:16px;height:16px;color:var(--gold)"></i>Good Neighbor</a>
+  <a href="host.html" class="nav-link"><i class="icon" data-lucide="home" style="width:16px;height:16px"></i>我要 Host</a>
 </nav>
 
-<!-- COMING SOON BANNER -->
-<div class="banner">
-  <i class="icon" data-lucide="clock"></i>
-  報名 <strong>7/25</strong> 開放 ｜ 先來了解流程
-</div>
+<!-- BANNER -->
+<div class="banner"><i class="icon" data-lucide="clock"></i>報名 7/25 開放 ｜ 先來看看附近有哪些場次</div>
 
 <!-- HERO -->
 <header class="hero">
   <div class="wrap">
-    <span class="kicker"><span class="dot"></span>加入 Watch Party</span>
-    <h1>在你附近，<br>找一場主日。
-      <span class="en">Good Neighbor 2025</span>
-    </h1>
-    <p>不用一個人在家看主日。<br>有人已經在你附近準備好了一個空間，<br>等你一起進來。</p>
-    <div class="open-date">
-      <i class="icon" data-lucide="calendar" style="width:16px;height:16px"></i>
-      報名 <strong>7/25</strong> 正式開放
-    </div>
+    <span class="kicker"><span class="dot"></span>Find a Watch Party</span>
+    <h1>在你附近，<br><span class="swash">找一場主日。</span></h1>
+    <p class="sub">不用一個人在家看主日。有人已經在你附近準備好了一個空間，等你一起進來。</p>
   </div>
 </header>
 
-<!-- WHAT IS IT -->
-<section>
-  <div class="wrap">
-    <div class="eyebrow"><i class="icon" data-lucide="users"></i>這是什麼</div>
-    <h2>實體聚集，一起看一次主日。</h2>
-    <p class="lead">Watch Party 是在你附近的某個空間——可能是某個人的家、一間咖啡廳或社區空間——一群人實體聚在一起，參與線上 Hope 主日。你會看到同樣的敬拜和訊息，但這次身邊有人陪你一起。</p>
+<!-- FINDER -->
+<div class="finder">
+  <div class="wide">
+    <div class="finder-inner">
+      <div class="finder-head">
+        <div class="count"><i class="icon" data-lucide="map-pin" style="width:15px;height:15px;color:var(--gold)"></i>目前開放 <b id="count">—</b> 個地點</div>
+        <div class="search">
+          <i class="icon" data-lucide="search"></i>
+          <input id="q" type="text" placeholder="搜尋地區，例如：台南、新竹、馬來西亞…" oninput="filter(this.value)">
+        </div>
+      </div>
+      <div class="finder-body">
+        <div id="map"></div>
+        <div class="list" id="list"></div>
+      </div>
+    </div>
+    <p style="color:rgba(255,255,255,.4);font-size:12px;text-align:center;margin-top:14px">※ 地圖為示意，地點為展示用範例。實際開放場次將於 7/25 上線。</p>
   </div>
-</section>
+</div>
 
 <!-- HOW TO JOIN -->
-<section>
-  <div class="wrap">
-    <div class="eyebrow"><i class="icon" data-lucide="route"></i>如何加入</div>
+<section class="alt">
+  <div class="wrap rv">
+    <span class="eyebrow"><i class="icon" data-lucide="route" style="width:14px;height:14px"></i>如何加入</span>
     <h2>三步，找到你的場次。</h2>
     <div class="steps">
-
-      <div class="step">
-        <div class="num">1</div>
-        <div class="body">
-          <h3>在地圖上找一場</h3>
-          <p>瀏覽附近開放中的 Watch Party，找到你喜歡的地點和場次。</p>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="num">2</div>
-        <div class="body">
-          <h3>報名</h3>
-          <p>留下你的基本資料，告訴 Host 你有幾個人一起來。</p>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="num">3</div>
-        <div class="body">
-          <h3>等 Host 聯絡你</h3>
-          <p>報名後一週內，那場的 Host 會主動聯繫你第一次見面的細節。</p>
-        </div>
-      </div>
-
+      <div class="step"><div class="num">1</div><div class="body"><h3>在地圖上找一場</h3><p>瀏覽附近開放中的 Watch Party，找到你喜歡的地點和場次。</p></div></div>
+      <div class="step"><div class="num">2</div><div class="body"><h3>送出聯繫</h3><p>留下你的基本資料，告訴 Host 你有幾個人一起來。</p></div></div>
+      <div class="step"><div class="num">3</div><div class="body"><h3>等 Host 聯絡你</h3><p>一週內，那場的 Host 會主動聯繫你第一次見面的細節。</p></div></div>
     </div>
-  </div>
-</section>
-
-<!-- MAP -->
-<section id="map">
-  <div class="wrap">
-    <div class="eyebrow"><i class="icon" data-lucide="map"></i>附近的 Watch Party</div>
-    <h2>找你附近的場次</h2>
-    <p class="lead" style="margin-bottom:6px">地圖 7/25 開放後上線，屆時可以在這裡找到所有開放報名的場次。</p>
-    <!-- 地圖佔位 — 上線後把 .map-wrap 整個換成 iframe -->
-    <div class="map-wrap">
-      <i class="icon" data-lucide="map-pin"></i>
-      <p>地圖 7/25 開放<br>屆時將顯示附近開放報名的 Watch Party</p>
-    </div>
-    <!-- 換成 iframe 時用這個：
-    <div style="border-radius:16px;overflow:hidden;border:1px solid var(--line);aspect-ratio:4/3">
-      <iframe src="YOUR_GOOGLE_MY_MAPS_EMBED_URL" style="border:0;width:100%;height:100%" allowfullscreen loading="lazy"></iframe>
-    </div>
-    -->
   </div>
 </section>
 
 <!-- WHAT TO EXPECT -->
 <section>
-  <div class="wrap">
-    <div class="eyebrow"><i class="icon" data-lucide="sparkles"></i>去了會怎樣</div>
+  <div class="wrap rv">
+    <span class="eyebrow"><i class="icon" data-lucide="sparkles" style="width:14px;height:14px"></i>去了會怎樣</span>
     <div class="cards">
-
-      <div class="card">
-        <div class="badge"><i class="icon" data-lucide="home"></i></div>
-        <div>
-          <h3>各場不一樣，但都歡迎你</h3>
-          <p>每個 Host 的空間和風格都不同。走進陌生空間可能會緊張，但 Host 在那裡是為了讓你覺得像回家。</p>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="badge"><i class="icon" data-lucide="play-circle"></i></div>
-        <div>
-          <h3>一起看主日</h3>
-          <p>你會看到和線上相同的敬拜和講道——只是這次有人在旁邊跟你一起被觸動，而不是一個人在手機螢幕前。</p>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="badge"><i class="icon" data-lucide="message-circle"></i></div>
-        <div>
-          <h3>看完之後一起聊</h3>
-          <p>訊息結束後會有一段小分享，把這篇訊息帶進你的生活、你的這一週。這群人也可以為你禱告。</p>
-        </div>
-      </div>
-
+      <div class="card"><div class="badge"><i class="icon" data-lucide="home"></i></div><div><h3>各場不一樣，但都歡迎你</h3><p>每個 Host 的空間和風格都不同。走進陌生空間可能會緊張，但 Host 在那裡是為了讓你覺得像回家。</p></div></div>
+      <div class="card"><div class="badge"><i class="icon" data-lucide="play-circle"></i></div><div><h3>一起看主日</h3><p>你會看到和線上相同的敬拜和講道——只是這次有人在旁邊跟你一起被觸動，而不是一個人在手機螢幕前。</p></div></div>
+      <div class="card"><div class="badge"><i class="icon" data-lucide="message-circle"></i></div><div><h3>看完之後一起聊</h3><p>訊息結束後會有一段小分享，把這篇訊息帶進你的生活、你的這一週。這群人也可以為你禱告。</p></div></div>
+    </div>
+    <div class="gallery">
+      <div class="ph"><i class="icon" data-lucide="users"></i><span>聚會現場</span></div>
+      <div class="ph"><i class="icon" data-lucide="hand-heart"></i><span>一起禱告</span></div>
+      <div class="ph"><i class="icon" data-lucide="smile"></i><span>認識新朋友</span></div>
     </div>
   </div>
 </section>
 
 <!-- FAQ -->
-<section>
-  <div class="wrap">
-    <div class="eyebrow"><i class="icon" data-lucide="help-circle"></i>常見問題</div>
+<section class="alt">
+  <div class="wrap rv">
+    <span class="eyebrow"><i class="icon" data-lucide="help-circle" style="width:14px;height:14px"></i>常見問題</span>
+    <h2>有點好奇嗎？</h2>
     <div class="faq">
-
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          誰可以參加？
-          <i class="icon chev" data-lucide="chevron-down"></i>
-        </button>
-        <div class="faq-a"><p>任何人都可以。不管你是第一次接觸 The Hope，還是已經認識教會很久了，都歡迎你來。不需要先信什麼，帶你自己來就好。</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          是實體還是線上？
-          <i class="icon chev" data-lucide="chevron-down"></i>
-        </button>
-        <div class="faq-a"><p>實體聚集。大家聚在某個真實的空間——某人家裡、咖啡廳或社區空間，一起參與線上 Hope 主日的直播。不是各自在家看，是面對面聚在一起。</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          要帶什麼嗎？需要費用嗎？
-          <i class="icon chev" data-lucide="chevron-down"></i>
-        </button>
-        <div class="faq-a"><p>什麼都不用帶，完全免費。帶一顆放鬆的心來就好。Host 可能會準備一些茶點，但完全不要求。</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          報名後會發生什麼事？
-          <i class="icon chev" data-lucide="chevron-down"></i>
-        </button>
-        <div class="faq-a"><p>你會收到一封確認信，裡面有場次資訊。那場的 Host 會在一週內主動聯絡你，告訴你第一次見面的細節和地址。</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          附近沒有開放的 Watch Party 怎麼辦？
-          <i class="icon chev" data-lucide="chevron-down"></i>
-        </button>
-        <div class="faq-a"><p>也許這就是你開一場的時候！如果你願意打開家門，可以去看看 Host 申請的說明。或者你也可以先在家參加線上 Hope 主日，等身邊有 Watch Party 時再加入。</p></div>
-      </div>
-
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">誰可以參加？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>任何人都可以。不管你是第一次接觸 The Hope，還是已經認識教會很久了，都歡迎你來。不需要先信什麼，帶你自己來就好。</p></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">是實體還是線上？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>實體聚集。大家聚在某個真實的空間——某人家裡、咖啡廳或社區空間，一起參與線上 Hope 主日的直播。不是各自在家看，是面對面聚在一起。</p></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">要帶什麼嗎？需要費用嗎？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>什麼都不用帶，完全免費。帶一顆放鬆的心來就好。Host 可能會準備一些茶點，但完全不要求。</p></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">報名後會發生什麼事？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>你會收到一封確認信，裡面有場次資訊。那場的 Host 會在一週內主動聯絡你，告訴你第一次見面的細節和地址。</p></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">附近沒有開放的場次怎麼辦？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>也許這就是你開一場的時候！如果你願意打開家門，可以去看看 Host 申請的說明。或者也可以先在家參加線上 Hope 主日，等身邊有 Watch Party 時再加入。</p></div></div>
     </div>
   </div>
 </section>
 
-<!-- JOIN CTA -->
+<!-- CTA -->
 <section id="join" class="cta-block">
   <div class="wrap">
     <h2>找到你的場次了嗎？</h2>
-    <p class="sub">7/25 開放後，在地圖上找到喜歡的場次，<br>填報名表，等 Host 聯絡你就完成了。</p>
-
-    <!-- 7/25 前：btn-soon（不可點）-->
-    <div class="btn-soon">
-      <i class="icon" data-lucide="lock" style="width:17px;height:17px"></i>
-      7/25 開放報名
-    </div>
-    <!-- 7/25 後：把上面換成這個，填入 Paperform Join 表單 URL -->
-    <!--
-    <a href="JOIN_FORM_URL" class="btn-apply">
-      <i class="icon" data-lucide="map-pin" style="width:18px;height:18px;stroke-width:2.5"></i>
-      找一場報名
-    </a>
-    -->
-
+    <p class="sub">7/25 開放後，在地圖上找到喜歡的場次，<br>送出聯繫，等 Host 聯絡你就完成了。</p>
+    <div class="btn-soon"><i class="icon" data-lucide="lock" style="width:17px;height:17px"></i>7/25 開放報名</div>
     <p class="open-note">8/16、8/23、8/30、9/6 四週主日</p>
-
-    <!-- HOST TEASER -->
     <div class="teaser-card">
-      <div class="badge" style="background:rgba(255,255,255,.12);color:var(--gold)">
-        <i class="icon" data-lucide="home"></i>
-      </div>
-      <div class="body">
-        <h3>想自己開一場？</h3>
-        <p>Host 申請 7/15 截止</p>
-      </div>
-      <a href="host.html" class="teaser-link">
-        申請
-        <i class="icon" data-lucide="arrow-right" style="width:15px;height:15px"></i>
-      </a>
+      <div class="badge" style="background:rgba(255,255,255,.12);color:var(--gold)"><i class="icon" data-lucide="home"></i></div>
+      <div class="body"><h3>想自己開一場？</h3><p>Host 申請 7/15 截止</p></div>
+      <a href="host.html" class="teaser-link">申請<i class="icon" data-lucide="arrow-right" style="width:15px;height:15px"></i></a>
     </div>
   </div>
 </section>
@@ -352,21 +279,157 @@
   The Hope ｜ Good Neighbor 好鄰舍
 </footer>
 
+<!-- CONTACT MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <button class="close" onclick="closeModal()"><i class="icon" data-lucide="x"></i></button>
+    <div id="modal-form">
+      <h3 id="m-name">場次名稱</h3>
+      <div class="loc-meta"><i class="icon" data-lucide="map-pin" style="width:14px;height:14px"></i><span id="m-area"></span></div>
+      <div class="field"><label>你的名字</label><input type="text" placeholder="怎麼稱呼你？"></div>
+      <div class="field"><label>手機</label><input type="tel" placeholder="Host 會用這個聯絡你"></div>
+      <div class="field"><label>幾位一起來？</label><input type="number" placeholder="含你自己" value="1"></div>
+      <button class="submit" onclick="submitContact()"><i class="icon" data-lucide="send" style="width:17px;height:17px"></i>送出聯繫</button>
+      <div class="demo-tip">這是示意流程，正式報名 7/25 開放。屆時會串接報名表單與 Host 通知。</div>
+    </div>
+    <div id="modal-done" style="display:none">
+      <div class="done">
+        <div class="ic"><i class="icon" data-lucide="check" style="width:30px;height:30px;color:var(--ink);stroke-width:3"></i></div>
+        <h3>已送出！</h3>
+        <p><b id="m-name-done"></b> 的 Host<br>會在一週內主動聯絡你。<br>期待跟你一起主日！</p>
+        <button class="submit" style="margin-top:18px" onclick="closeModal()">好的</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
-  lucide.createIcons();
-  function toggleFaq(btn) {
-    const ans = btn.nextElementSibling;
-    const isOpen = btn.classList.contains('open');
-    document.querySelectorAll('.faq-q.open').forEach(b => {
-      b.classList.remove('open');
-      b.nextElementSibling.style.maxHeight = '0';
-    });
-    if (!isOpen) {
-      btn.classList.add('open');
-      ans.style.maxHeight = ans.scrollHeight + 'px';
-    }
+  // ===== 示意資料（之後改為從報名後台讀取）=====
+  const LOCS = [
+    {id:1, name:"新店・總部周邊", area:"新北市・新店區", lat:24.9675, lng:121.5419, week:"8/23"},
+    {id:2, name:"新竹場", area:"新竹市", lat:24.8047, lng:120.9714, week:"8/16"},
+    {id:3, name:"台南場", area:"台南市・東區", lat:22.9908, lng:120.2133, week:"8/30"},
+    {id:4, name:"高雄場", area:"高雄市・苓雅區", lat:22.6273, lng:120.3014, week:"8/23"},
+    {id:5, name:"宜蘭場", area:"宜蘭縣・羅東", lat:24.6772, lng:121.7668, week:"9/6"},
+    {id:6, name:"台東場", area:"台東縣・台東市", lat:22.7583, lng:121.1444, week:"8/16"},
+    {id:7, name:"澎湖場", area:"澎湖縣・馬公", lat:23.5712, lng:119.5793, week:"8/30"},
+    {id:8, name:"檳城場", area:"馬來西亞・檳城", lat:5.4141, lng:100.3288, week:"8/23"},
+    {id:9, name:"怡保場", area:"馬來西亞・怡保", lat:4.5975, lng:101.0901, week:"9/6"},
+    {id:10, name:"加州場", area:"美國・洛杉磯", lat:34.0522, lng:-118.2437, week:"8/16"},
+    {id:11, name:"愛丁堡場", area:"英國・愛丁堡", lat:55.9533, lng:-3.1883, week:"8/30"},
+  ];
+
+  // ---- helper：建立 lucide icon 元素 ----
+  function ic(name, size){
+    const i=document.createElement('i');
+    i.className='icon'; i.setAttribute('data-lucide',name);
+    if(size){i.style.width=size+'px';i.style.height=size+'px';}
+    return i;
   }
+
+  // ---- 地圖 ----
+  const map = L.map('map',{scrollWheelZoom:false}).setView([23.7,120.95],7);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
+    attribution:'&copy; OpenStreetMap &copy; CARTO', maxZoom:19
+  }).addTo(map);
+
+  const markers={};
+  function makeIcon(active){
+    return L.divIcon({className:'',html:'<div class="pin'+(active?' active':'')+'"><span></span></div>',iconSize:[30,30],iconAnchor:[15,30],popupAnchor:[0,-30]});
+  }
+  LOCS.forEach(l=>{
+    const m=L.marker([l.lat,l.lng],{icon:makeIcon(false)}).addTo(map);
+    // popup 用安全 DOM 建構
+    const pop=document.createElement('div'); pop.className='pop';
+    const h=document.createElement('h4'); h.textContent=l.name;
+    const p=document.createElement('p'); p.textContent=l.area+' ・ '+l.week+' 主日';
+    const b=document.createElement('button'); b.textContent='送出聯繫';
+    b.addEventListener('click',()=>openModal(l.id));
+    pop.append(h,p,b);
+    m.bindPopup(pop);
+    m.on('click',()=>highlight(l.id,false));
+    markers[l.id]=m;
+  });
+
+  function highlight(id,fly){
+    document.querySelectorAll('.loc').forEach(el=>el.classList.toggle('active',+el.dataset.id===id));
+    Object.entries(markers).forEach(([k,m])=>m.setIcon(makeIcon(+k===id)));
+    const el=document.querySelector('.loc[data-id="'+id+'"]');
+    if(el) el.scrollIntoView({behavior:'smooth',block:'nearest'});
+    if(fly){const l=LOCS.find(x=>x.id===id);map.flyTo([l.lat,l.lng],(l.lat>50||l.lat<10)?6:9,{duration:.8});markers[id].openPopup();}
+  }
+
+  // ---- 列表渲染（安全 DOM，不用 innerHTML）----
+  function render(items){
+    const list=document.getElementById('list');
+    document.getElementById('count').textContent=items.length;
+    list.replaceChildren();
+    if(!items.length){
+      const e=document.createElement('div'); e.className='empty';
+      e.textContent='找不到符合的地點 — 換個關鍵字試試';
+      list.appendChild(e); return;
+    }
+    items.forEach(l=>{
+      const row=document.createElement('div'); row.className='loc'; row.dataset.id=l.id;
+      row.addEventListener('click',()=>highlight(l.id,true));
+
+      const thumb=document.createElement('div'); thumb.className='thumb'; thumb.appendChild(ic('image'));
+
+      const info=document.createElement('div'); info.className='info';
+      const h4=document.createElement('h4'); h4.textContent=l.name;
+      const meta1=document.createElement('div'); meta1.className='meta';
+      const tag=document.createElement('span'); tag.className='ch-tag'; tag.textContent='Watch Party';
+      const week=document.createElement('span'); week.className='week';
+      week.appendChild(ic('calendar',13)); week.append(' '+l.week+' 主日');
+      meta1.append(tag,week);
+      const meta2=document.createElement('div'); meta2.className='meta'; meta2.style.marginTop='4px';
+      meta2.appendChild(ic('map-pin',13)); meta2.append(' '+l.area);
+      info.append(h4,meta1,meta2);
+
+      const go=document.createElement('div'); go.className='go'; go.appendChild(ic('arrow-right'));
+
+      row.append(thumb,info,go);
+      list.appendChild(row);
+    });
+    lucide.createIcons();
+  }
+  function filter(q){
+    q=q.trim().toLowerCase();
+    render(LOCS.filter(l=>(l.name+l.area).toLowerCase().includes(q)));
+  }
+
+  // ---- modal ----
+  let current=null;
+  function openModal(id){
+    current=LOCS.find(l=>l.id===id);
+    document.getElementById('m-name').textContent=current.name;
+    document.getElementById('m-area').textContent=current.area+' ・ '+current.week+' 主日';
+    document.getElementById('modal-form').style.display='block';
+    document.getElementById('modal-done').style.display='none';
+    document.getElementById('modal').classList.add('show');
+    lucide.createIcons();
+  }
+  function submitContact(){
+    document.getElementById('m-name-done').textContent=current.name;
+    document.getElementById('modal-form').style.display='none';
+    document.getElementById('modal-done').style.display='block';
+    lucide.createIcons();
+  }
+  function closeModal(){document.getElementById('modal').classList.remove('show');}
+  document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+  function toggleFaq(btn){
+    const ans=btn.nextElementSibling, open=btn.classList.contains('open');
+    document.querySelectorAll('.faq-q.open').forEach(b=>{b.classList.remove('open');b.nextElementSibling.style.maxHeight='0'});
+    if(!open){btn.classList.add('open');ans.style.maxHeight=ans.scrollHeight+'px'}
+  }
+
+  render(LOCS);
+  lucide.createIcons();
+  const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 </script>
 </body>
 </html>
