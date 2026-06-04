@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Good Neighbor 好鄰舍 ｜ The Hope</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1D292E;        /* The Hope 主色 */
+    --gold:#FFCC32;       /* The Hope 黃 */
+    --paper:#FAF8F3;
+    --muted:#5C6A70;
+    --line:#E6E1D8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Noto Sans TC",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);background:var(--paper);line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:560px;margin:0 auto;padding:0 22px}
+  .icon{width:22px;height:22px;stroke-width:2;flex:none}
+
+  /* Hero */
+  .hero{background:var(--ink);color:#fff;padding:64px 0 56px;text-align:center}
+  .hero .wrap{max-width:560px}
+  .kicker{display:inline-flex;align-items:center;gap:7px;font-size:13px;letter-spacing:.18em;
+    color:var(--gold);font-weight:700;text-transform:uppercase;margin-bottom:20px}
+  .kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+  .hero h1{font-size:38px;line-height:1.25;font-weight:900;letter-spacing:.01em}
+  .hero h1 .en{display:block;font-size:16px;font-weight:500;letter-spacing:.32em;
+    color:rgba(255,255,255,.55);margin-top:14px}
+  .hero p{margin-top:22px;font-size:16px;color:rgba(255,255,255,.82)}
+  .dates{display:inline-flex;gap:8px;margin-top:26px;flex-wrap:wrap;justify-content:center}
+  .pill{border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:7px 14px;
+    font-size:13px;color:rgba(255,255,255,.9)}
+  .pill b{color:var(--gold);font-weight:700}
+
+  /* Section */
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  .eyebrow{display:flex;align-items:center;gap:9px;color:var(--muted);font-weight:700;
+    font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px}
+  .eyebrow .icon{color:var(--ink)}
+  h2{font-size:23px;font-weight:900;line-height:1.4;margin-bottom:14px}
+  p.lead{font-size:16px;color:#39474D}
+  .hl{background:linear-gradient(transparent 62%,var(--gold) 62%);font-weight:700;padding:0 1px}
+
+  /* Reassure cards */
+  .cards{display:grid;gap:14px;margin-top:8px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 20px;
+    display:flex;gap:14px;align-items:flex-start}
+  .card .badge{width:42px;height:42px;border-radius:12px;background:var(--ink);color:var(--gold);
+    display:flex;align-items:center;justify-content:center;flex:none}
+  .card h3{font-size:16px;font-weight:700;margin-bottom:4px}
+  .card p{font-size:14.5px;color:var(--muted)}
+
+  /* Steps */
+  .steps{margin-top:6px;position:relative}
+  .step{display:flex;gap:16px;padding:0 0 22px;position:relative}
+  .step:last-child{padding-bottom:0}
+  .step .num{width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--ink);
+    font-weight:900;display:flex;align-items:center;justify-content:center;flex:none;font-size:15px;z-index:1}
+  .step:not(:last-child)::before{content:"";position:absolute;left:17px;top:34px;bottom:0;
+    width:2px;background:var(--line)}
+  .step .body h3{font-size:16px;font-weight:700;margin-bottom:2px}
+  .step .body p{font-size:14.5px;color:var(--muted)}
+
+  /* Get list */
+  .get{display:grid;gap:12px;margin-top:8px}
+  .get .row{display:flex;gap:12px;align-items:center;font-size:15.5px;font-weight:500}
+  .get .row .icon{color:var(--ink)}
+
+  /* CTA */
+  .cta{background:var(--ink);color:#fff;text-align:center;border:none}
+  .cta h2{color:#fff}
+  .cta p{color:rgba(255,255,255,.78);font-size:15px;margin-bottom:24px}
+  .btn{display:inline-flex;align-items:center;gap:9px;background:var(--gold);color:var(--ink);
+    text-decoration:none;font-weight:700;font-size:16px;padding:15px 30px;border-radius:999px}
+  .btn:active{transform:translateY(1px)}
+  .note{margin-top:16px;font-size:13px;color:rgba(255,255,255,.5)}
+
+  footer{text-align:center;padding:30px 0 44px;color:var(--muted);font-size:13px}
+  footer .en{letter-spacing:.3em;color:var(--ink);font-weight:700;margin-bottom:4px}
+</style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="wrap">
+      <span class="kicker"><span class="dot"></span>The Hope 夏季福音行動</span>
+      <h1>Good Neighbor<br>好鄰舍
+        <span class="en">WATCH PARTY</span>
+      </h1>
+      <p>在你家、或一個你喜歡的空間，<br>約幾個朋友，一起看一次線上 Hope 主日。</p>
+      <div class="dates">
+        <span class="pill"><b>8/16</b></span>
+        <span class="pill"><b>8/23</b> 教會生日</span>
+        <span class="pill"><b>8/30</b> BTS</span>
+        <span class="pill"><b>9/6</b></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- WHAT -->
+  <section>
+    <div class="wrap">
+      <div class="eyebrow"><i class="icon" data-lucide="users"></i>這是什麼</div>
+      <h2>一起，不用一個人做主日。</h2>
+      <p class="lead">配合 8 月<b>職場主題</b>的主日系列講道，我們想鼓勵大家邀請身邊還不認識耶穌的朋友，一起來參與一次主日。最簡單的方式，就是辦一場 <b>Watch Party</b>——約幾個人，一起看線上 Hope 主日、一起聊聊。</p>
+    </div>
+  </section>
+
+  <!-- REASSURE -->
+  <section>
+    <div class="wrap">
+      <div class="eyebrow"><i class="icon" data-lucide="heart-handshake"></i>幾件讓你放心的事</div>
+      <div class="cards">
+        <div class="card">
+          <div class="badge"><i class="icon" data-lucide="sprout"></i></div>
+          <div>
+            <h3>不是很大的一場，而是更多人願意小小的響應</h3>
+            <p>這次的期待不是要很盛大，而是人願意一起來分享福音，所以大家都可以響應，不一定要很大的空間，可以很多人自己 host 小空間，當然如果想要一起也可以。</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="badge"><i class="icon" data-lucide="sliders-horizontal"></i></div>
+          <div>
+            <h3>人數，你自己決定</h3>
+            <p>主要的期待是大家邀請身邊的朋友，但是有空間的地方，也可以上到教會的宣傳，但你可以自己設人數上限，照你的空間和節奏來，不用擔心場面失控。</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="badge"><i class="icon" data-lucide="home"></i></div>
+          <div>
+            <h3>門檻很低</h3>
+            <p>不像 Christmas Together 那種規模——<span class="hl">至少 3 個人、一台能播主日的螢幕</span>就可以。不用有額外的活動，一起主日，有簡單的聊聊分享，8/16–9/6 四週，至少選一週舉辦就可以申請。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GET -->
+  <section>
+    <div class="wrap">
+      <div class="eyebrow"><i class="icon" data-lucide="gift"></i>你會拿到</div>
+      <div class="get">
+        <div class="row"><i class="icon" data-lucide="package"></i>活動資源包（VIP 卡 + 手環、空間裝飾品）</div>
+        <div class="row"><i class="icon" data-lucide="book-open"></i>Host 手冊（如何 host watch party）</div>
+        <div class="row"><i class="icon" data-lucide="graduation-cap"></i>開場前的訓練，負責的 Leader 隨時可問</div>
+      </div>
+    </div>
+  </section>
+
+
+  <footer>
+    <div class="en">YOU BELONG HERE</div>
+    The Hope ｜ Good Neighbor 好鄰舍
+  </footer>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>
