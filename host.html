@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Host 申請 ｜ Good Neighbor 好鄰舍 ｜ The Hope</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1D292E;
+    --gold:#FFCC32;
+    --paper:#FAF8F3;
+    --muted:#5C6A70;
+    --line:#E6E1D8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Noto Sans TC",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);background:var(--paper);line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:560px;margin:0 auto;padding:0 22px}
+  .icon{width:22px;height:22px;stroke-width:2;flex:none}
+
+  /* NAV */
+  .topnav{background:var(--ink);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+  .topnav .brand{color:var(--gold);font-weight:700;font-size:13px;letter-spacing:.14em;text-decoration:none;text-transform:uppercase}
+  .topnav .nav-link{color:rgba(255,255,255,.6);font-size:13px;text-decoration:none;display:flex;align-items:center;gap:5px}
+  .topnav .nav-link:active{color:#fff}
+
+  /* HERO */
+  .hero{background:var(--ink);color:#fff;padding:56px 0 52px;text-align:center}
+  .kicker{display:inline-flex;align-items:center;gap:7px;font-size:12px;letter-spacing:.2em;
+    color:var(--gold);font-weight:700;text-transform:uppercase;margin-bottom:18px}
+  .kicker .dot{width:5px;height:5px;border-radius:50%;background:var(--gold)}
+  .hero h1{font-size:32px;line-height:1.3;font-weight:900}
+  .hero h1 .en{display:block;font-size:14px;font-weight:500;letter-spacing:.28em;
+    color:rgba(255,255,255,.45);margin-top:12px;text-transform:uppercase}
+  .hero p{margin-top:18px;font-size:15.5px;color:rgba(255,255,255,.78);padding:0 8px;line-height:1.85}
+  .hero-btn{margin-top:28px;display:inline-flex;align-items:center;gap:9px;
+    background:var(--gold);color:var(--ink);text-decoration:none;font-weight:700;
+    font-size:15px;padding:14px 28px;border-radius:999px}
+  .hero-btn:active{opacity:.85}
+
+  /* SECTION */
+  section{padding:44px 0;border-bottom:1px solid var(--line)}
+  section:last-of-type{border-bottom:none}
+  .eyebrow{display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:700;
+    font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px}
+  h2{font-size:22px;font-weight:900;line-height:1.4;margin-bottom:12px}
+  p.lead{font-size:15.5px;color:#39474D;line-height:1.85}
+  .hl{background:linear-gradient(transparent 60%,rgba(255,204,50,.5) 60%);font-weight:700}
+
+  /* CARDS */
+  .cards{display:grid;gap:12px;margin-top:10px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;
+    display:flex;gap:14px;align-items:flex-start}
+  .badge{width:40px;height:40px;border-radius:11px;background:var(--ink);color:var(--gold);
+    display:flex;align-items:center;justify-content:center;flex:none}
+  .card h3{font-size:15px;font-weight:700;margin-bottom:3px}
+  .card p{font-size:14px;color:var(--muted);line-height:1.75}
+
+  /* STEPS */
+  .steps{margin-top:10px}
+  .step{display:flex;gap:16px;padding:0 0 22px;position:relative}
+  .step:last-child{padding-bottom:0}
+  .step .num{width:36px;height:36px;border-radius:50%;background:var(--gold);color:var(--ink);
+    font-weight:900;display:flex;align-items:center;justify-content:center;
+    flex:none;font-size:14px;z-index:1}
+  .step:not(:last-child)::before{content:"";position:absolute;left:18px;top:36px;bottom:0;
+    width:2px;background:var(--line)}
+  .step .body h3{font-size:15.5px;font-weight:700;margin-bottom:3px;padding-top:6px}
+  .step .body p{font-size:14px;color:var(--muted);line-height:1.75}
+  .tag{display:inline-block;font-size:11.5px;font-weight:700;color:var(--ink);
+    background:var(--gold);padding:2px 10px;border-radius:999px;margin-top:6px}
+
+  /* GET LIST */
+  .get{display:grid;gap:12px;margin-top:10px}
+  .get .row{display:flex;gap:12px;align-items:center;font-size:15px;font-weight:500}
+  .get .row .icon{color:var(--ink)}
+
+  /* VENUE REQUIREMENTS */
+  .req{list-style:none;display:grid;gap:9px;margin-top:12px}
+  .req li{display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:#39474D;line-height:1.7}
+  .req .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:9px;flex:none}
+
+  /* FAQ */
+  .faq{margin-top:10px}
+  .faq-item{border-bottom:1px solid var(--line)}
+  .faq-item:first-child{border-top:1px solid var(--line)}
+  .faq-q{width:100%;text-align:left;background:none;border:none;cursor:pointer;
+    padding:16px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;
+    font-size:15px;font-weight:700;color:var(--ink);line-height:1.5;font-family:inherit}
+  .faq-q .chev{flex:none;transition:transform .2s;color:var(--muted);width:18px;height:18px}
+  .faq-q.open .chev{transform:rotate(180deg)}
+  .faq-a{overflow:hidden;max-height:0;transition:max-height .28s ease}
+  .faq-a p{padding:0 0 16px;font-size:14.5px;color:var(--muted);line-height:1.85}
+
+  /* CTA BLOCK */
+  .cta-block{background:var(--ink);padding:52px 0;text-align:center;border:none}
+  .cta-block h2{color:#fff;margin-bottom:8px;font-size:24px}
+  .cta-block .sub{color:rgba(255,255,255,.65);font-size:14.5px;margin-bottom:26px;line-height:1.8}
+  .btn-apply{display:inline-flex;align-items:center;gap:9px;background:var(--gold);color:var(--ink);
+    text-decoration:none;font-weight:700;font-size:16px;padding:16px 32px;border-radius:999px}
+  .btn-apply:active{opacity:.85}
+  .deadline-note{margin-top:18px;font-size:13px;color:rgba(255,255,255,.4);
+    display:flex;align-items:center;justify-content:center;gap:6px}
+  .deadline-note .icon{width:15px;height:15px;color:rgba(255,255,255,.4)}
+
+  /* JOIN TEASER */
+  .teaser-card{background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:20px;display:flex;gap:14px;align-items:center;margin-top:16px}
+  .teaser-card .body{flex:1;min-width:0}
+  .teaser-card h3{font-size:15px;font-weight:700;margin-bottom:2px}
+  .teaser-card p{font-size:13.5px;color:var(--muted)}
+  .teaser-link{color:var(--ink);font-weight:700;font-size:14px;text-decoration:none;
+    white-space:nowrap;display:flex;align-items:center;gap:4px;flex:none}
+
+  footer{text-align:center;padding:28px 0 48px;color:var(--muted);font-size:13px}
+  footer .brand-en{letter-spacing:.28em;color:var(--ink);font-weight:700;margin-bottom:5px;font-size:12px}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="topnav">
+  <a href="index.html" class="brand">Good Neighbor</a>
+  <a href="join.html" class="nav-link">
+    <i class="icon" data-lucide="map-pin" style="width:16px;height:16px;stroke-width:2"></i>
+    找一場加入
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <span class="kicker"><span class="dot"></span>Host Watch Party</span>
+    <h1>你打開家門，<br>就是開始。
+      <span class="en">Good Neighbor 2025</span>
+    </h1>
+    <p>你不需要什麼都準備好，<br>只要有一顆願意連結人的心，<br>還有一個能讓人聚在一起的空間。</p>
+    <a href="#apply" class="hero-btn">
+      <i class="icon" data-lucide="clipboard-list" style="width:18px;height:18px;stroke-width:2.5"></i>
+      我要申請 Host
+    </a>
+  </div>
+</header>
+
+<!-- WHAT IS IT -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow"><i class="icon" data-lucide="users"></i>這是什麼</div>
+    <h2>帶一個人來，<br>就是傳福音。</h2>
+    <p class="lead">配合 8 月<strong>職場主題</strong>的主日系列講道，我們鼓勵大家邀請身邊還不認識耶穌的朋友，帶進一次主日。你可以在家裡、咖啡廳或任何一個你喜歡的空間辦一場 <strong>Watch Party</strong>——約幾個人，一起看線上 Hope 主日、一起聊聊。</p>
+  </div>
+</section>
+
+<!-- REASSURE -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow"><i class="icon" data-lucide="heart-handshake"></i>幾件讓你放心的事</div>
+    <div class="cards">
+
+      <div class="card">
+        <div class="badge"><i class="icon" data-lucide="sprout"></i></div>
+        <div>
+          <h3>不是要做一場很大的活動</h3>
+          <p>這次的期待是很多人願意小小地響應，一起來分享福音。很多人各自辦小場，累積起來比一場大活動更有力量。</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="badge"><i class="icon" data-lucide="sliders-horizontal"></i></div>
+        <div>
+          <h3>人數，你自己決定</h3>
+          <p>主要期待你邀請自己認識的朋友。如果想對外開放，讓更多人報名加入，也可以自己設人數上限，照你的空間和節奏來。</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="badge"><i class="icon" data-lucide="home"></i></div>
+        <div>
+          <h3>門檻真的很低</h3>
+          <p>至少 <span class="hl">3 個人、一台能播主日的螢幕</span>就可以。8/16–9/6 四週，選<span class="hl">至少一週</span>舉辦就符合資格。</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="process">
+  <div class="wrap">
+    <div class="eyebrow"><i class="icon" data-lucide="route"></i>申請流程</div>
+    <h2>三步，就可以開始。</h2>
+    <div class="steps">
+
+      <div class="step">
+        <div class="num">1</div>
+        <div class="body">
+          <h3>填報名表</h3>
+          <p>告訴我們你的場地基本資訊、你為什麼想開一場，以及你希不希望對外開放。大約 5 分鐘可以完成。</p>
+          <span class="tag">截止 7/15</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num">2</div>
+        <div class="body">
+          <h3>面試（線上，約 30 分鐘）</h3>
+          <p>跟我們的團隊聊聊你的動機和場地。輕鬆對話，不是考試。你可以在報名時選一個喜歡的時段。</p>
+          <span class="tag">6/29–7/14</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num">3</div>
+        <div class="body">
+          <h3>訓練 + 拿資源包</h3>
+          <p>一次線上訓練，拿到 Host 手冊和資源包，準備好開場。</p>
+          <span class="tag">7/25</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHAT YOU GET -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow"><i class="icon" data-lucide="gift"></i>你會拿到</div>
+    <div class="get">
+      <div class="row"><i class="icon" data-lucide="package"></i>活動資源包（VIP 卡、手環、空間裝飾品）</div>
+      <div class="row"><i class="icon" data-lucide="book-open"></i>Host 手冊（完整的 Watch Party 流程指引）</div>
+      <div class="row"><i class="icon" data-lucide="graduation-cap"></i>開場前訓練，負責的 Leader 隨時可問</div>
+      <div class="row"><i class="icon" data-lucide="message-circle"></i>傳福音引導工具（分享卡、問題卡）</div>
+    </div>
+  </div>
+</section>
+
+<!-- VENUE -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow"><i class="icon" data-lucide="building-2"></i>場地條件</div>
+    <h2>家裡、咖啡廳、<br>會議室都可以。</h2>
+    <p class="lead" style="margin-bottom:14px">重點不是場地多大，而是讓人走進去覺得舒服、安全、想留下來。只需要符合幾個基本條件：</p>
+    <ul class="req">
+      <li><span class="dot"></span>安全、整潔的環境</li>
+      <li><span class="dot"></span>穩定的網路連線</li>
+      <li><span class="dot"></span>能播放主日的螢幕（電視或投影機）</li>
+      <li><span class="dot"></span>至少容納 3 人的空間</li>
+      <li><span class="dot"></span>音量對周遭鄰居友善</li>
+    </ul>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow"><i class="icon" data-lucide="help-circle"></i>常見問題</div>
+    <div class="faq">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          誰可以申請成為 Host？
+          <i class="icon chev" data-lucide="chevron-down"></i>
+        </button>
+        <div class="faq-a"><p>任何 Hope Nation 的成員，只要有場地、有願意連結人的心就可以。不需要特別的服事資歷。今年主要開放給有場地的申請者，不需要是小組長。</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          我一定要對外開放嗎？
+          <i class="icon chev" data-lucide="chevron-down"></i>
+        </button>
+        <div class="faq-a"><p>完全不用。你可以選「封閉場」——只邀請自己認識的朋友；也可以選「公開場」，讓教會幫你宣傳，附近的人可以報名加入你的場次。報名時選一個選項即可。</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          四週我都要辦嗎？
+          <i class="icon chev" data-lucide="chevron-down"></i>
+        </button>
+        <div class="faq-a"><p>不用。8/16、8/23、8/30、9/6 四週，你選<strong>至少一週</strong>舉辦就符合資格。當然如果有動力辦更多週也非常歡迎！</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          面試要準備什麼嗎？
+          <i class="icon chev" data-lucide="chevron-down"></i>
+        </button>
+        <div class="faq-a"><p>不需要特別準備。就是跟我們的團隊輕鬆聊聊你的動機、場地狀況，以及對這件事的想法。大約 30 分鐘。你可以在報名時選擇自己方便的時段。</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Watch Party 當天要怎麼帶？
+          <i class="icon chev" data-lucide="chevron-down"></i>
+        </button>
+        <div class="faq-a"><p>教會會給你完整的 Host 手冊，裡面有詳細的建議流程。基本上就是：接待大家、一起敬拜、看線上主日訊息、活動後有段簡單的分享交流。訓練時我們會一起走過流程。</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          費用要自己負擔嗎？
+          <i class="icon chev" data-lucide="chevron-down"></i>
+        </button>
+        <div class="faq-a"><p>場地（自備）和當天的招待茶點由你自行決定是否準備。教會提供資源包（VIP 卡、手環、裝飾品）和訓練，不收費。</p></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- APPLY CTA -->
+<section id="apply" class="cta-block">
+  <div class="wrap">
+    <h2>準備好了嗎？</h2>
+    <p class="sub">報名大約 5 分鐘，<br>填完後我們會與你聯繫面試時段。</p>
+    <!-- 把下方 href="#" 換成 Paperform Host 報名表 URL -->
+    <a href="#" class="btn-apply" id="host-apply-btn">
+      <i class="icon" data-lucide="clipboard-list" style="width:18px;height:18px;stroke-width:2.5"></i>
+      填寫 Host 申請表
+    </a>
+    <div class="deadline-note">
+      <i class="icon" data-lucide="clock"></i>
+      報名截止 7/15
+    </div>
+  </div>
+</section>
+
+<!-- JOIN TEASER -->
+<section style="padding:36px 0">
+  <div class="wrap">
+    <div class="eyebrow"><i class="icon" data-lucide="map-pin"></i>想找一場參加？</div>
+    <div class="teaser-card">
+      <div class="badge" style="background:#F0EDE6;color:var(--ink)">
+        <i class="icon" data-lucide="calendar" style="color:var(--muted)"></i>
+      </div>
+      <div class="body">
+        <h3>加入一場 Watch Party</h3>
+        <p>7/25 開放，屆時可以在地圖上找附近的場次報名。</p>
+      </div>
+      <a href="join.html" class="teaser-link">
+        了解
+        <i class="icon" data-lucide="arrow-right" style="width:15px;height:15px"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand-en">YOU BELONG HERE</div>
+  The Hope ｜ Good Neighbor 好鄰舍
+</footer>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  lucide.createIcons();
+  function toggleFaq(btn) {
+    const ans = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('open');
+    document.querySelectorAll('.faq-q.open').forEach(b => {
+      b.classList.remove('open');
+      b.nextElementSibling.style.maxHeight = '0';
+    });
+    if (!isOpen) {
+      btn.classList.add('open');
+      ans.style.maxHeight = ans.scrollHeight + 'px';
+    }
+  }
+</script>
+</body>
+</html>
