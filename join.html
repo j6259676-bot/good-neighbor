@@ -158,9 +158,9 @@
   /* MODAL */
   .modal-bg{position:fixed;inset:0;background:rgba(29,41,46,.55);z-index:3000;display:none;align-items:flex-end;justify-content:center}
   .modal-bg.show{display:flex}
-  .modal{background:var(--paper);width:100%;max-width:560px;border-radius:26px 26px 0 0;padding:28px 24px 36px;animation:up .3s ease}
+  .modal{background:var(--paper);width:100%;max-width:560px;border-radius:26px 26px 0 0;padding:18px 24px 34px;animation:up .3s ease;max-height:90vh;overflow-y:auto;position:relative}
   @keyframes up{from{transform:translateY(100%)}to{transform:none}}
-  .modal .close{float:right;background:none;border:none;cursor:pointer;color:var(--muted)}
+  .modal .close{position:sticky;top:0;float:right;background:var(--paper);border:none;cursor:pointer;color:var(--muted);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:5;box-shadow:0 0 0 8px var(--paper)}
   .modal h3{font-size:22px;font-weight:900;margin-bottom:4px}
   .modal .loc-meta{font-size:13.5px;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:6px}
   .field{margin-bottom:14px}
@@ -302,7 +302,7 @@
       <div class="field"><label>你的名字</label><input id="f-name" type="text" placeholder="怎麼稱呼你？"></div>
       <div class="field"><label>Email</label><input id="f-email" type="email" placeholder="報名成功通知會寄到這裡"></div>
       <div class="field"><label>手機</label><input id="f-phone" type="tel" placeholder="Host 會用這個聯絡你"></div>
-      <div class="field"><label>幾位一起來？</label><input id="f-people" type="number" placeholder="含你自己" value="1"></div>
+      <div class="field"><label>幾位一起來？</label><input id="f-people" type="number" min="1" placeholder="含你自己" value="1"></div>
       <div class="field"><label>是誰邀請你來的？<span style="color:var(--muted);font-weight:400">（選填）</span></label><input id="f-inviter" type="text" placeholder="讓 Host 更快認得你"></div>
       <div class="field"><label>想跟 Host 說的話<span style="color:var(--muted);font-weight:400">（選填）</span></label><input id="f-message" type="text" placeholder="簡單一句自我介紹"></div>
       <button class="submit" id="f-submit" onclick="submitContact()"><i class="icon" data-lucide="send" style="width:17px;height:17px"></i>送出聯繫</button>
@@ -385,7 +385,7 @@
       const pop=document.createElement('div');pop.className='pop';
       const h=document.createElement('h4');h.textContent=l.name;
       const p=document.createElement('p');
-      p.textContent=[l.area,l.week,l.time].filter(Boolean).join(' ・ ');
+      p.textContent=[l.area,(l.week?l.week+' 主日':''),(l.time?l.time+'（當地）':'')].filter(Boolean).join(' ・ ');
       const b=document.createElement('button');
       if(l.open===false){b.textContent='此場無對外開放';b.disabled=true;b.className='disabled';}
       else if(l.full===true){b.textContent='已額滿';b.disabled=true;b.className='disabled';}
@@ -450,10 +450,13 @@
     current=LOCS.find(l=>l.id===id);
     if(!current||current.open===false||current.full===true)return; // 無對外開放／額滿不開表單
     document.getElementById('m-name').textContent=current.name;
-    document.getElementById('m-area').textContent=[current.area,current.time,(current.week?current.week+' 主日':'')].filter(Boolean).join(' ・ ');
+    const t=current.time?current.time+'（當地時間）':'';
+    document.getElementById('m-area').textContent=[current.area,t,(current.week?current.week+' 主日':'')].filter(Boolean).join(' ・ ');
     document.getElementById('modal-form').style.display='block';
     document.getElementById('modal-done').style.display='none';
-    document.getElementById('modal').classList.add('show');lucide.createIcons();
+    document.getElementById('modal').classList.add('show');
+    const mb=document.querySelector('.modal');if(mb)mb.scrollTop=0;
+    lucide.createIcons();
   }
   function val(id){const el=document.getElementById(id);return el?el.value.trim():'';}
   function showDone(){document.getElementById('m-name-done').textContent=current.name;document.getElementById('modal-form').style.display='none';document.getElementById('modal-done').style.display='block';lucide.createIcons();}
