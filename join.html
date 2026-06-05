@@ -91,6 +91,9 @@
   .pop h4{font-size:15px;font-weight:900;margin-bottom:3px;color:var(--ink)}
   .pop p{font-size:12.5px;color:var(--muted);margin-bottom:10px}
   .pop button{background:var(--gold);color:var(--ink);border:none;font-family:inherit;font-weight:900;font-size:13px;padding:9px 16px;border-radius:999px;cursor:pointer;width:100%}
+  .locate-btn{width:40px;height:40px;border:none;background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.28);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+  .locate-btn:hover{background:var(--paper)}
+  .locate-btn .icon{width:20px;height:20px}
 
   /* SECTION */
   section{padding:64px 0}
@@ -289,11 +292,12 @@
     <div id="modal-form">
       <h3 id="m-name">場次名稱</h3>
       <div class="loc-meta"><i class="icon" data-lucide="map-pin" style="width:14px;height:14px"></i><span id="m-area"></span></div>
-      <div class="field"><label>你的名字</label><input type="text" placeholder="怎麼稱呼你？"></div>
-      <div class="field"><label>手機</label><input type="tel" placeholder="Host 會用這個聯絡你"></div>
-      <div class="field"><label>幾位一起來？</label><input type="number" placeholder="含你自己" value="1"></div>
-      <button class="submit" onclick="submitContact()"><i class="icon" data-lucide="send" style="width:17px;height:17px"></i>送出聯繫</button>
-      <div class="demo-tip">這是示意流程，正式報名 7/25 開放。屆時會串接報名表單與 Host 通知。</div>
+      <div class="field"><label>你的名字</label><input id="f-name" type="text" placeholder="怎麼稱呼你？"></div>
+      <div class="field"><label>Email</label><input id="f-email" type="email" placeholder="報名成功通知會寄到這裡"></div>
+      <div class="field"><label>手機</label><input id="f-phone" type="tel" placeholder="Host 會用這個聯絡你"></div>
+      <div class="field"><label>幾位一起來？</label><input id="f-people" type="number" placeholder="含你自己" value="1"></div>
+      <button class="submit" id="f-submit" onclick="submitContact()"><i class="icon" data-lucide="send" style="width:17px;height:17px"></i>送出聯繫</button>
+      <div class="demo-tip" id="f-tip">送出後，你和這場的 Host 都會收到 Email 通知。</div>
     </div>
     <div id="modal-done" style="display:none">
       <div class="done">
@@ -309,7 +313,11 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
-  const LOCS=[
+  // ⚙️ 部署 GAS Web App 後，把 /exec 網址填進這裡，地圖就改吃 Google Sheet 即時資料
+  const GAS_URL = ''; // 例：https://script.google.com/macros/s/AKfy.../exec
+
+  // 示意資料（GAS_URL 留空時顯示）
+  const DEMO=[
     {id:1, name:"新店・總部周邊", area:"新北市・新店區", lat:24.9675, lng:121.5419, week:"8/23"},
     {id:2, name:"新竹場", area:"新竹市", lat:24.8047, lng:120.9714, week:"8/16"},
     {id:3, name:"台南場", area:"台南市・東區", lat:22.9908, lng:120.2133, week:"8/30"},
@@ -322,6 +330,7 @@
     {id:10, name:"加州場", area:"美國・洛杉磯", lat:34.0522, lng:-118.2437, week:"8/16"},
     {id:11, name:"愛丁堡場", area:"英國・愛丁堡", lat:55.9533, lng:-3.1883, week:"8/30"},
   ];
+  let LOCS = DEMO;
 
   function ic(name,size){const i=document.createElement('i');i.className='icon';i.setAttribute('data-lucide',name);if(size){i.style.width=size+'px';i.style.height=size+'px';}return i;}
 
@@ -331,18 +340,60 @@
   setTimeout(()=>map.invalidateSize(),200);
   window.addEventListener('resize',()=>map.invalidateSize());
 
+  // 「去我附近」定位按鈕
+  const LocateCtl = L.Control.extend({
+    options:{position:'topright'},
+    onAdd:function(){
+      const b=L.DomUtil.create('button','locate-btn');
+      b.type='button'; b.title='去我附近'; b.appendChild(ic('locate-fixed',20));
+      L.DomEvent.on(b,'click',function(ev){L.DomEvent.stop(ev);locateMe();});
+      return b;
+    }
+  });
+  map.addControl(new LocateCtl());
+  lucide.createIcons();
+  let meMarker=null;
+  function locateMe(){
+    if(!navigator.geolocation){alert('你的瀏覽器不支援定位');return;}
+    navigator.geolocation.getCurrentPosition(function(pos){
+      const lat=pos.coords.latitude, lng=pos.coords.longitude;
+      map.flyTo([lat,lng],11,{duration:.9});
+      if(meMarker)map.removeLayer(meMarker);
+      meMarker=L.circleMarker([lat,lng],{radius:8,color:'#1D292E',fillColor:'#FFCC32',fillOpacity:1,weight:3}).addTo(map);
+      sortByDistance(lat,lng);
+    },function(){alert('無法取得定位，請確認瀏覽器已允許位置權限');},{enableHighAccuracy:true,timeout:8000});
+  }
+  function dist(a,b,c,d){const R=6371,p=Math.PI/180,x=(c-a)*p,y=(d-b)*p,s=Math.sin(x/2)**2+Math.cos(a*p)*Math.cos(c*p)*Math.sin(y/2)**2;return 2*R*Math.asin(Math.sqrt(s));}
+  function sortByDistance(lat,lng){LOCS.sort((m,n)=>dist(lat,lng,m.lat,m.lng)-dist(lat,lng,n.lat,n.lng));render(LOCS);}
+
   const markers={};
   function makeIcon(a){return L.divIcon({className:'',html:'<div class="pin'+(a?' active':'')+'"><span></span></div>',iconSize:[32,32],iconAnchor:[16,32],popupAnchor:[0,-32]});}
-  LOCS.forEach(l=>{
-    const m=L.marker([l.lat,l.lng],{icon:makeIcon(false)}).addTo(map);
-    const pop=document.createElement('div');pop.className='pop';
-    const h=document.createElement('h4');h.textContent=l.name;
-    const p=document.createElement('p');p.textContent=l.area+' ・ '+l.week+' 主日';
-    const b=document.createElement('button');b.textContent='送出聯繫';b.addEventListener('click',()=>openModal(l.id));
-    pop.append(h,p,b);m.bindPopup(pop);
-    m.on('click',()=>highlight(l.id,false));
-    markers[l.id]=m;
-  });
+  function buildMarkers(){
+    Object.values(markers).forEach(m=>map.removeLayer(m));
+    for(const k in markers)delete markers[k];
+    LOCS.forEach(l=>{
+      const m=L.marker([l.lat,l.lng],{icon:makeIcon(false)}).addTo(map);
+      const pop=document.createElement('div');pop.className='pop';
+      const h=document.createElement('h4');h.textContent=l.name;
+      const p=document.createElement('p');p.textContent=l.area+' ・ '+l.week+' 主日';
+      const b=document.createElement('button');b.textContent='送出聯繫';b.addEventListener('click',()=>openModal(l.id));
+      pop.append(h,p,b);m.bindPopup(pop);
+      m.on('click',()=>highlight(l.id,false));
+      markers[l.id]=m;
+    });
+  }
+  // 載入場次：有 GAS_URL 吃 Sheet 即時資料，否則示意資料
+  function loadData(){
+    if(!GAS_URL){LOCS=DEMO;render(LOCS);buildMarkers();return;}
+    fetch(GAS_URL).then(r=>r.json()).then(d=>{
+      if(d&&d.ok&&d.locations&&d.locations.length){
+        LOCS=d.locations.map(x=>({id:x.id,name:x.name,area:x.area,lat:x.lat,lng:x.lng,
+          week:(x.weeks&&x.weeks.length)?x.weeks.join('、'):(x.week||''),
+          time:x.time,language:x.language,hostLabel:x.hostLabel,spots:x.spots}));
+      }else{LOCS=DEMO;}
+      render(LOCS);buildMarkers();
+    }).catch(()=>{LOCS=DEMO;render(LOCS);buildMarkers();});
+  }
 
   function highlight(id,fly){
     document.querySelectorAll('.loc').forEach(el=>el.classList.toggle('active',+el.dataset.id===id));
@@ -376,13 +427,22 @@
 
   let current=null;
   function openModal(id){current=LOCS.find(l=>l.id===id);document.getElementById('m-name').textContent=current.name;document.getElementById('m-area').textContent=current.area+' ・ '+current.week+' 主日';document.getElementById('modal-form').style.display='block';document.getElementById('modal-done').style.display='none';document.getElementById('modal').classList.add('show');lucide.createIcons();}
-  function submitContact(){document.getElementById('m-name-done').textContent=current.name;document.getElementById('modal-form').style.display='none';document.getElementById('modal-done').style.display='block';lucide.createIcons();}
+  function val(id){const el=document.getElementById(id);return el?el.value.trim():'';}
+  function showDone(){document.getElementById('m-name-done').textContent=current.name;document.getElementById('modal-form').style.display='none';document.getElementById('modal-done').style.display='block';lucide.createIcons();}
+  function submitContact(){
+    const payload={sessionId:current.id,name:val('f-name'),email:val('f-email'),phone:val('f-phone'),people:val('f-people'),message:''};
+    if(!GAS_URL){showDone();return;}
+    const btn=document.getElementById('f-submit');btn.disabled=true;btn.textContent='送出中…';
+    fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
+      .then(r=>r.json()).then(()=>showDone()).catch(()=>showDone())
+      .finally(()=>{btn.disabled=false;});
+  }
   function closeModal(){document.getElementById('modal').classList.remove('show');}
   document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
   function toggleFaq(btn){const ans=btn.nextElementSibling,open=btn.classList.contains('open');document.querySelectorAll('.faq-q.open').forEach(b=>{b.classList.remove('open');b.nextElementSibling.style.maxHeight='0'});if(!open){btn.classList.add('open');ans.style.maxHeight=ans.scrollHeight+'px'}}
 
-  render(LOCS);
+  loadData();
   lucide.createIcons();
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
   document.querySelectorAll('.rv').forEach(el=>io.observe(el));
