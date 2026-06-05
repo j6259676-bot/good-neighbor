@@ -94,6 +94,13 @@
   .locate-btn{width:40px;height:40px;border:none;background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.28);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink)}
   .locate-btn:hover{background:var(--paper)}
   .locate-btn .icon{width:20px;height:20px}
+  .st-tag{font-size:10.5px;font-weight:900;padding:2px 9px;border-radius:999px}
+  .st-tag.closed{background:#E4DCC9;color:#7A6E55}
+  .st-tag.full{background:#1D292E;color:var(--gold)}
+  .loc.dim{opacity:.6}
+  .thumb.has-img{border:none;background:none;overflow:hidden;padding:0}
+  .thumb-img{width:100%;height:100%;object-fit:cover;display:block}
+  .pop button.disabled{background:#E4DCC9;color:#9C8E70;cursor:default}
 
   /* SECTION */
   section{padding:64px 0}
@@ -296,6 +303,8 @@
       <div class="field"><label>Email</label><input id="f-email" type="email" placeholder="報名成功通知會寄到這裡"></div>
       <div class="field"><label>手機</label><input id="f-phone" type="tel" placeholder="Host 會用這個聯絡你"></div>
       <div class="field"><label>幾位一起來？</label><input id="f-people" type="number" placeholder="含你自己" value="1"></div>
+      <div class="field"><label>是誰邀請你來的？<span style="color:var(--muted);font-weight:400">（選填）</span></label><input id="f-inviter" type="text" placeholder="讓 Host 更快認得你"></div>
+      <div class="field"><label>想跟 Host 說的話<span style="color:var(--muted);font-weight:400">（選填）</span></label><input id="f-message" type="text" placeholder="簡單一句自我介紹"></div>
       <button class="submit" id="f-submit" onclick="submitContact()"><i class="icon" data-lucide="send" style="width:17px;height:17px"></i>送出聯繫</button>
       <div class="demo-tip" id="f-tip">送出後，你和這場的 Host 都會收到 Email 通知。</div>
     </div>
@@ -375,8 +384,12 @@
       const m=L.marker([l.lat,l.lng],{icon:makeIcon(false)}).addTo(map);
       const pop=document.createElement('div');pop.className='pop';
       const h=document.createElement('h4');h.textContent=l.name;
-      const p=document.createElement('p');p.textContent=l.area+' ・ '+l.week+' 主日';
-      const b=document.createElement('button');b.textContent='送出聯繫';b.addEventListener('click',()=>openModal(l.id));
+      const p=document.createElement('p');
+      p.textContent=[l.area,l.week,l.time].filter(Boolean).join(' ・ ');
+      const b=document.createElement('button');
+      if(!l.open){b.textContent='此場無對外開放';b.disabled=true;b.className='disabled';}
+      else if(l.full){b.textContent='已額滿';b.disabled=true;b.className='disabled';}
+      else{b.textContent='送出聯繫';b.addEventListener('click',()=>openModal(l.id));}
       pop.append(h,p,b);m.bindPopup(pop);
       m.on('click',()=>highlight(l.id,false));
       markers[l.id]=m;
@@ -409,14 +422,20 @@
     list.replaceChildren();
     if(!items.length){const e=document.createElement('div');e.className='empty';e.textContent='找不到符合的地點 — 換個關鍵字試試';list.appendChild(e);return;}
     items.forEach(l=>{
-      const row=document.createElement('div');row.className='loc';row.dataset.id=l.id;row.addEventListener('click',()=>highlight(l.id,true));
-      const thumb=document.createElement('div');thumb.className='thumb';thumb.appendChild(ic('image'));
+      const closed=!l.open, full=l.full;
+      const row=document.createElement('div');row.className='loc'+((closed||full)?' dim':'');row.dataset.id=l.id;
+      row.addEventListener('click',()=>highlight(l.id,true));
+      const thumb=document.createElement('div');thumb.className='thumb';
+      if(l.thumb){const im=document.createElement('img');im.src=l.thumb;im.alt='';im.className='thumb-img';thumb.classList.add('has-img');thumb.appendChild(im);}
+      else thumb.appendChild(ic('image'));
       const info=document.createElement('div');info.className='info';
       const h4=document.createElement('h4');h4.textContent=l.name;
       const meta1=document.createElement('div');meta1.className='meta';
-      const tag=document.createElement('span');tag.className='ch-tag';tag.textContent='Watch Party';
-      const week=document.createElement('span');week.className='week';week.appendChild(ic('calendar',13));week.append(' '+l.week+' 主日');
-      meta1.append(tag,week);
+      const tag=document.createElement('span');tag.className='ch-tag';tag.textContent='Watch Party';meta1.appendChild(tag);
+      if(closed){const c=document.createElement('span');c.className='st-tag closed';c.textContent='無對外開放';meta1.appendChild(c);}
+      else if(full){const c=document.createElement('span');c.className='st-tag full';c.textContent='已額滿';meta1.appendChild(c);}
+      if(l.week){const w=document.createElement('span');w.className='week';w.appendChild(ic('calendar',13));w.append(' '+l.week);meta1.appendChild(w);}
+      if(l.time){const t=document.createElement('span');t.className='week';t.appendChild(ic('clock',13));t.append(' '+l.time);meta1.appendChild(t);}
       const meta2=document.createElement('div');meta2.className='meta';meta2.style.marginTop='4px';meta2.appendChild(ic('map-pin',13));meta2.append(' '+l.area);
       info.append(h4,meta1,meta2);
       const go=document.createElement('div');go.className='go';go.appendChild(ic('arrow-right'));
@@ -427,16 +446,26 @@
   function filter(q){q=q.trim().toLowerCase();render(LOCS.filter(l=>(l.name+l.area).toLowerCase().includes(q)));}
 
   let current=null;
-  function openModal(id){current=LOCS.find(l=>l.id===id);document.getElementById('m-name').textContent=current.name;document.getElementById('m-area').textContent=current.area+' ・ '+current.week+' 主日';document.getElementById('modal-form').style.display='block';document.getElementById('modal-done').style.display='none';document.getElementById('modal').classList.add('show');lucide.createIcons();}
+  function openModal(id){
+    current=LOCS.find(l=>l.id===id);
+    if(!current||!current.open||current.full)return; // 無對外開放／額滿不開表單
+    document.getElementById('m-name').textContent=current.name;
+    document.getElementById('m-area').textContent=[current.area,current.time,(current.week?current.week+' 主日':'')].filter(Boolean).join(' ・ ');
+    document.getElementById('modal-form').style.display='block';
+    document.getElementById('modal-done').style.display='none';
+    document.getElementById('modal').classList.add('show');lucide.createIcons();
+  }
   function val(id){const el=document.getElementById(id);return el?el.value.trim():'';}
   function showDone(){document.getElementById('m-name-done').textContent=current.name;document.getElementById('modal-form').style.display='none';document.getElementById('modal-done').style.display='block';lucide.createIcons();}
   function submitContact(){
-    const payload={sessionId:current.id,name:val('f-name'),email:val('f-email'),phone:val('f-phone'),people:val('f-people'),message:''};
+    const payload={sessionId:current.id,name:val('f-name'),email:val('f-email'),phone:val('f-phone'),people:val('f-people'),inviter:val('f-inviter'),message:val('f-message')};
     if(!GAS_URL){showDone();return;}
     const btn=document.getElementById('f-submit');btn.disabled=true;btn.textContent='送出中…';
     fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
-      .then(r=>r.json()).then(()=>showDone()).catch(()=>showDone())
-      .finally(()=>{btn.disabled=false;});
+      .then(r=>r.json()).then(d=>{
+        if(d&&d.ok===false&&d.full){alert('這場剛好額滿了，請改選其他場次');btn.disabled=false;btn.textContent='送出聯繫';loadData();return;}
+        showDone();
+      }).catch(()=>showDone());
   }
   function closeModal(){document.getElementById('modal').classList.remove('show');}
   document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
