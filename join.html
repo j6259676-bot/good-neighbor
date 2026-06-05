@@ -313,8 +313,8 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
-  // ⚙️ 部署 GAS Web App 後，把 /exec 網址填進這裡，地圖就改吃 Google Sheet 即時資料
-  const GAS_URL = ''; // 例：https://script.google.com/macros/s/AKfy.../exec
+  // GAS Web App /exec — 地圖即時吃 Google Sheet「公開=是」場次
+  const GAS_URL = 'https://script.google.com/macros/s/AKfycbwZOkck7wxHumuHmgkFUKpjDfoQyL-ArZQxIPpk7fRhAkQlrR8ak6oY3UMtnqvr_hOk/exec';
 
   // 示意資料（GAS_URL 留空時顯示）
   const DEMO=[
@@ -386,11 +386,12 @@
   function loadData(){
     if(!GAS_URL){LOCS=DEMO;render(LOCS);buildMarkers();return;}
     fetch(GAS_URL).then(r=>r.json()).then(d=>{
-      if(d&&d.ok&&d.locations&&d.locations.length){
+      if(d&&d.ok&&Array.isArray(d.locations)){
+        // 連上 Sheet 就用真實資料（含空陣列＝目前無公開場次）
         LOCS=d.locations.map(x=>({id:x.id,name:x.name,area:x.area,lat:x.lat,lng:x.lng,
           week:(x.weeks&&x.weeks.length)?x.weeks.join('、'):(x.week||''),
           time:x.time,language:x.language,hostLabel:x.hostLabel,spots:x.spots}));
-      }else{LOCS=DEMO;}
+      }else{LOCS=DEMO;} // 連線失敗才退回示意資料
       render(LOCS);buildMarkers();
     }).catch(()=>{LOCS=DEMO;render(LOCS);buildMarkers();});
   }
