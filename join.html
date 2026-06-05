@@ -99,7 +99,11 @@
   .st-tag.full{background:#1D292E;color:var(--gold)}
   .loc.dim{opacity:.6}
   .thumb.has-img{border:none;background:none;overflow:hidden;padding:0}
-  .thumb-img{width:100%;height:100%;object-fit:cover;display:block}
+  .thumb-img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in}
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:4000;display:none;align-items:center;justify-content:center;padding:24px}
+  .lightbox.show{display:flex}
+  .lightbox img{max-width:100%;max-height:90vh;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .lightbox .lb-close{position:absolute;top:18px;right:20px;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
   .pop button.disabled{background:#E4DCC9;color:#9C8E70;cursor:default}
 
   /* SECTION */
@@ -319,6 +323,12 @@
   </div>
 </div>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()"><i class="icon" data-lucide="x"></i></button>
+  <img id="lightbox-img" alt="場地照片">
+</div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
@@ -427,7 +437,7 @@
       const row=document.createElement('div');row.className='loc'+((closed||full)?' dim':'');row.dataset.id=l.id;
       row.addEventListener('click',()=>highlight(l.id,true));
       const thumb=document.createElement('div');thumb.className='thumb';
-      if(l.thumb){const im=document.createElement('img');im.src=l.thumb;im.alt='';im.className='thumb-img';thumb.classList.add('has-img');thumb.appendChild(im);}
+      if(l.thumb){const im=document.createElement('img');im.src=l.thumb;im.alt='';im.className='thumb-img';im.addEventListener('click',e=>{e.stopPropagation();openLightbox(l.thumb);});thumb.classList.add('has-img');thumb.appendChild(im);}
       else thumb.appendChild(ic('image'));
       const info=document.createElement('div');info.className='info';
       const h4=document.createElement('h4');h4.textContent=l.name;
@@ -472,6 +482,9 @@
       }).catch(()=>showDone());
   }
   function closeModal(){document.getElementById('modal').classList.remove('show');}
+  function openLightbox(url){const hi=url.replace(/=w\d+$/,'=w1600');document.getElementById('lightbox-img').src=hi;document.getElementById('lightbox').classList.add('show');lucide.createIcons();}
+  function closeLightbox(){document.getElementById('lightbox').classList.remove('show');}
+  document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this)closeLightbox();});
   document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
   function toggleFaq(btn){const ans=btn.nextElementSibling,open=btn.classList.contains('open');document.querySelectorAll('.faq-q.open').forEach(b=>{b.classList.remove('open');b.nextElementSibling.style.maxHeight='0'});if(!open){btn.classList.add('open');ans.style.maxHeight=ans.scrollHeight+'px'}}
