@@ -385,7 +385,7 @@
       const pop=document.createElement('div');pop.className='pop';
       const h=document.createElement('h4');h.textContent=l.name;
       const p=document.createElement('p');
-      p.textContent=[l.area,(l.week?l.week+' 主日':''),(l.time?l.time+'（當地）':'')].filter(Boolean).join(' ・ ');
+      p.textContent=[l.area,(l.week?l.week+' 主日':''),(l.time?l.time+'（'+(l.tz||'當地時間')+'）':'')].filter(Boolean).join(' ・ ');
       const b=document.createElement('button');
       if(l.open===false){b.textContent='此場無對外開放';b.disabled=true;b.className='disabled';}
       else if(l.full===true){b.textContent='已額滿';b.disabled=true;b.className='disabled';}
@@ -403,7 +403,8 @@
         // 連上 Sheet 就用真實資料（含空陣列＝目前無公開場次）
         LOCS=d.locations.map(x=>({id:x.id,name:x.name,area:x.area,lat:x.lat,lng:x.lng,
           week:(x.weeks&&x.weeks.length)?x.weeks.join('、'):(x.week||''),
-          time:x.time,language:x.language,hostLabel:x.hostLabel,spots:x.spots}));
+          time:x.time,tz:x.tz,language:x.language,hostLabel:x.hostLabel,spots:x.spots,
+          open:x.open,full:x.full,thumb:x.thumb}));
       }else{LOCS=DEMO;} // 連線失敗才退回示意資料
       render(LOCS);buildMarkers();
     }).catch(()=>{LOCS=DEMO;render(LOCS);buildMarkers();});
@@ -435,7 +436,7 @@
       if(closed){const c=document.createElement('span');c.className='st-tag closed';c.textContent='無對外開放';meta1.appendChild(c);}
       else if(full){const c=document.createElement('span');c.className='st-tag full';c.textContent='已額滿';meta1.appendChild(c);}
       if(l.week){const w=document.createElement('span');w.className='week';w.appendChild(ic('calendar',13));w.append(' '+l.week);meta1.appendChild(w);}
-      if(l.time){const t=document.createElement('span');t.className='week';t.appendChild(ic('clock',13));t.append(' '+l.time);meta1.appendChild(t);}
+      if(l.time){const t=document.createElement('span');t.className='week';t.appendChild(ic('clock',13));t.append(' '+l.time+'（'+(l.tz||'當地時間')+'）');meta1.appendChild(t);}
       const meta2=document.createElement('div');meta2.className='meta';meta2.style.marginTop='4px';meta2.appendChild(ic('map-pin',13));meta2.append(' '+l.area);
       info.append(h4,meta1,meta2);
       const go=document.createElement('div');go.className='go';go.appendChild(ic('arrow-right'));
@@ -450,7 +451,7 @@
     current=LOCS.find(l=>l.id===id);
     if(!current||current.open===false||current.full===true)return; // 無對外開放／額滿不開表單
     document.getElementById('m-name').textContent=current.name;
-    const t=current.time?current.time+'（當地時間）':'';
+    const t=current.time?current.time+'（'+(current.tz||'當地時間')+'）':'';
     document.getElementById('m-area').textContent=[current.area,t,(current.week?current.week+' 主日':'')].filter(Boolean).join(' ・ ');
     document.getElementById('modal-form').style.display='block';
     document.getElementById('modal-done').style.display='none';
