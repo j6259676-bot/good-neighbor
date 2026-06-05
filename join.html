@@ -387,8 +387,8 @@
       const p=document.createElement('p');
       p.textContent=[l.area,l.week,l.time].filter(Boolean).join(' ・ ');
       const b=document.createElement('button');
-      if(!l.open){b.textContent='此場無對外開放';b.disabled=true;b.className='disabled';}
-      else if(l.full){b.textContent='已額滿';b.disabled=true;b.className='disabled';}
+      if(l.open===false){b.textContent='此場無對外開放';b.disabled=true;b.className='disabled';}
+      else if(l.full===true){b.textContent='已額滿';b.disabled=true;b.className='disabled';}
       else{b.textContent='送出聯繫';b.addEventListener('click',()=>openModal(l.id));}
       pop.append(h,p,b);m.bindPopup(pop);
       m.on('click',()=>highlight(l.id,false));
@@ -398,7 +398,7 @@
   // 載入場次：有 GAS_URL 吃 Sheet 即時資料，否則示意資料
   function loadData(){
     if(!GAS_URL){LOCS=DEMO;render(LOCS);buildMarkers();return;}
-    fetch(GAS_URL).then(r=>r.json()).then(d=>{
+    fetch(GAS_URL+(GAS_URL.indexOf('?')<0?'?':'&')+'t='+Date.now()).then(r=>r.json()).then(d=>{
       if(d&&d.ok&&Array.isArray(d.locations)){
         // 連上 Sheet 就用真實資料（含空陣列＝目前無公開場次）
         LOCS=d.locations.map(x=>({id:x.id,name:x.name,area:x.area,lat:x.lat,lng:x.lng,
@@ -422,7 +422,7 @@
     list.replaceChildren();
     if(!items.length){const e=document.createElement('div');e.className='empty';e.textContent='找不到符合的地點 — 換個關鍵字試試';list.appendChild(e);return;}
     items.forEach(l=>{
-      const closed=!l.open, full=l.full;
+      const closed=(l.open===false), full=(l.full===true);
       const row=document.createElement('div');row.className='loc'+((closed||full)?' dim':'');row.dataset.id=l.id;
       row.addEventListener('click',()=>highlight(l.id,true));
       const thumb=document.createElement('div');thumb.className='thumb';
@@ -448,7 +448,7 @@
   let current=null;
   function openModal(id){
     current=LOCS.find(l=>l.id===id);
-    if(!current||!current.open||current.full)return; // 無對外開放／額滿不開表單
+    if(!current||current.open===false||current.full===true)return; // 無對外開放／額滿不開表單
     document.getElementById('m-name').textContent=current.name;
     document.getElementById('m-area').textContent=[current.area,current.time,(current.week?current.week+' 主日':'')].filter(Boolean).join(' ・ ');
     document.getElementById('modal-form').style.display='block';
