@@ -107,6 +107,8 @@
   /* FULL-BLEED PHOTO BAND */
   .band{position:relative;margin:36px 0 0;overflow:hidden}
   .band .ph{aspect-ratio:21/9;border-radius:0}
+  .band picture,.band img{display:block;width:100%}
+  .band img{aspect-ratio:21/9;object-fit:cover}
   .band.framed{padding:0 24px}
   .band.framed .ph{border-radius:24px}
   .band .cap{position:absolute;left:24px;bottom:20px;background:rgba(29,41,46,.82);color:#fff;
@@ -150,10 +152,16 @@
   .req li{display:flex;align-items:flex-start;gap:13px;font-size:16px;color:#3C4A50;font-weight:500;line-height:1.6}
   .req .ck{width:26px;height:26px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px}
   .req .ck .icon{width:15px;height:15px;color:var(--ink);stroke-width:3}
-  .vgrid{display:grid;grid-template-columns:1.4fr 1fr;grid-template-rows:repeat(2,1fr);gap:14px;margin-top:26px}
+  .vgrid{display:grid;grid-template-columns:1.4fr 1fr;grid-auto-rows:128px;gap:14px;margin-top:26px}
   .vgrid .ph{border-radius:22px}
   .vgrid .a{grid-row:span 2;aspect-ratio:auto}
   .vgrid .ph:not(.a){aspect-ratio:auto}
+  .vtile{position:relative;border-radius:22px;overflow:hidden;margin:0}
+  .vtile.a{grid-row:span 2}
+  .vtile img{width:100%;height:100%;object-fit:cover;display:block}
+  .vtile figcaption{position:absolute;left:11px;bottom:11px;background:rgba(29,41,46,.82);color:#fff;
+    font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;display:flex;align-items:center;gap:6px;backdrop-filter:blur(4px)}
+  .vtile figcaption .icon{width:13px;height:13px;color:var(--gold)}
 
   /* FAQ */
   .faq{margin-top:22px}
@@ -195,7 +203,7 @@
     section{padding:84px 0}
     .video-zone{padding:54px 0 0}
     .vgrid{grid-template-columns:1.5fr 1fr;grid-auto-rows:200px}
-    .band .ph{aspect-ratio:21/8}
+    .band .ph,.band img{aspect-ratio:21/8}
   }
   @media(min-width:1040px){
     .wrap{max-width:920px}
@@ -255,9 +263,11 @@
     <p class="lead">配合 8 月<strong>職場主題</strong>的主日系列講道，我們鼓勵大家邀請身邊還不認識耶穌的朋友，帶進一次主日。你可以在家裡、咖啡廳或任何喜歡的空間辦一場 <strong>Watch Party</strong>——約幾個人，一起看線上 Hope 主日、一起聊聊。</p>
   </div>
   <div class="band rv">
-    <div class="ph"><i class="icon" data-lucide="image"></i><div class="lbl">主視覺照片</div><div class="sub">建議：一群人在客廳一起看主日、笑著的溫暖橫幅畫面</div>
-      <div class="cap"><i class="icon" data-lucide="heart"></i>一起，不用一個人做主日</div>
-    </div>
+    <picture>
+      <source media="(min-width:768px)" srcset="images/band-desktop.jpg">
+      <img src="images/band-mobile.jpg" alt="一群人在客廳一起看線上 Hope 主日" loading="lazy">
+    </picture>
+    <div class="cap"><i class="icon" data-lucide="heart"></i>一起，不用一個人做主日</div>
   </div>
 </section>
 
@@ -315,9 +325,9 @@
       <li><span class="ck"><i class="icon" data-lucide="check"></i></span>音量對周遭鄰居友善</li>
     </ul>
     <div class="vgrid">
-      <div class="ph a"><i class="icon" data-lucide="sofa"></i><div class="lbl">居家客廳</div></div>
-      <div class="ph"><i class="icon" data-lucide="coffee"></i><div class="lbl">咖啡廳</div></div>
-      <div class="ph"><i class="icon" data-lucide="users"></i><div class="lbl">社區空間</div></div>
+      <figure class="vtile a"><img src="images/home.jpg" alt="在家裡客廳一起看主日" loading="lazy"><figcaption><i class="icon" data-lucide="sofa"></i>居家客廳</figcaption></figure>
+      <figure class="vtile"><img src="images/cafe.jpg" alt="在咖啡廳一起看主日" loading="lazy"><figcaption><i class="icon" data-lucide="coffee"></i>咖啡廳</figcaption></figure>
+      <figure class="vtile"><img src="images/community.jpg" alt="在社區空間一起看主日" loading="lazy"><figcaption><i class="icon" data-lucide="users"></i>社區空間</figcaption></figure>
     </div>
   </div>
 </section>
