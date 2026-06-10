@@ -137,6 +137,13 @@
   footer{text-align:center;padding:46px 0 58px;color:var(--muted);font-size:13px;background:var(--paper);border-top:2.5px solid var(--ink)}
   footer .tg{font-family:var(--display);color:var(--ink);font-size:17px;margin-bottom:10px;display:inline-block;background:linear-gradient(transparent 58%,var(--y) 58%);padding:0 6px 2px}
   footer .be{font-family:var(--display);letter-spacing:.01em;color:var(--ink);margin:0 0 6px;font-size:22px}
+  footer .fnote{margin-top:18px;font-size:13px;color:var(--ink-soft);font-weight:700}
+  footer .fcontact{margin-top:12px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  footer .fcontact a{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:900;color:var(--ink);text-decoration:none;background:var(--y);border:2px solid var(--ink);border-radius:999px;padding:9px 16px;box-shadow:2.5px 2.5px 0 var(--ink);transition:transform .15s,box-shadow .15s;cursor:pointer}
+  footer .fcontact a:hover{transform:translate(-1px,-1px);box-shadow:3.5px 3.5px 0 var(--ink)}
+  footer .fcontact a:active{transform:translate(1.5px,1.5px);box-shadow:1px 1px 0 var(--ink)}
+  footer .fcontact a .icon{width:15px;height:15px}
+  footer .fcopy{margin-top:20px}
 
   @media (prefers-reduced-motion:reduce){
     .sp{animation:none}
@@ -230,6 +237,7 @@
     <span class="eyebrow"><i class="icon" data-lucide="help-circle" style="width:14px;height:14px"></i>常見問題</span>
     <h2>有點好奇嗎？</h2>
     <div class="faq">
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">我一個人去、誰都不認識，會不會很尷尬？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>這是很多人來之前最大的擔心，很正常。但 Host 就是為了接待你而在那裡——他們會主動認識你、讓你自在。而且現場大多數人幾乎都是第一次見面，大家帶著一樣的心情來。你不需要很會社交，帶自己來就好，剩下的交給我們。</p></div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">誰可以參加？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>任何人都可以。不管你是第一次接觸 The Hope，還是已經認識教會很久了，都歡迎你來。不需要先信什麼，帶你自己來就好。</p></div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">是實體還是線上？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>實體聚集。大家聚在某個真實的空間——某人家裡、咖啡廳或社區空間，一起參與線上 Hope 主日的直播。不是各自在家看，是面對面聚在一起。</p></div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">要帶什麼嗎？需要費用嗎？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>什麼都不用帶，完全免費。帶一顆放鬆的心來就好。Host 可能會準備一些茶點，但完全不要求。</p></div></div>
@@ -253,7 +261,12 @@
 <footer>
   <div><span class="tg">一起揪、一起聚、神的家就在這裡！</span></div>
   <div class="be">You Belong Here</div>
-  The Hope ｜ Good Neighbor
+  <div class="fnote">有問題、想找人聊聊嗎？</div>
+  <div class="fcontact">
+    <a href="mailto:online@thehope.co"><i class="icon" data-lucide="mail"></i>online@thehope.co</a>
+    <a href="https://lin.ee/Pyo0AMl" target="_blank" rel="noopener"><i class="icon" data-lucide="message-circle"></i>線上分部 LINE@</a>
+  </div>
+  <div class="fcopy">The Hope ｜ Good Neighbor</div>
 </footer>
 
 <script src="https://unpkg.com/lucide@latest"></script>
