@@ -199,9 +199,10 @@
     lucide.createIcons();
   }
 
+  function recomputeTaken(){ DATA.host.taken=(DATA.people||[]).reduce((s,x)=>s+(x.status==='不會來'?0:(parseInt(x.people,10)||1)),0); }
   function setStatus(jid,status,btn){
-    btn.parentNode.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.on===status));
     const p=(DATA.people||[]).find(x=>String(x.joinId)===String(jid)); if(p)p.status=status;
+    recomputeTaken(); render();   // 即時反映額度（不會來＝釋出）
     fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
       body:JSON.stringify({action:'setStatus',token:TOKEN,joinId:jid,status:status})})
       .then(r=>r.json()).then(d=>{ toast(d&&d.ok?('已標記「'+status+'」'):'沒存成功，請再試一次'); })
