@@ -366,8 +366,8 @@
   }
 
   function highlight(id,fly){
-    document.querySelectorAll('.loc').forEach(el=>el.classList.toggle('active',+el.dataset.id===id));
-    Object.entries(markers).forEach(([k,m])=>m.setIcon(makeIcon(+k===id)));
+    document.querySelectorAll('.loc').forEach(el=>el.classList.toggle('active',el.dataset.id===String(id)));
+    Object.entries(markers).forEach(([k,m])=>m.setIcon(makeIcon(String(k)===String(id))));
     const el=document.querySelector('.loc[data-id="'+id+'"]');if(el)el.scrollIntoView({behavior:'smooth',block:'nearest'});
     if(fly){const l=LOCS.find(x=>x.id===id);map.flyTo([l.lat,l.lng],(l.lat>50||l.lat<10)?6:9,{duration:.8});markers[id].openPopup();}
   }
