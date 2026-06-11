@@ -59,9 +59,10 @@
   .person .who .ppl{font-size:11px;font-weight:900;background:var(--cream);border:1.5px solid var(--ink);border-radius:999px;padding:0 8px}
   .person .who .msg{font-size:12.5px;color:var(--ink-soft);margin-top:3px}
   .person .who .meta{font-size:11.5px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
-  .person .calls{display:flex;gap:7px;flex:none}
-  .person .calls a{width:34px;height:34px;border-radius:50%;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;color:var(--ink);background:var(--paper);text-decoration:none}
-  .person .calls a .icon{width:16px;height:16px}
+  .person .contacts{margin-top:7px;display:flex;flex-direction:column;gap:4px}
+  .person .contacts a{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--ink);text-decoration:none;font-weight:500;width:fit-content}
+  .person .contacts a .icon{width:14px;height:14px;color:var(--y2);stroke-width:2.4}
+  .person .contacts a:active{color:var(--y2)}
 
   .seg{display:flex;margin-top:12px;border:2px solid var(--ink);border-radius:10px;overflow:hidden}
   .seg button{flex:1;font-family:var(--sans);font-size:12.5px;font-weight:900;color:var(--ink);background:var(--paper);border:none;border-right:2px solid var(--ink);padding:9px 4px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
@@ -168,24 +169,22 @@
     } else {
       ppl.forEach(p=>{
         const ini=(String(p.name||'?').trim().slice(-1))||'?';
-        const calls=[];
-        if(p.phone) calls.push(E('a',{href:'tel:'+p.phone,'aria-label':'撥打電話'},[icon('phone',16)]));
-        if(p.email) calls.push(E('a',{href:'mailto:'+p.email,'aria-label':'寄 Email'},[icon('mail',16)]));
+        const contacts=[];
+        if(p.phone) contacts.push(E('a',{href:'tel:'+p.phone},[icon('phone',14), p.phone]));
+        if(p.email) contacts.push(E('a',{href:'mailto:'+p.email},[icon('mail',14), p.email]));
         const metaParts=[];
         if(p.inviter) metaParts.push('邀請人：'+p.inviter);
         if(p.ts) metaParts.push(p.ts);
 
         const who=E('div',{class:'who'},[
           E('div',{class:'nm'},[ (p.name||'（未填名）'),
-            E('span',{class:'ppl',text:(p.people>1?('+'+(p.people-1)+' 位'):'1 位')}) ]),
+            E('span',{class:'ppl',text:'共 '+p.people+' 位'}) ]),
           p.message? E('div',{class:'msg',text:p.message}) : null,
-          metaParts.length? E('div',{class:'meta'},[icon('clock',12), metaParts.join('・')]) : null
+          metaParts.length? E('div',{class:'meta'},[icon('clock',12), metaParts.join('・')]) : null,
+          contacts.length? E('div',{class:'contacts'},contacts) : null
         ]);
 
-        const top=E('div',{class:'top'},[
-          E('div',{class:'ava',text:ini}), who,
-          calls.length? E('div',{class:'calls'},calls) : null
-        ]);
+        const top=E('div',{class:'top'},[ E('div',{class:'ava',text:ini}), who ]);
 
         const seg=E('div',{class:'seg'}, STATUS.map(s=>
           E('button',{'data-on':s,class:(p.status===s?'active':''),onclick:(ev)=>setStatus(p.joinId,s,ev.currentTarget)},
