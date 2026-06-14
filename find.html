@@ -84,6 +84,14 @@
   .loc .info .meta .week{display:inline-flex;align-items:center;gap:4px}
   .loc .go{flex:none;width:34px;height:34px;border-radius:50%;background:var(--y);border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;color:var(--ink)}
   .loc .go .icon{width:17px;height:17px}
+  /* 列表內的「申請加入」按鈕：CTA 直接在列表區，手機不必滑回地圖 */
+  .loc .loc-act{flex:none;font-family:inherit;font-weight:900;font-size:12.5px;white-space:nowrap;color:var(--ink);
+    background:var(--y);border:2px solid var(--ink);border-radius:999px;padding:8px 14px;cursor:pointer;
+    box-shadow:2.5px 2.5px 0 var(--ink);transition:transform .15s,box-shadow .15s}
+  .loc .loc-act:hover{transform:translate(-1px,-1px);box-shadow:3.5px 3.5px 0 var(--ink)}
+  .loc .loc-act:active{transform:translate(1.5px,1.5px);box-shadow:1px 1px 0 var(--ink)}
+  .loc .loc-act.off,.loc .loc-act.off:hover{background:var(--gray);color:var(--ink-soft);cursor:default;box-shadow:none;transform:none}
+  .loc .loc-act.full{background:var(--ink);color:var(--y)}
   .empty{padding:40px 20px;text-align:center;color:var(--muted);font-size:14px}
   .finder-note{color:var(--ink-soft);font-size:12px;text-align:center;padding:14px 24px}
 
@@ -394,14 +402,20 @@
       if(l.time){const t=document.createElement('span');t.className='week';t.appendChild(ic('clock',13));t.append(' '+l.time+'（'+(l.tz||'當地時間')+'）');meta1.appendChild(t);}
       const meta2=document.createElement('div');meta2.className='meta';meta2.style.marginTop='4px';meta2.appendChild(ic('map-pin',13));meta2.append(' '+l.area);
       info.append(h4,meta1,meta2);
-      const go=document.createElement('div');go.className='go';go.appendChild(ic('arrow-right'));
-      row.append(thumb,info,go);list.appendChild(row);
+      // 列表內的行動按鈕：直接在列表區送出，手機不必滑回地圖找按鈕
+      const act=document.createElement('button');act.className='loc-act';
+      if(closed){act.textContent='無對外開放';act.disabled=true;act.classList.add('off');}
+      else if(full){act.textContent='已額滿';act.disabled=true;act.classList.add('full');}
+      else if(l.formUrl){act.textContent='前往報名';act.addEventListener('click',e=>{e.stopPropagation();window.open(l.formUrl,'_blank','noopener');});}
+      else{act.textContent='申請加入';act.addEventListener('click',e=>{e.stopPropagation();openModal(l.id);});}
+      row.append(thumb,info,act);list.appendChild(row);
     });
     lucide.createIcons();
   }
   function filter(q){q=q.trim().toLowerCase();render(LOCS.filter(l=>(l.name+l.area).toLowerCase().includes(q)));}
 
-  let current=null;
+  let current=null, submitting=false;
+  function resetSubmit(){const b=document.getElementById('f-submit');b.disabled=false;b.replaceChildren(ic('send',17),document.createTextNode('送出聯繫'));submitting=false;lucide.createIcons();}
   function openModal(id){
     current=LOCS.find(l=>l.id===id);
     if(!current||current.open===false||current.full===true)return; // 無對外開放／額滿不開表單
@@ -409,6 +423,7 @@
     document.getElementById('m-name').textContent=current.name;
     const t=current.time?current.time+'（'+(current.tz||'當地時間')+'）':'';
     document.getElementById('m-area').textContent=[current.area,t,(current.week?current.week+' 主日':'')].filter(Boolean).join(' ・ ');
+    resetSubmit(); // 每次開啟都把按鈕復位，避免上一場卡在「送出中…」
     document.getElementById('modal-form').style.display='block';
     document.getElementById('modal-done').style.display='none';
     document.getElementById('modal').classList.add('show');
@@ -418,14 +433,21 @@
   function val(id){const el=document.getElementById(id);return el?el.value.trim():'';}
   function showDone(){document.getElementById('m-name-done').textContent=current.name;document.getElementById('modal-form').style.display='none';document.getElementById('modal-done').style.display='block';lucide.createIcons();}
   function submitContact(){
+    if(submitting)return; // 防連點：避免同一次送出重複觸發
+    if(!val('f-name')||!val('f-email')){alert('請至少填寫名字和 Email');return;}
     const payload={sessionId:current.id,name:val('f-name'),email:val('f-email'),phone:val('f-phone'),people:val('f-people'),inviter:val('f-inviter'),message:val('f-message')};
     if(!GAS_URL){showDone();return;}
+    submitting=true;
     const btn=document.getElementById('f-submit');btn.disabled=true;btn.textContent='送出中…';
+    let settled=false;
+    const finish=fn=>{if(settled)return;settled=true;submitting=false;clearTimeout(to);fn();};
+    // 卡住保險：GAS 後端通常已收到並寄信，逾時就直接顯示完成，避免使用者卡在「送出中…」
+    const to=setTimeout(()=>finish(()=>showDone()),8000);
     fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
       .then(r=>r.json()).then(d=>{
-        if(d&&d.ok===false&&d.full){alert('這場剛好額滿了，請改選其他場次');btn.disabled=false;btn.textContent='送出聯繫';loadData();return;}
-        showDone();
-      }).catch(()=>showDone());
+        if(d&&d.ok===false&&d.full){finish(()=>{alert('這場剛好額滿了，請改選其他場次');resetSubmit();loadData();});return;}
+        finish(()=>showDone()); // 含 duplicate（重複送出後端會擋，仍視為成功）
+      }).catch(()=>finish(()=>showDone()));
   }
   function closeModal(){document.getElementById('modal').classList.remove('show');}
   function openLightbox(url){const hi=url.replace(/=w\d+$/,'=w1600');document.getElementById('lightbox-img').src=hi;document.getElementById('lightbox').classList.add('show');lucide.createIcons();}
