@@ -6,69 +6,75 @@
 <title>我的 Watch Party 名單 ｜ Good Neighbor ｜ The Hope</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>@import url("https://fontsapi.zeoseven.com/745/main/result.css");</style>
 <style>
-  @import url("https://fontsapi.zeoseven.com/745/main/result.css");
   :root{
-    --ink:#20231C; --ink-soft:#41423B; --gray:#D8DAD8; --gray-deep:#A9ADA9;
-    --paper:#FFFFFF; --cream:#F0F1EE; --y:#F2EE4D; --y2:#EECB5A; --muted:#65675F; --line:#E2E3DF;
+    --ink:#191817; --ink-soft:#46443f; --muted:#5f5e58;
+    --gold:#F4B400; --gold-deep:#8a6500; --gold-tint:rgba(244,180,0,.16);
+    --y:#F4B400; --y2:#e0a400;
+    --gray:#CDC9BD; --gray-deep:#A9ADA9;
+    --paper:#FFFFFF; --cream:#F4F1E8; --line:#e6e3da;
+    --silver1:#F4F1E8; --silver2:#CDC9BD;
     --go:#1D9E75; --no:#C7402F;
+    --en:"Noto Sans",-apple-system,BlinkMacSystemFont,sans-serif;
     --display:"Mantou Sans","Noto Sans TC",sans-serif;
     --sans:"Noto Sans TC",-apple-system,BlinkMacSystemFont,sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:var(--sans);color:var(--ink);background:var(--cream);line-height:1.7;-webkit-font-smoothing:antialiased}
+  body{font-family:var(--sans);color:var(--ink);background:var(--silver1);line-height:1.7;-webkit-font-smoothing:antialiased}
   .wrap{max-width:620px;margin:0 auto;padding:0 16px}
   .icon{width:20px;height:20px;stroke-width:2;flex:none}
 
-  .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:2.5px solid var(--ink)}
-  .nav .brand{font-family:var(--display);font-size:18px;color:var(--ink)}
-  .nav .tag{font-size:12px;font-weight:900;color:var(--muted)}
+  .nav{position:sticky;top:0;z-index:50;background:rgba(244,241,232,.92);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:0 18px;height:58px;border-bottom:1px solid var(--line)}
+  .nav .brand{font-family:var(--display);font-size:20px;color:var(--ink)}
+  .nav .brand i{color:inherit;font-style:normal}
+  .nav .tag{font-size:12px;font-weight:700;color:var(--muted)}
 
-  .hero{background:var(--ink);color:#fff;padding:22px 0}
-  .hero .kick{font-family:var(--display);font-size:12px;letter-spacing:.12em;color:var(--y2)}
-  .hero h1{font-size:24px;font-weight:900;margin-top:4px;line-height:1.2}
-  .hero .area{font-size:13.5px;color:#C9CBC4;margin-top:4px;display:flex;align-items:center;gap:6px}
+  .hero{background:var(--gold);color:var(--ink);padding:24px 0}
+  .hero .kick{font-family:var(--display);font-size:12px;letter-spacing:.12em;color:var(--gold-deep)}
+  .hero h1{font-size:25px;font-weight:900;margin-top:4px;line-height:1.2}
+  .hero .area{font-size:13.5px;color:var(--ink-soft);margin-top:4px;display:flex;align-items:center;gap:6px}
 
   .sec{padding:18px 0}
 
-  .count{display:flex;align-items:center;gap:16px;background:var(--y);border:2px solid var(--ink);border-radius:16px;box-shadow:3px 3px 0 var(--ink);padding:16px 18px}
-  .count .big{font-size:30px;font-weight:900;line-height:1;font-family:var(--display)}
-  .count .big span{font-size:15px}
+  .count{display:flex;align-items:center;gap:16px;background:var(--paper);border-radius:18px;box-shadow:0 14px 32px rgba(60,55,45,.10);padding:18px 20px}
+  .count .big{font-size:32px;font-weight:900;line-height:1;font-family:var(--display);color:var(--gold-deep)}
+  .count .big span{font-size:15px;color:var(--ink)}
   .count .lab{font-size:13px;color:var(--ink);font-weight:500}
   .count .lab b{font-weight:900}
-  .count .edit{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:900;color:var(--ink);background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:7px 12px;box-shadow:2px 2px 0 var(--ink);cursor:pointer}
-  .count .edit:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+  .count .edit{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;color:var(--ink);background:var(--gold);border:0;border-radius:999px;padding:9px 14px;cursor:pointer;transition:transform .15s,box-shadow .15s}
+  .count .edit:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(244,180,0,.4)}
   .count .edit .icon{width:15px;height:15px}
 
   .actions{display:flex;gap:10px;margin-top:14px}
-  .actions button{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;font-family:var(--sans);font-size:13.5px;font-weight:900;color:var(--ink);background:var(--paper);border:2px solid var(--ink);border-radius:12px;padding:11px;box-shadow:2.5px 2.5px 0 var(--ink);cursor:pointer}
-  .actions button:active{transform:translate(1.5px,1.5px);box-shadow:1px 1px 0 var(--ink)}
+  .actions button{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;font-family:var(--sans);font-size:13.5px;font-weight:700;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:13px;cursor:pointer;transition:.15s}
+  .actions button:hover{border-color:var(--gold);box-shadow:0 8px 18px rgba(60,55,45,.08)}
   .actions button .icon{width:16px;height:16px}
 
-  .reminder{display:flex;gap:9px;align-items:flex-start;font-size:12.5px;color:var(--ink-soft);background:var(--cream);border:1.5px dashed var(--gray-deep);border-radius:12px;padding:11px 13px;margin-top:14px;line-height:1.6}
-  .reminder .icon{width:16px;height:16px;color:var(--y2);margin-top:2px}
+  .reminder{display:flex;gap:9px;align-items:flex-start;font-size:12.5px;color:var(--ink-soft);background:var(--gold-tint);border-radius:12px;padding:12px 14px;margin-top:14px;line-height:1.6}
+  .reminder .icon{width:16px;height:16px;color:var(--gold-deep);margin-top:2px}
 
-  .listhead{font-family:var(--display);font-size:13px;letter-spacing:.04em;color:var(--muted);margin:22px 0 10px;display:flex;align-items:center;gap:7px}
+  .listhead{font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:.04em;color:var(--muted);margin:22px 0 10px;display:flex;align-items:center;gap:7px}
 
-  .person{background:var(--paper);border:2px solid var(--ink);border-radius:14px;box-shadow:2.5px 2.5px 0 var(--ink);padding:14px 15px;margin-bottom:12px}
+  .person{background:var(--paper);border-radius:16px;box-shadow:0 14px 32px rgba(60,55,45,.09);padding:16px 16px;margin-bottom:12px}
   .person .top{display:flex;align-items:flex-start;gap:11px}
-  .person .ava{width:38px;height:38px;flex:none;border-radius:50%;background:var(--y);border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:var(--ink)}
+  .person .ava{width:40px;height:40px;flex:none;border-radius:50%;background:var(--gold-tint);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:var(--gold-deep)}
   .person .who{flex:1;min-width:0}
   .person .who .nm{font-size:15px;font-weight:900;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .person .who .ppl{font-size:11px;font-weight:900;background:var(--cream);border:1.5px solid var(--ink);border-radius:999px;padding:0 8px}
+  .person .who .ppl{font-size:11px;font-weight:700;background:var(--gold-tint);color:var(--gold-deep);border-radius:999px;padding:1px 9px}
   .person .who .msg{font-size:12.5px;color:var(--ink-soft);margin-top:3px}
   .person .who .meta{font-size:11.5px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
   .person .contacts{margin-top:7px;display:flex;flex-direction:column;gap:4px}
   .person .contacts a{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--ink);text-decoration:none;font-weight:500;width:fit-content}
-  .person .contacts a .icon{width:14px;height:14px;color:var(--y2);stroke-width:2.4}
-  .person .contacts a:active{color:var(--y2)}
+  .person .contacts a .icon{width:14px;height:14px;color:var(--gold-deep);stroke-width:2.4}
+  .person .contacts a:active{color:var(--gold-deep)}
 
-  .seg{display:flex;margin-top:12px;border:2px solid var(--ink);border-radius:10px;overflow:hidden}
-  .seg button{flex:1;font-family:var(--sans);font-size:12.5px;font-weight:900;color:var(--ink);background:var(--paper);border:none;border-right:2px solid var(--ink);padding:9px 4px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
+  .seg{display:flex;margin-top:12px;border:1.5px solid var(--line);border-radius:12px;overflow:hidden}
+  .seg button{flex:1;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);background:var(--paper);border:none;border-right:1.5px solid var(--line);padding:10px 4px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:.12s}
   .seg button:last-child{border-right:none}
   .seg button .icon{width:14px;height:14px}
-  .seg button[data-on="待聯繫"].active{background:var(--y)}
+  .seg button[data-on="待聯繫"].active{background:var(--gold)}
   .seg button[data-on="會來"].active{background:var(--go);color:#fff}
   .seg button[data-on="不會來"].active{background:var(--no);color:#fff}
 
@@ -81,7 +87,7 @@
 </head>
 <body>
   <div class="nav">
-    <span class="brand">Good Neighbor</span>
+    <span class="brand">GOOD <i>NEIGHBOR</i></span>
     <span class="tag">Host 名單</span>
   </div>
 

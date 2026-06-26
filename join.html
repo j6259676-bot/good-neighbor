@@ -6,261 +6,281 @@
 <title>Good Neighbor ｜ 找一場加入 ｜ The Hope</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>@import url("https://fontsapi.zeoseven.com/745/main/result.css");</style>
 <style>
-  @import url("https://fontsapi.zeoseven.com/745/main/result.css");
-  :root{
-    --ink:#20231C;
-    --ink-soft:#41423B;
-    --gray:#D8DAD8;
-    --gray-deep:#A9ADA9;
-    --paper:#FFFFFF;
-    --cream:#F0F1EE;
-    --y:#F2EE4D;
-    --y2:#EECB5A;
-    --muted:#65675F;
-    --line:#E2E3DF;
-    --display:"Mantou Sans","Noto Sans TC",sans-serif;
-    --sans:"Noto Sans TC",-apple-system,BlinkMacSystemFont,sans-serif;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.78;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-  .wrap{max-width:660px;margin:0 auto;padding:0 24px}
-  .icon{width:22px;height:22px;stroke-width:2;flex:none}
-  img{display:block;max-width:100%}
+:root{
+  --ink:#191817; --ink-soft:#46443f; --muted:#5f5e58;
+  --gold:#F4B400; --gold-deep:#8a6500; --gold-tint:rgba(244,180,0,.16);
+  --silver1:#F4F1E8; --silver2:#CDC9BD;
+  --paper:#fff; --line:#e6e3da;
+  --en:"Noto Sans",-apple-system,BlinkMacSystemFont,sans-serif;
+  --zh:"Noto Sans TC",-apple-system,BlinkMacSystemFont,sans-serif;
+  --display:"Mantou Sans","Noto Sans TC",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--zh);color:var(--ink);line-height:1.78;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background:
+    radial-gradient(90% 60% at 82% -6%, rgba(244,180,0,.22), rgba(244,180,0,0) 50%),
+    radial-gradient(130% 78% at 50% 0%, var(--silver1), var(--silver2))}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:.15;mix-blend-mode:multiply}
+img{display:block;max-width:100%}
+.icon{width:22px;height:22px;stroke-width:2;flex:none}
+.wrap{max-width:980px;margin:0 auto;padding:0 clamp(20px,4vw,40px)}
+.bleed{width:100vw;margin-left:calc(50% - 50vw)}
 
-  .rv{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.16,.8,.3,1),transform .8s cubic-bezier(.16,.8,.3,1)}
-  .rv.in{opacity:1;transform:none}
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1)}
+.rv.in{opacity:1;transform:none}
 
-  /* NAV */
-  .nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-bottom:2.5px solid var(--ink)}
-  .nav .brand{font-family:var(--display);font-size:20px;color:var(--ink);letter-spacing:.01em}
-  .nav a.link{color:var(--ink);font-size:13px;text-decoration:none;display:flex;align-items:center;gap:6px;font-weight:900;
-    background:var(--y);border:2px solid var(--ink);border-radius:999px;padding:7px 14px;box-shadow:2.5px 2.5px 0 var(--ink);transition:transform .15s,box-shadow .15s;cursor:pointer}
-  .nav a.link:hover{transform:translate(-1px,-1px);box-shadow:3.5px 3.5px 0 var(--ink)}
-  .nav a.link:active{transform:translate(1.5px,1.5px);box-shadow:1px 1px 0 var(--ink)}
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--zh);font-weight:700;font-size:16px;
+  padding:15px 28px;border-radius:999px;text-decoration:none;cursor:pointer;border:0;
+  background:var(--gold);color:var(--ink);transition:transform .16s ease,box-shadow .16s ease}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(244,180,0,.38)}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.btn.ghost:hover{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.btn.big{font-size:18px;padding:18px 36px}
 
-  /* BANNER */
-  .banner{background:var(--y);padding:11px 22px;text-align:center;font-size:13.5px;font-weight:900;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:8px;border-bottom:2.5px solid var(--ink)}
-  .banner .icon{width:16px;height:16px}
+/* NAV */
+.nav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+  height:64px;padding:0 clamp(20px,4vw,40px);background:rgba(240,240,238,.8);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .brand{font-family:var(--display);font-size:23px;color:var(--ink);text-decoration:none}
+.nav .brand i{color:inherit;font-style:normal}
+.nav .link{font-family:var(--zh);font-weight:700;font-size:14px;color:var(--ink);text-decoration:none;
+  display:inline-flex;align-items:center;gap:7px;border:1.5px solid var(--ink);border-radius:999px;padding:8px 16px;transition:.16s}
+.nav .link:hover{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.nav .link:hover .icon{color:var(--ink)}
 
-  /* HERO */
-  .hero{background:radial-gradient(125% 130% at 80% 8%,#EDEEEC 0%,#D8DAD8 55%,#C3C6C3 100%);color:var(--ink);position:relative;overflow:hidden;padding:48px 0 52px;text-align:center}
-  .hero::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(32,35,28,.09) 1.5px,transparent 1.5px);background-size:24px 24px}
-  .hero .wrap{position:relative}
-  .sticker{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-size:13px;letter-spacing:.1em;color:var(--ink);
-    background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:7px 16px;box-shadow:3px 3px 0 var(--ink);
-    transform:rotate(-2deg);margin-bottom:24px}
-  .sticker .dot{width:8px;height:8px;border-radius:50%;background:var(--y2);border:1.5px solid var(--ink);animation:pulse 2.2s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-  .wordmark{font-family:var(--display);line-height:1;letter-spacing:.005em;font-size:clamp(46px,13vw,92px);
-    color:var(--y);text-shadow:.045em .045em 0 var(--y2),.1em .1em 0 var(--ink);transform:rotate(-1.5deg)}
-  .hero .zh{margin-top:24px;font-family:var(--display);font-size:clamp(19px,5vw,25px);color:var(--ink);letter-spacing:.1em;
-    display:inline-block;background:linear-gradient(transparent 58%,var(--y) 58%);padding:0 6px 2px;transform:rotate(-.6deg)}
-  .hero .sub{margin-top:16px;font-size:15.5px;color:var(--ink-soft);line-height:1.85;max-width:34ch;margin-left:auto;margin-right:auto;font-weight:500}
-  .hero-cta{margin-top:28px;display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:var(--y);
-    text-decoration:none;font-weight:900;font-size:16px;padding:16px 32px;border-radius:999px;border:2.5px solid var(--ink);
-    box-shadow:5px 5px 0 var(--y2);transition:transform .15s,box-shadow .15s;cursor:pointer}
-  .hero-cta:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--y2)}
-  .hero-cta:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--y2)}
-  .sp{position:absolute;pointer-events:none;animation:float 5s ease-in-out infinite}
-  .sp svg{display:block}
-  @keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(8deg)}}
-  .sp1{top:30px;right:7%;width:30px;animation-delay:.4s}
-  .sp2{bottom:60px;left:5%;width:22px;animation-delay:1.3s}
+/* BANNER */
+.banner{position:relative;z-index:50;background:var(--gold);padding:11px 22px;text-align:center;font-size:13.5px;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:8px}
+.banner .icon{width:16px;height:16px}
 
-  /* SECTION */
-  section{padding:64px 0}
-  .alt{background:var(--cream)}
-  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-size:12.5px;letter-spacing:.1em;
-    margin-bottom:20px;color:var(--ink);background:var(--y);border:2px solid var(--ink);padding:6px 15px;border-radius:999px;
-    box-shadow:2.5px 2.5px 0 var(--ink);transform:rotate(-1.2deg)}
-  h2{font-family:var(--display);font-size:clamp(27px,6.6vw,42px);font-weight:400;line-height:1.22;margin-bottom:16px}
-  p.lead{font-size:17px;color:var(--ink-soft);line-height:1.95}
+/* page + cord */
+.page{position:relative;z-index:1}
+.cordlayer{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;transform:translateZ(0);will-change:transform}
+.cordlayer svg{width:100%;height:100%;display:block}
+.cordlayer path{fill:none;stroke:var(--gold);stroke-width:10;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.92}
+section{position:relative;z-index:2}
 
-  .steps{margin-top:26px}
-  .step{display:flex;gap:20px;padding:0 0 30px;position:relative}
-  .step:last-child{padding-bottom:0}
-  .step .num{width:52px;height:52px;border-radius:50%;background:var(--y);border:2.5px solid var(--ink);color:var(--ink);font-family:var(--display);display:flex;align-items:center;justify-content:center;flex:none;font-size:21px;z-index:1;box-shadow:3px 3px 0 var(--ink)}
-  .step:not(:last-child)::before{content:"";position:absolute;left:25px;top:56px;bottom:0;width:2.5px;background:var(--ink);opacity:.25}
-  .step .body h3{font-size:18px;font-weight:900;margin-bottom:5px;padding-top:11px}
-  .step .body p{font-size:15px;color:var(--muted);line-height:1.8}
+/* HERO */
+.hero{position:relative;min-height:calc(100vh - 110px);display:flex;flex-direction:column;justify-content:center;padding:36px 0 48px}
+.hero .copy{position:relative;z-index:3;max-width:760px}
+.hero-slogan{display:inline-flex;align-items:center;gap:8px;font-family:var(--zh);font-weight:700;font-size:14px;letter-spacing:.04em;
+  background:var(--gold);color:var(--ink);padding:8px 17px;border-radius:999px;margin-bottom:22px}
+.hero-slogan .icon{width:15px;height:15px;color:var(--ink)}
+.hero h1{font-family:var(--display);color:var(--gold);line-height:.85;font-size:clamp(52px,10vw,128px);letter-spacing:.005em;
+  text-shadow:0 2px 0 rgba(154,111,0,.14)}
+.hero h1 span{display:block}
+.hero .lead{font-family:var(--zh);font-weight:900;font-size:clamp(22px,2.7vw,34px);line-height:1.35;margin:26px 0 14px;letter-spacing:.01em;max-width:18ch}
+.hero .sub{font-family:var(--zh);font-weight:400;color:var(--ink-soft);font-size:17px;line-height:1.85;max-width:27ch;margin-bottom:30px}
+.hero .row{display:flex;gap:13px;flex-wrap:wrap}
+.hero .phone{position:absolute;right:0;bottom:3%;height:70vh;max-height:680px;width:auto;z-index:1;filter:drop-shadow(0 18px 30px rgba(0,0,0,.18))}
 
-  .cards{display:grid;gap:18px;margin-top:22px}
-  .card{background:var(--paper);border:2.5px solid var(--ink);border-radius:20px;padding:24px;display:flex;gap:18px;align-items:flex-start;
-    box-shadow:6px 6px 0 var(--y2);transition:transform .2s,box-shadow .2s}
-  .card:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--y2)}
-  .card:nth-child(2){transform:rotate(.5deg)}
-  .card:nth-child(2):hover{transform:rotate(0) translate(-2px,-2px)}
-  .badge{width:50px;height:50px;border-radius:50%;background:var(--y);border:2px solid var(--ink);color:var(--ink);display:flex;align-items:center;justify-content:center;flex:none}
-  .card h3{font-size:18px;font-weight:900;margin-bottom:5px}
-  .card p{font-size:15px;color:var(--muted);line-height:1.8}
+/* SECTION */
+section{padding:clamp(70px,11vh,130px) 0}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-family:var(--zh);font-weight:700;font-size:14px;letter-spacing:.04em;
+  background:var(--gold);color:var(--ink);padding:8px 17px;border-radius:999px;margin-bottom:20px}
+.kicker .icon{width:16px;height:16px;color:var(--ink)}
+h2.title{font-family:var(--zh);font-weight:900;color:var(--ink);font-size:clamp(30px,4.6vw,52px);line-height:1.28;letter-spacing:.01em;margin-bottom:18px}
+p.lead{font-size:17px;color:var(--ink-soft);line-height:1.95;max-width:44ch}
+.hl{font-weight:900;color:var(--ink);border-bottom:3px solid var(--gold)}
 
-  .band{position:relative;margin:38px 0 0;overflow:hidden}
-  .band img{display:block;width:100%;aspect-ratio:21/9;object-fit:cover}
-  .band .cap{position:absolute;left:24px;bottom:18px;background:var(--paper);color:var(--ink);border:2px solid var(--ink);
-    font-size:12.5px;font-weight:900;padding:7px 14px;border-radius:999px;display:flex;align-items:center;gap:7px;box-shadow:3px 3px 0 var(--ink);transform:rotate(-1deg)}
-  .band .cap .icon{width:14px;height:14px;color:var(--ink)}
+/* photo band */
+.band{position:relative;margin:42px 0 0;border-radius:16px;overflow:hidden;box-shadow:0 26px 54px rgba(60,55,45,.16)}
+.band img{display:block;width:100%;aspect-ratio:21/9;object-fit:cover}
+.band .cap{position:absolute;left:18px;bottom:16px;background:var(--paper);color:var(--ink);font-size:13px;font-weight:700;
+  padding:8px 15px;border-radius:999px;display:inline-flex;align-items:center;gap:7px;box-shadow:0 8px 18px rgba(0,0,0,.14)}
+.band .cap .icon{width:14px;height:14px;color:var(--gold-deep)}
 
-  /* FIND MAP CTA */
-  .find{background:var(--y);padding:74px 0;text-align:center;position:relative;overflow:hidden;border-top:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink)}
-  .find::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(32,35,28,.1) 1.5px,transparent 1.5px);background-size:24px 24px}
-  .find .wrap{position:relative}
-  .find h2{margin-bottom:14px;transform:rotate(-1deg)}
-  .find p{color:var(--ink-soft);font-size:16px;margin-bottom:28px;line-height:1.85;font-weight:500;max-width:30ch;margin-left:auto;margin-right:auto}
-  .btn-map{display:inline-flex;align-items:center;gap:11px;background:var(--ink);color:var(--y);text-decoration:none;font-weight:900;font-size:18px;padding:18px 38px;border-radius:999px;border:2.5px solid var(--ink);box-shadow:6px 6px 0 var(--paper);transition:transform .15s,box-shadow .15s;cursor:pointer}
-  .btn-map:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--paper)}
-  .btn-map:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--paper)}
-  .find .note{margin-top:22px;font-size:13px;color:var(--ink);display:inline-flex;align-items:center;gap:7px;font-weight:900;background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:6px 15px}
-  .find .note .icon{width:15px;height:15px}
+/* steps */
+.steps{margin-top:30px}
+.step{display:flex;gap:22px;padding:0 0 32px;position:relative}
+.step:last-child{padding-bottom:0}
+.step .num{width:60px;height:60px;border-radius:50%;background:var(--gold);color:var(--ink);font-family:var(--display);font-size:26px;
+  display:flex;align-items:center;justify-content:center;flex:none;z-index:1;box-shadow:0 0 0 8px rgba(244,180,0,.18)}
+.step:not(:last-child)::before{content:"";position:absolute;left:29px;top:64px;bottom:4px;width:2px;background:var(--gold);opacity:.5}
+.step .body h3{font-size:19px;font-weight:900;margin-bottom:6px;padding-top:13px}
+.step .body p{font-size:15px;color:var(--ink-soft);line-height:1.8;max-width:46ch}
 
-  .faq{margin-top:24px}
-  .faq-item{border:2.5px solid var(--ink);border-radius:18px;margin-bottom:14px;overflow:hidden;background:var(--paper);box-shadow:4px 4px 0 var(--y2);transition:box-shadow .2s}
-  .faq-item:hover{box-shadow:6px 6px 0 var(--y2)}
-  .faq-q{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:19px 22px;display:flex;justify-content:space-between;align-items:center;gap:14px;font-size:16px;font-weight:900;color:var(--ink);line-height:1.5;font-family:inherit}
-  .faq-q .chev{flex:none;transition:transform .25s;color:var(--ink);width:20px;height:20px}
-  .faq-q.open .chev{transform:rotate(180deg)}
-  .faq-a{overflow:hidden;max-height:0;transition:max-height .3s ease}
-  .faq-a p{padding:0 22px 20px;font-size:15px;color:var(--muted);line-height:1.9}
+/* cards */
+.cards{display:grid;gap:18px;margin-top:30px;grid-template-columns:1fr}
+.card{background:var(--paper);border-radius:16px;padding:26px;display:flex;gap:18px;align-items:flex-start;
+  box-shadow:0 18px 42px rgba(60,55,45,.10);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 24px 50px rgba(60,55,45,.14)}
+.badge{width:52px;height:52px;border-radius:50%;background:var(--gold-tint);color:var(--gold-deep);display:flex;align-items:center;justify-content:center;flex:none}
+.card h3{font-size:18px;font-weight:900;margin-bottom:6px}
+.card p{font-size:15px;color:var(--muted);line-height:1.8}
+@media(min-width:768px){.cards{grid-template-columns:repeat(3,1fr)}.card{flex-direction:column}}
 
-  .teaser{background:var(--cream);padding:46px 0}
-  .teaser-card{background:var(--paper);border:2.5px solid var(--ink);border-radius:20px;padding:24px;display:flex;gap:16px;align-items:center;box-shadow:5px 5px 0 var(--y2)}
-  .teaser-card .body{flex:1;min-width:0}
-  .teaser-card h3{font-size:16px;font-weight:900;margin-bottom:3px}
-  .teaser-card p{font-size:14px;color:var(--muted)}
-  .teaser-link{color:var(--ink);font-weight:900;font-size:14px;text-decoration:none;white-space:nowrap;display:flex;align-items:center;gap:6px;flex:none;
-    background:var(--y);border:2px solid var(--ink);padding:10px 18px;border-radius:999px;box-shadow:2.5px 2.5px 0 var(--ink);transition:transform .15s,box-shadow .15s;cursor:pointer}
-  .teaser-link:hover{transform:translate(-1px,-1px);box-shadow:3.5px 3.5px 0 var(--ink)}
-  .teaser-link:active{transform:translate(1.5px,1.5px);box-shadow:1px 1px 0 var(--ink)}
+/* find cta band */
+.find{text-align:center;background:var(--gold);position:relative;z-index:2;border-radius:0}
+.find .wrap{position:relative}
+.find h2{font-family:var(--zh);font-weight:900;color:var(--ink);font-size:clamp(30px,4.6vw,52px);line-height:1.2;margin-bottom:14px}
+.find p{color:var(--ink-soft);font-size:16px;margin:0 auto 28px;line-height:1.85;max-width:30ch}
+.btn-map{display:inline-flex;align-items:center;gap:11px;background:var(--paper);color:var(--ink);text-decoration:none;font-weight:700;font-size:18px;
+  padding:18px 38px;border-radius:999px;transition:transform .16s,box-shadow .16s;cursor:pointer}
+.btn-map:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(60,55,45,.25)}
+.find .note{margin-top:22px;font-size:13px;color:var(--ink);display:inline-flex;align-items:center;gap:7px;font-weight:700;background:var(--paper);border-radius:999px;padding:7px 15px;box-shadow:0 6px 16px rgba(0,0,0,.12)}
+.find .note .icon{width:15px;height:15px;color:var(--gold-deep)}
 
-  footer{text-align:center;padding:46px 0 58px;color:var(--muted);font-size:13px;background:var(--paper);border-top:2.5px solid var(--ink)}
-  footer .tg{font-family:var(--display);color:var(--ink);font-size:17px;margin-bottom:10px;display:inline-block;background:linear-gradient(transparent 58%,var(--y) 58%);padding:0 6px 2px}
-  footer .be{font-family:var(--display);letter-spacing:.01em;color:var(--ink);margin:0 0 6px;font-size:22px}
-  footer .fnote{margin-top:18px;font-size:13px;color:var(--ink-soft);font-weight:700}
-  footer .fcontact{margin-top:12px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-  footer .fcontact a{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:900;color:var(--ink);text-decoration:none;background:var(--y);border:2px solid var(--ink);border-radius:999px;padding:9px 16px;box-shadow:2.5px 2.5px 0 var(--ink);transition:transform .15s,box-shadow .15s;cursor:pointer}
-  footer .fcontact a:hover{transform:translate(-1px,-1px);box-shadow:3.5px 3.5px 0 var(--ink)}
-  footer .fcontact a:active{transform:translate(1.5px,1.5px);box-shadow:1px 1px 0 var(--ink)}
-  footer .fcontact a .icon{width:15px;height:15px}
-  footer .fcopy{margin-top:20px}
+/* faq */
+.faq{margin-top:30px;max-width:780px;background:var(--paper);border-radius:16px;padding:6px 26px;box-shadow:0 18px 42px rgba(60,55,45,.10)}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-item:last-child{border-bottom:0}
+.faq-q{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:22px 2px;display:flex;justify-content:space-between;
+  align-items:center;gap:14px;font-size:17px;font-weight:700;color:var(--ink);line-height:1.5;font-family:inherit}
+.faq-q .chev{flex:none;transition:transform .25s;color:var(--gold-deep);width:20px;height:20px}
+.faq-q.open .chev{transform:rotate(180deg)}
+.faq-a{overflow:hidden;max-height:0;transition:max-height .3s ease}
+.faq-a p{padding:0 2px 22px;font-size:15px;color:var(--ink-soft);line-height:1.9}
 
-  @media (prefers-reduced-motion:reduce){
-    .sp{animation:none}
-    .rv{opacity:1;transform:none;transition:none}
-    .sticker .dot{animation:none}
-  }
-  @media(min-width:768px){
-    .wrap{max-width:760px}
-    section{padding:84px 0}
-    .band img{aspect-ratio:21/8}
-  }
-  @media(min-width:1040px){.wrap{max-width:920px}}
+/* host teaser */
+.teaser{padding:0 0 clamp(60px,9vh,100px)}
+.teaser-card{background:var(--paper);border-radius:16px;padding:24px;display:flex;gap:16px;align-items:center;box-shadow:0 18px 42px rgba(60,55,45,.12)}
+.teaser-card .badge{background:var(--gold-tint)}
+.teaser-card .body{flex:1;min-width:0}
+.teaser-card h3{font-size:17px;font-weight:900;margin-bottom:3px}
+.teaser-card p{font-size:14px;color:var(--muted)}
+.teaser-link{color:var(--ink);font-weight:700;font-size:14px;text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;flex:none;
+  border:1.5px solid var(--ink);padding:10px 18px;border-radius:999px;transition:.16s}
+.teaser-link:hover{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+
+footer{position:relative;z-index:2;background:#EBE6D8;color:var(--ink-soft);text-align:center;padding:clamp(56px,8vh,90px) 0 54px;border-top:1px solid var(--line)}
+footer .tg{font-family:var(--display);color:var(--ink);font-size:clamp(26px,4vw,46px);line-height:1.2;display:inline-block;
+  background:linear-gradient(transparent 60%,var(--gold) 60%);padding:0 8px 2px;margin-bottom:16px}
+footer .be{font-family:var(--en);font-weight:600;letter-spacing:.05em;color:var(--gold-deep);margin-bottom:26px}
+footer .fnote{font-size:14px;color:var(--ink-soft);font-weight:500;margin-bottom:14px}
+footer .fcontact{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+footer .fcontact a{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;
+  border:1.5px solid var(--ink);border-radius:999px;padding:9px 16px;transition:.16s}
+footer .fcontact a:hover{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+footer .fcontact a:hover .icon{color:var(--ink)}
+footer .fcontact a .icon{width:15px;height:15px}
+footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
+
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.hero .phone{animation:none}}
+@media (prefers-reduced-motion:no-preference){.hero .phone{animation:flo 5.5s ease-in-out infinite}@keyframes flo{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}}
+
+@media(max-width:760px){
+  .cordlayer{display:none}
+  .hero{min-height:auto;padding:24px 0 36px}
+  .hero h1{font-size:17vw}
+  .hero .lead{max-width:100%}
+  .hero .phone{position:relative;right:auto;bottom:auto;height:auto;width:60%;max-height:none;margin:22px auto 0;display:block}
+  .step{gap:16px}.step .num{width:48px;height:48px;font-size:21px}.step:not(:last-child)::before{left:23px;top:52px}
+}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
-  <span class="brand">Good Neighbor</span>
-  <a href="host.html" class="link"><i class="icon" data-lucide="home" style="width:16px;height:16px"></i>我要 Host</a>
+  <a href="index.html" class="brand">GOOD <i>NEIGHBOR</i></a>
+  <a href="host.html" class="link"><i class="icon" data-lucide="home" style="width:15px;height:15px"></i>我要 Host</a>
 </nav>
 
-<!-- BANNER -->
 <div class="banner"><i class="icon" data-lucide="clock"></i>報名 7/25 開放 ｜ 先了解這是什麼、怎麼進行</div>
 
-<!-- HERO -->
-<header class="hero">
-  <span class="sp sp1"><svg viewBox="0 0 24 24" fill="#EECB5A" stroke="#20231C" stroke-width="1.2"><path d="M12 1c1 6.5 4.5 10 11 11-6.5 1-10 4.5-11 11-1-6.5-4.5-10-11-11 6.5-1 10-4.5 11-11z"/></svg></span>
-  <span class="sp sp2"><svg viewBox="0 0 24 24" fill="#20231C"><path d="M12 1c1 6.5 4.5 10 11 11-6.5 1-10 4.5-11 11-1-6.5-4.5-10-11-11 6.5-1 10-4.5 11-11z"/></svg></span>
-  <div class="wrap">
-    <span class="sticker"><span class="dot"></span>Find a Watch Party</span>
-    <h1 class="wordmark">Good Neighbor</h1>
-    <div class="zh">找一場加入</div>
-    <p class="sub">不用一個人在家看主日。有人已經在你附近準備好了一個空間，等你一起進來。</p>
-    <div><a href="find.html" class="hero-cta"><i class="icon" data-lucide="map-pin" style="width:18px;height:18px;stroke-width:2.5"></i>在地圖上找一場</a></div>
-  </div>
-</header>
+<div class="page">
+  <div class="cordlayer" aria-hidden="true"><svg preserveAspectRatio="none"><path id="cord"></path></svg></div>
 
-<!-- WHAT IS IT -->
-<section>
-  <div class="wrap rv">
-    <span class="eyebrow"><i class="icon" data-lucide="sparkles" style="width:14px;height:14px"></i>這是什麼</span>
-    <h2>一群人，<br>一起做一次主日。</h2>
-    <p class="lead">Watch Party 是一場實體聚集——大家聚在某個真實的空間（某人家裡、咖啡廳或社區空間），一起參與線上 Hope 主日。<strong>不是各自在家看，是面對面聚在一起</strong>，一起敬拜、一起聽訊息，看完後有一段簡單的分享。完全免費，帶你自己來就好。</p>
-  </div>
-  <div class="band rv">
-    <img src="images/gathering.jpg" alt="一群人在客廳一起看線上 Hope 主日" loading="lazy">
-    <div class="cap"><i class="icon" data-lucide="users"></i>一群人，一個空間，一起遇見神</div>
-  </div>
-</section>
-
-<!-- HOW TO JOIN -->
-<section class="alt">
-  <div class="wrap rv">
-    <span class="eyebrow"><i class="icon" data-lucide="route" style="width:14px;height:14px"></i>怎麼進行</span>
-    <h2>三步，找到<br>你的場次。</h2>
-    <div class="steps">
-      <div class="step"><div class="num">1</div><div class="body"><h3>在地圖上找一場</h3><p>瀏覽附近開放中的 Watch Party，找到你喜歡的地點和場次。</p></div></div>
-      <div class="step"><div class="num">2</div><div class="body"><h3>送出聯繫</h3><p>留下你的基本資料，告訴 Host 你有幾個人一起來。</p></div></div>
-      <div class="step"><div class="num">3</div><div class="body"><h3>等 Host 聯絡你</h3><p>一週內，那場的 Host 會主動聯繫你第一次見面的細節。</p></div></div>
+  <!-- HERO -->
+  <header class="hero wrap">
+    <div class="copy">
+      <span class="hero-slogan"><i class="icon" data-lucide="map-pin"></i>Find a Watch Party</span>
+      <h1><span>找一場</span><span>加入</span></h1>
+      <p class="lead">不用一個人在家看主日。</p>
+      <p class="sub">有人已經在你附近準備好了一個空間，等你一起進來。</p>
+      <div class="row">
+        <a href="find.html" class="btn">在地圖上找一場 <span style="font-family:var(--en)">→</span></a>
+        <a href="#what" class="btn ghost">這是什麼</a>
+      </div>
     </div>
-  </div>
-</section>
+    <img class="phone" src="images/phone-hero.png" alt="手握橘色電話">
+  </header>
 
-<!-- WHAT TO EXPECT -->
-<section>
-  <div class="wrap rv">
-    <span class="eyebrow"><i class="icon" data-lucide="heart-handshake" style="width:14px;height:14px"></i>去了會怎樣</span>
-    <h2>你不會是<br>一個人。</h2>
-    <div class="cards">
-      <div class="card"><div class="badge"><i class="icon" data-lucide="home"></i></div><div><h3>各場不一樣，但都歡迎你</h3><p>每個 Host 的空間和風格都不同。走進陌生空間可能會緊張，但 Host 在那裡是為了讓你覺得像回家。</p></div></div>
-      <div class="card"><div class="badge"><i class="icon" data-lucide="play-circle"></i></div><div><h3>一起看主日</h3><p>你會看到和線上相同的敬拜和講道——只是這次有人在旁邊跟你一起被觸動，而不是一個人在手機螢幕前。</p></div></div>
-      <div class="card"><div class="badge"><i class="icon" data-lucide="message-circle"></i></div><div><h3>看完之後一起聊</h3><p>訊息結束後會有一段小分享，把這篇訊息帶進你的生活、你的這一週。這群人也可以為你禱告。</p></div></div>
+  <!-- WHAT IS IT -->
+  <section id="what">
+    <div class="wrap rv">
+      <div class="kicker"><i class="icon" data-lucide="sparkles"></i>這是什麼</div>
+      <h2 class="title">一群人，一起做一次主日。</h2>
+      <p class="lead">Watch Party 是一場實體聚集——大家聚在某個真實的空間（某人家裡、咖啡廳或社區空間），一起參與線上 Hope 主日。<strong>不是各自在家看，是面對面聚在一起</strong>，一起敬拜、一起聽訊息，看完後有一段簡單的分享。完全免費，帶你自己來就好。</p>
     </div>
-  </div>
-</section>
+    <div class="wrap"><div class="band rv">
+      <img src="images/gathering.jpg" alt="一群人在客廳一起看線上 Hope 主日" loading="lazy">
+      <div class="cap"><i class="icon" data-lucide="users"></i>一群人，一個空間，一起遇見神</div>
+    </div></div>
+  </section>
 
-<!-- FIND MAP CTA -->
-<section class="find">
-  <div class="wrap rv">
-    <h2>看看附近<br>有哪些場次。</h2>
-    <p>在地圖上挑一個離你近的 Watch Party，送出聯繫就完成了。</p>
-    <a href="find.html" class="btn-map"><i class="icon" data-lucide="map-pin" style="width:19px;height:19px;stroke-width:2.5"></i>找一場 Watch Party</a>
-    <div><span class="note"><i class="icon" data-lucide="lock"></i>報名 7/25 開放，現在可先看示意場次</span></div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="alt">
-  <div class="wrap rv">
-    <span class="eyebrow"><i class="icon" data-lucide="help-circle" style="width:14px;height:14px"></i>常見問題</span>
-    <h2>有點好奇嗎？</h2>
-    <div class="faq">
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">我一個人去、誰都不認識，會不會很尷尬？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>這是很多人來之前最大的擔心，很正常。但 Host 就是為了接待你而在那裡——他們會主動認識你、讓你自在。而且現場大多數人幾乎都是第一次見面，大家帶著一樣的心情來。你不需要很會社交，帶自己來就好，剩下的交給我們。</p></div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">誰可以參加？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>任何人都可以。不管你是第一次接觸 The Hope，還是已經認識教會很久了，都歡迎你來。不需要先信什麼，帶你自己來就好。</p></div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">是實體還是線上？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>實體聚集。大家聚在某個真實的空間——某人家裡、咖啡廳或社區空間，一起參與線上 Hope 主日的直播。不是各自在家看，是面對面聚在一起。</p></div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">要帶什麼嗎？需要費用嗎？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>什麼都不用帶，完全免費。帶一顆放鬆的心來就好。Host 可能會準備一些茶點，但完全不要求。</p></div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">報名後會發生什麼事？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>你會收到一封確認信，裡面有場次資訊。那場的 Host 會在一週內主動聯絡你，告訴你第一次見面的細節和地址。</p></div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">附近沒有開放的場次怎麼辦？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>也許這就是你開一場的時候！如果你願意打開家門，可以去看看 Host 申請的說明。或者也可以先在家參加線上 Hope 主日，等身邊有 Watch Party 時再加入。</p></div></div>
+  <!-- HOW TO JOIN -->
+  <section id="how">
+    <div class="wrap rv">
+      <div class="kicker"><i class="icon" data-lucide="route"></i>怎麼進行</div>
+      <h2 class="title">三步，找到你的場次。</h2>
+      <div class="steps">
+        <div class="step"><div class="num">1</div><div class="body"><h3>在地圖上找一場</h3><p>瀏覽附近開放中的 Watch Party，找到你喜歡的地點和場次。</p></div></div>
+        <div class="step"><div class="num">2</div><div class="body"><h3>送出聯繫</h3><p>留下你的基本資料，告訴 Host 你有幾個人一起來。</p></div></div>
+        <div class="step"><div class="num">3</div><div class="body"><h3>等 Host 聯絡你</h3><p>一週內，那場的 Host 會主動聯繫你第一次見面的細節。</p></div></div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- HOST TEASER -->
-<div class="teaser">
-  <div class="wrap rv">
-    <div class="teaser-card">
-      <div class="badge" style="background:var(--cream)"><i class="icon" data-lucide="home"></i></div>
-      <div class="body"><h3>想自己開一場？</h3><p>Host 申請 7/15 截止</p></div>
-      <a href="host.html" class="teaser-link">申請<i class="icon" data-lucide="arrow-right" style="width:15px;height:15px"></i></a>
+  <!-- WHAT TO EXPECT -->
+  <section>
+    <div class="wrap rv">
+      <div class="kicker"><i class="icon" data-lucide="heart-handshake"></i>去了會怎樣</div>
+      <h2 class="title">你不會是一個人。</h2>
+      <div class="cards">
+        <div class="card"><div class="badge"><i class="icon" data-lucide="home"></i></div><div><h3>各場不一樣，但都歡迎你</h3><p>每個 Host 的空間和風格都不同。走進陌生空間可能會緊張，但 Host 在那裡是為了讓你覺得像回家。</p></div></div>
+        <div class="card"><div class="badge"><i class="icon" data-lucide="play-circle"></i></div><div><h3>一起看主日</h3><p>你會看到和線上相同的敬拜和講道——只是這次有人在旁邊跟你一起被觸動，而不是一個人在手機螢幕前。</p></div></div>
+        <div class="card"><div class="badge"><i class="icon" data-lucide="message-circle"></i></div><div><h3>看完之後一起聊</h3><p>訊息結束後會有一段小分享，把這篇訊息帶進你的生活、你的這一週。這群人也可以為你禱告。</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIND MAP CTA -->
+  <section class="find bleed">
+    <div class="wrap rv">
+      <h2>看看附近有哪些場次。</h2>
+      <p>在地圖上挑一個離你近的 Watch Party，送出聯繫就完成了。</p>
+      <a href="find.html" class="btn-map"><i class="icon" data-lucide="map-pin" style="width:19px;height:19px;stroke-width:2.5"></i>找一場 Watch Party</a>
+      <div><span class="note"><i class="icon" data-lucide="lock"></i>報名 7/25 開放，現在可先看示意場次</span></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="wrap rv">
+      <div class="kicker"><i class="icon" data-lucide="help-circle"></i>常見問題</div>
+      <h2 class="title">有點好奇嗎？</h2>
+      <div class="faq">
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">我一個人去、誰都不認識，會不會很尷尬？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>這是很多人來之前最大的擔心，很正常。但 Host 就是為了接待你而在那裡——他們會主動認識你、讓你自在。而且現場大多數人幾乎都是第一次見面，大家帶著一樣的心情來。你不需要很會社交，帶自己來就好，剩下的交給我們。</p></div></div>
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">誰可以參加？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>任何人都可以。不管你是第一次接觸 The Hope，還是已經認識教會很久了，都歡迎你來。不需要先信什麼，帶你自己來就好。</p></div></div>
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">是實體還是線上？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>實體聚集。大家聚在某個真實的空間——某人家裡、咖啡廳或社區空間，一起參與線上 Hope 主日的直播。不是各自在家看，是面對面聚在一起。</p></div></div>
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">要帶什麼嗎？需要費用嗎？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>什麼都不用帶，完全免費。帶一顆放鬆的心來就好。Host 可能會準備一些茶點，但完全不要求。</p></div></div>
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">報名後會發生什麼事？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>你會收到一封確認信，裡面有場次資訊。那場的 Host 會在一週內主動聯絡你，告訴你第一次見面的細節和地址。</p></div></div>
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">附近沒有開放的場次怎麼辦？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>也許這就是你開一場的時候！如果你願意打開家門，可以去看看 Host 申請的說明。或者也可以先在家參加線上 Hope 主日，等身邊有 Watch Party 時再加入。</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOST TEASER -->
+  <div class="teaser">
+    <div class="wrap rv">
+      <div class="teaser-card">
+        <div class="badge"><i class="icon" data-lucide="home"></i></div>
+        <div class="body"><h3>想自己開一場？</h3><p>Host 申請 7/15 截止</p></div>
+        <a href="host.html" class="teaser-link">申請<i class="icon" data-lucide="arrow-right" style="width:15px;height:15px"></i></a>
+      </div>
     </div>
   </div>
 </div>
 
 <footer>
-  <div><span class="tg">一起揪、一起聚、神的家就在這裡！</span></div>
-  <div class="be">You Belong Here</div>
+  <div class="tg">一起揪、一起聚、神的家就在這裡！</div>
+  <div class="be">YOU BELONG HERE</div>
   <div class="fnote">有問題、想找人聊聊嗎？</div>
   <div class="fcontact">
     <a href="mailto:online@thehope.co"><i class="icon" data-lucide="mail"></i>online@thehope.co</a>
@@ -270,11 +290,56 @@
 </footer>
 
 <script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
   lucide.createIcons();
-  function toggleFaq(btn){const ans=btn.nextElementSibling,open=btn.classList.contains('open');document.querySelectorAll('.faq-q.open').forEach(b=>{b.classList.remove('open');b.nextElementSibling.style.maxHeight='0'});if(!open){btn.classList.add('open');ans.style.maxHeight=ans.scrollHeight+'px'}}
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function toggleFaq(btn){
+    const ans=btn.nextElementSibling, open=btn.classList.contains('open');
+    document.querySelectorAll('.faq-q.open').forEach(b=>{b.classList.remove('open');b.nextElementSibling.style.maxHeight='0'});
+    if(!open){btn.classList.add('open');ans.style.maxHeight=ans.scrollHeight+'px'}
+  }
+
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
   document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+  if(window.gsap && !reduceMotion){
+    gsap.set(['.hero-slogan','.hero h1 span','.hero .lead','.hero .sub','.hero .row'],{opacity:0,y:30});
+    gsap.timeline({defaults:{ease:'power3.out',duration:.85}})
+      .to('.hero-slogan',{opacity:1,y:0})
+      .to('.hero h1 span',{opacity:1,y:0,stagger:.12},'-=.5')
+      .to('.hero .lead',{opacity:1,y:0},'-=.5')
+      .to('.hero .sub',{opacity:1,y:0},'-=.55')
+      .to('.hero .row',{opacity:1,y:0},'-=.55');
+    gsap.from('.hero .phone',{opacity:0,x:60,duration:1.1,ease:'power3.out',delay:.25});
+  }
+
+  function buildCord(){
+    const svg=document.querySelector('.cordlayer svg'), path=document.getElementById('cord'), page=document.querySelector('.page');
+    if(!svg||!path||!page)return;
+    const H=page.offsetHeight; svg.setAttribute('viewBox','0 0 1000 '+H);
+    const xR=910, xL=565, waves=Math.max(5,Math.round(H/680)), seg=H/waves;
+    let prevX=xR, prevY=Math.round(seg*0.18), d='M '+prevX+' '+prevY;
+    for(let i=1;i<=waves;i++){
+      const y=Math.round(seg*i), x=(i%2===0)?xR:xL, m=prevY+(y-prevY)*0.5;
+      d+=' C '+prevX+' '+m+', '+x+' '+m+', '+x+' '+y; prevX=x; prevY=y;
+    }
+    path.setAttribute('d',d);
+    const len=path.getTotalLength(); path.style.strokeDasharray=len;
+    if(reduceMotion||!window.gsap){path.style.strokeDashoffset=0;return;}
+    path.style.strokeDashoffset=len;
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.to(path,{strokeDashoffset:0,ease:'none',scrollTrigger:{trigger:'.page',start:'top top',end:'+=1300',scrub:true}});
+  }
+  window.addEventListener('load',function(){
+    buildCord();
+    if(window.ScrollTrigger){
+      if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>ScrollTrigger.refresh());
+      setTimeout(()=>ScrollTrigger.refresh(),700);
+    }
+  });
 </script>
 </body>
 </html>
