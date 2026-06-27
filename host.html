@@ -30,12 +30,14 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   opacity:.15;mix-blend-mode:multiply}
 img{display:block;max-width:100%}
 .icon{width:22px;height:22px;stroke-width:2;flex:none}
-.wrap{max-width:980px;margin:0 auto;padding:0 clamp(24px,5vw,40px)}
+.wrap{max-width:980px;margin:0 auto;padding:0 clamp(28px,6vw,44px)}
 .bleed{width:100vw;margin-left:calc(50% - 50vw)}
-/* 中文斷句：只在標點/空白換行，不切斷詞意；單一過長字串才強制斷 */
-h1,h2,h3,h4,p,li,.title,.lead,.sub,.ttl,.tg{word-break:keep-all;overflow-wrap:break-word}
+/* 中文斷句：用瀏覽器預設避頭尾（標點不開頭、永不溢出），關鍵詞用 .nb 不斷行 */
+h1,h2,h3,h4,p,li,.title,.lead,.sub,.ttl,.tg{overflow-wrap:break-word;line-break:strict}
 .hero h1,h2.title,.cta-final .ttl,footer .tg{text-wrap:balance}
 p.lead,.hero .lead,.hero .sub,.cta-final .sub{text-wrap:pretty}
+.nb{white-space:nowrap}
+.card>div{min-width:0}
 
 .rv{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1)}
 .rv.in{opacity:1;transform:none}
@@ -224,7 +226,7 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
 
 @media(max-width:760px){
   .cordlayer{display:none}
-  .nav .brand{font-size:19px}
+  .nav .brand{font-size:17px}
   .nav .link{font-size:13px;padding:7px 13px}
   .hero{min-height:auto;padding:24px 0 36px}
   .hero h1{font-size:13.5vw}
@@ -252,7 +254,7 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
     <div class="copy">
       <h1><span>GOOD</span><span>NEIGHBOR</span></h1>
       <p class="lead">一起揪、一起聚，<span style="white-space:nowrap">神的家就在這裡！</span></p>
-      <p class="sub">約幾個朋友，在家裡或咖啡廳，一起參與線上 Hope 主日。<span style="white-space:nowrap">8/16 到 9/6，選一週舉辦就好。</span></p>
+      <p class="sub">約幾個朋友，在家裡或咖啡廳，一起參與線上 <span class="nb">Hope 主日</span>。<span class="nb">8/16 到 9/6，選一週舉辦就好。</span></p>
       <div class="row">
         <a href="#apply" class="btn">我要申請 Host <span style="font-family:var(--en)">→</span></a>
         <a href="#what" class="btn ghost">先看看細節</a>
@@ -327,7 +329,7 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
       <h2 class="title">我們會陪你一起。</h2>
       <div class="get">
         <div class="row"><div class="ic"><i class="icon" data-lucide="package"></i></div>活動資源包（VIP 卡、手環、空間裝飾品）</div>
-        <div class="row"><div class="ic"><i class="icon" data-lucide="book-open"></i></div>Host 手冊（完整的 Watch Party 流程指引）</div>
+        <div class="row"><div class="ic"><i class="icon" data-lucide="book-open"></i></div>Host 手冊（完整的 <span class="nb">Watch Party</span> 流程指引）</div>
         <div class="row"><div class="ic"><i class="icon" data-lucide="graduation-cap"></i></div>開場前訓練，負責的 Leader 隨時可問</div>
         <div class="row"><div class="ic"><i class="icon" data-lucide="message-circle"></i></div>傳福音引導工具（分享卡、問題卡）</div>
       </div>
@@ -365,7 +367,7 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
         <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">我一定要對外開放嗎？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>完全不用。你可以選「封閉場」，只邀請自己認識的朋友；也可以選「公開場」，讓教會幫你宣傳，附近的人可以報名加入你的場次。報名時選一個選項即可。</p></div></div>
         <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">四週我都要辦嗎？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>不用。8/16、8/23、8/30、9/6 四週，你選<strong>至少一週</strong>舉辦就符合資格。當然如果有動力辦更多週也非常歡迎。</p></div></div>
         <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">認識聊聊要準備什麼嗎？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>不需要特別準備。就是跟我們的團隊輕鬆聊聊你的動機、場地狀況，以及對這件事的想法。大約 30 分鐘。你可以在報名時選擇自己方便的時段。</p></div></div>
-        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Watch Party 當天要怎麼帶？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>教會會給你完整的 Host 手冊，裡面有詳細的建議流程。基本上就是：接待大家、一起敬拜、看線上主日訊息、活動後有段簡單的分享交流。訓練時我們會一起走過流程。</p></div></div>
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span class="nb">Watch Party</span> 當天要怎麼帶？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>教會會給你完整的 Host 手冊，裡面有詳細的建議流程。基本上就是：接待大家、一起敬拜、看線上主日訊息、活動後有段簡單的分享交流。訓練時我們會一起走過流程。</p></div></div>
         <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">費用要自己負擔嗎？<i class="icon chev" data-lucide="chevron-down"></i></button><div class="faq-a"><p>場地（自備）和當天的招待茶點由你自行決定是否準備。教會提供資源包（VIP 卡、手環、裝飾品）和訓練，不收費。</p></div></div>
       </div>
     </div>
@@ -376,7 +378,7 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
     <div class="wrap rv">
       <div class="kicker"><i class="icon" data-lucide="sparkles"></i>已經有人動起來了</div>
       <h2 class="title" id="mo-h">已經有夥伴申請了。</h2>
-      <p class="lead">這些地方已經有人願意打開家門、開一場 Watch Party，也許下一個就是你的城市。</p>
+      <p class="lead">這些地方已經有人願意打開家門、開一場 <span class="nb">Watch Party</span>，也許下一個就是你的城市。</p>
       <div class="mo-mapwrap">
         <div id="mo-map"></div>
         <div class="mo-count"><b id="mo-n">0</b> 位夥伴 ・ <span id="mo-r">0</span> 個地區</div>

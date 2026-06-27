@@ -27,13 +27,14 @@
     background:
       radial-gradient(90% 60% at 82% -6%, rgba(244,180,0,.20), rgba(244,180,0,0) 50%),
       radial-gradient(130% 78% at 50% 0%, var(--silver1), var(--silver2))}
-  .wrap{max-width:980px;margin:0 auto;padding:0 clamp(24px,5vw,40px)}
+  .wrap{max-width:980px;margin:0 auto;padding:0 clamp(28px,6vw,44px)}
   .icon{width:22px;height:22px;stroke-width:2;flex:none}
   img{display:block;max-width:100%}
-  /* 中文斷句：只在標點/空白換行，不切斷詞意；單一過長字串才強制斷 */
-  h1,h2,h3,h4,p,li,.sub,.tg{word-break:keep-all;overflow-wrap:break-word}
+  /* 中文斷句：用瀏覽器預設避頭尾（標點不開頭、永不溢出），關鍵詞用 .nb 不斷行 */
+  h1,h2,h3,h4,p,li,.sub,.tg{overflow-wrap:break-word;line-break:strict}
   .wordmark,h2,footer .tg{text-wrap:balance}
   .hero .sub{text-wrap:pretty}
+  .nb{white-space:nowrap}
 
   .rv{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1)}
   .rv.in{opacity:1;transform:none}
@@ -175,7 +176,7 @@
     .sticker .dot{animation:none}
   }
   @media(max-width:760px){
-    .nav .brand{font-size:19px}
+    .nav .brand{font-size:17px}
     .nav a.link{font-size:13px;padding:7px 13px}
     footer .tg{font-size:clamp(20px,6vw,28px)}
     footer .fcontact{gap:9px}
