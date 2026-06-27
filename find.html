@@ -27,9 +27,13 @@
     background:
       radial-gradient(90% 60% at 82% -6%, rgba(244,180,0,.20), rgba(244,180,0,0) 50%),
       radial-gradient(130% 78% at 50% 0%, var(--silver1), var(--silver2))}
-  .wrap{max-width:980px;margin:0 auto;padding:0 clamp(20px,4vw,40px)}
+  .wrap{max-width:980px;margin:0 auto;padding:0 clamp(24px,5vw,40px)}
   .icon{width:22px;height:22px;stroke-width:2;flex:none}
   img{display:block;max-width:100%}
+  /* 中文斷句：只在標點/空白換行，不切斷詞意；單一過長字串才強制斷 */
+  h1,h2,h3,h4,p,li,.sub,.tg{word-break:keep-all;overflow-wrap:break-word}
+  .wordmark,h2,footer .tg{text-wrap:balance}
+  .hero .sub{text-wrap:pretty}
 
   .rv{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1)}
   .rv.in{opacity:1;transform:none}
@@ -55,8 +59,8 @@
     background:var(--gold);border-radius:999px;padding:8px 17px;margin-bottom:18px}
   .sticker .dot{width:8px;height:8px;border-radius:50%;background:var(--ink);animation:pulse 2.2s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-  .wordmark{font-family:var(--display);line-height:1.05;letter-spacing:.005em;font-size:clamp(32px,8vw,56px);
-    color:var(--gold);text-shadow:0 2px 0 rgba(154,111,0,.14)}
+  .wordmark{font-family:var(--sans);font-weight:900;line-height:1.12;letter-spacing:.02em;font-size:clamp(32px,7.5vw,54px);
+    color:var(--gold);text-shadow:0 2px 0 rgba(154,111,0,.16)}
   .hero .sub{margin-top:16px;font-size:15.5px;color:var(--ink-soft);line-height:1.85;max-width:34ch;margin-left:auto;margin-right:auto;font-weight:400}
 
   /* FINDER (immersive) */
@@ -136,7 +140,7 @@
   .teaser-link:hover{background:var(--gold);color:var(--ink);border-color:var(--gold)}
 
   footer{text-align:center;padding:clamp(46px,7vh,80px) 0 56px;color:var(--ink-soft);font-size:13px;background:#EBE6D8;border-top:1px solid var(--line);position:relative;z-index:2}
-  footer .tg{font-family:var(--display);color:var(--ink);font-size:clamp(22px,4vw,34px);margin-bottom:14px;display:inline-block;background:linear-gradient(transparent 60%,var(--gold) 60%);padding:0 8px 2px}
+  footer .tg{font-family:var(--display);color:var(--ink);font-size:clamp(21px,4vw,34px);line-height:1.32;margin-bottom:14px;display:inline-block;background:linear-gradient(transparent 60%,var(--gold) 60%);padding:0 8px 2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
   footer .be{font-family:var(--en);font-weight:600;letter-spacing:.05em;color:var(--gold-deep);margin:0 0 8px;font-size:15px}
   footer .fnote{margin-top:18px;font-size:13px;color:var(--ink-soft);font-weight:500}
   footer .fcontact{margin-top:12px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
@@ -170,12 +174,19 @@
     .rv{opacity:1;transform:none;transition:none}
     .sticker .dot{animation:none}
   }
+  @media(max-width:760px){
+    .nav .brand{font-size:19px}
+    .nav a.link{font-size:13px;padding:7px 13px}
+    footer .tg{font-size:clamp(20px,6vw,28px)}
+    footer .fcontact{gap:9px}
+    footer .fcontact a{font-size:12.5px;padding:8px 13px}
+  }
   /* DESKTOP: immersive overlay map */
   @media(min-width:900px){
     section{padding:80px 0}
     .finder{height:80vh;min-height:600px;max-height:820px;overflow:hidden;border-radius:0}
     #map{position:absolute;inset:0;width:100%;height:100%}
-    .panel{position:absolute;top:24px;left:max(24px,calc(50vw - 490px + 24px));width:392px;max-height:calc(100% - 48px);margin-top:0;
+    .panel{position:absolute;top:24px;left:24px;width:392px;max-height:calc(100% - 48px);margin-top:0;
       display:flex;flex-direction:column;border-radius:22px;overflow:hidden;box-shadow:0 22px 50px rgba(60,55,45,.22);z-index:500}
     .list{max-height:none;flex:1}
     .finder-note{position:absolute;bottom:10px;right:24px;padding:7px 15px;color:var(--ink);background:rgba(255,255,255,.9);border-radius:999px;backdrop-filter:blur(4px);box-shadow:0 6px 16px rgba(0,0,0,.12)}
@@ -197,7 +208,7 @@
 <header class="hero">
   <div class="wrap">
     <span class="sticker"><span class="dot"></span>Find a Watch Party</span>
-    <h1 class="wordmark">找一場 Watch Party</h1>
+    <h1 class="wordmark">找一場 <span style="white-space:nowrap">Watch Party</span></h1>
     <p class="sub">在地圖上挑一個離你近的場次，送出聯繫，等 Host 聯絡你就完成了。</p>
   </div>
 </header>

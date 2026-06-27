@@ -30,8 +30,12 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   opacity:.15;mix-blend-mode:multiply}
 img{display:block;max-width:100%}
 .icon{width:22px;height:22px;stroke-width:2;flex:none}
-.wrap{max-width:980px;margin:0 auto;padding:0 clamp(20px,4vw,40px)}
+.wrap{max-width:980px;margin:0 auto;padding:0 clamp(24px,5vw,40px)}
 .bleed{width:100vw;margin-left:calc(50% - 50vw)}
+/* 中文斷句：只在標點/空白換行，不切斷詞意；單一過長字串才強制斷 */
+h1,h2,h3,h4,p,li,.title,.lead,.sub,.ttl,.tg{word-break:keep-all;overflow-wrap:break-word}
+.hero h1,h2.title,.cta-final .ttl,footer .tg{text-wrap:balance}
+p.lead,.hero .lead,.hero .sub,.cta-final .sub{text-wrap:pretty}
 
 .rv{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1)}
 .rv.in{opacity:1;transform:none}
@@ -90,7 +94,7 @@ section,.teaser,.video-zone{position:relative;z-index:2}
   background:radial-gradient(120% 120% at 50% 35%,#f6f6f4,#d9d9d6);background-size:cover;background-position:center}
 .video .play{width:78px;height:78px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;
   box-shadow:0 0 0 10px rgba(244,180,0,.18);transition:transform .2s}
-.video:hover .play{transform:scale(1.07)}
+@media(hover:hover){.video:hover .play{transform:scale(1.07)}}
 .video .play .icon{width:30px;height:30px;color:var(--ink);margin-left:4px}
 .video .vlabel{position:absolute;bottom:14px;left:16px;color:var(--ink);font-size:13px;font-weight:700;
   display:inline-flex;align-items:center;gap:7px;background:var(--paper);border-radius:999px;padding:7px 14px;box-shadow:0 6px 16px rgba(0,0,0,.12)}
@@ -103,7 +107,7 @@ section{padding:clamp(70px,11vh,130px) 0}
   background:var(--gold);color:var(--ink);padding:8px 17px;border-radius:999px;margin-bottom:20px}
 .kicker .icon{width:16px;height:16px;color:var(--ink)}
 h2.title{font-family:var(--zh);font-weight:900;color:var(--ink);font-size:clamp(30px,4.6vw,52px);line-height:1.28;letter-spacing:.01em;margin-bottom:18px}
-p.lead{font-size:17px;color:var(--ink-soft);line-height:1.95;max-width:40ch}
+p.lead{font-size:17px;color:var(--ink-soft);line-height:1.95;max-width:58ch}
 .hl{font-weight:900;color:var(--ink);border-bottom:3px solid var(--gold)}
 
 /* photo band */
@@ -202,8 +206,9 @@ p.lead{font-size:17px;color:var(--ink-soft);line-height:1.95;max-width:40ch}
   background:var(--gold-tint);padding:10px 18px;border-radius:999px}
 
 footer{position:relative;z-index:2;background:#EBE6D8;color:var(--ink-soft);text-align:center;padding:clamp(56px,8vh,90px) 0 54px;border-top:1px solid var(--line)}
-footer .tg{font-family:var(--display);color:var(--ink);font-size:clamp(26px,4vw,46px);line-height:1.2;display:inline-block;
-  background:linear-gradient(transparent 60%,var(--gold) 60%);padding:0 8px 2px;margin-bottom:16px}
+footer .tg{font-family:var(--display);color:var(--ink);font-size:clamp(24px,4vw,46px);line-height:1.32;display:inline-block;
+  background:linear-gradient(transparent 60%,var(--gold) 60%);padding:0 8px 2px;margin-bottom:16px;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone}
 footer .be{font-family:var(--en);font-weight:600;letter-spacing:.05em;color:var(--gold-deep);margin-bottom:26px}
 footer .fnote{font-size:14px;color:var(--ink-soft);font-weight:500;margin-bottom:14px}
 footer .fcontact{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
@@ -219,11 +224,16 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
 
 @media(max-width:760px){
   .cordlayer{display:none}
+  .nav .brand{font-size:19px}
+  .nav .link{font-size:13px;padding:7px 13px}
   .hero{min-height:auto;padding:24px 0 36px}
   .hero h1{font-size:13.5vw}
   .hero .lead{max-width:100%}
   .hero .phone{position:relative;right:auto;bottom:auto;height:auto;width:62%;max-height:none;margin:22px auto 0;display:block}
   .step{gap:16px}.step .num{width:48px;height:48px;font-size:21px}.step:not(:last-child)::before{left:23px;top:52px}
+  footer .tg{font-size:clamp(21px,6.2vw,28px)}
+  footer .fcontact{gap:9px}
+  footer .fcontact a{font-size:12.5px;padding:8px 13px}
 }
 </style>
 </head>
@@ -264,7 +274,6 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
     <div class="wrap">
       <div class="video rv" id="video-box" role="button" tabindex="0" aria-label="播放招募影片">
         <div class="ph" id="video-ph"><div class="play"><i class="icon" data-lucide="play"></i></div></div>
-        <div class="vlabel"><i class="icon" data-lucide="clapperboard"></i>招募影片（約 60 秒）</div>
       </div>
     </div>
   </div>
@@ -274,7 +283,7 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
     <div class="wrap rv">
       <div class="kicker"><i class="icon" data-lucide="users"></i>這是什麼</div>
       <h2 class="title">帶一個人來，就是傳福音。</h2>
-      <p class="lead">配合 8 月<strong>職場主題</strong>的主日系列，我們鼓勵你邀請身邊還不認識耶穌的朋友，帶進一次主日。在家裡、咖啡廳或任何喜歡的空間辦一場 <span class="hl">Watch Party</span>，約幾個人，一起參與線上 Hope 主日、一起聊聊。</p>
+      <p class="lead">配合 8 月<strong>職場主題</strong>的主日系列講道，我們鼓勵你邀請身邊還不認識耶穌的朋友，帶進一次主日。在家裡、咖啡廳或任何喜歡的空間辦一場 <span class="hl" style="white-space:nowrap">Watch Party</span>，約幾個人，一起參與線上 Hope 主日、一起聊聊。</p>
     </div>
     <div class="wrap"><div class="band rv">
       <picture>
