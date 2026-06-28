@@ -33,7 +33,7 @@ img{display:block;max-width:100%}
 .bleed{width:100vw;margin-left:calc(50% - 50vw)}
 /* 中文斷句：用瀏覽器預設避頭尾（標點不開頭、永不溢出），關鍵詞用 .nb 不斷行 */
 h1,h2,h3,h4,p,li,.title,.lead,.sub,.ttl,.tg{overflow-wrap:break-word;line-break:strict}
-.hero h1,h2.title,.cta-final .ttl,footer .tg{text-wrap:balance}
+h2.title,.cta-final .ttl,footer .tg{text-wrap:balance}
 p.lead,.hero .lead,.hero .sub,.cta-final .sub{text-wrap:pretty}
 .nb{white-space:nowrap}
 .card>div{min-width:0}
@@ -73,7 +73,7 @@ section,.video-zone{position:relative;z-index:2}
 .hero-slogan{display:inline-flex;align-items:center;gap:8px;font-family:var(--zh);font-weight:700;font-size:14px;letter-spacing:.04em;
   background:var(--gold);color:var(--ink);padding:8px 17px;border-radius:999px;margin-bottom:22px}
 .hero-slogan .icon{width:15px;height:15px;color:var(--ink)}
-.hero h1{font-family:var(--display);color:var(--gold);line-height:.85;font-size:clamp(58px,11vw,148px);letter-spacing:.005em;
+.hero h1{font-family:var(--display);color:var(--gold);line-height:.9;font-size:clamp(44px,6vw,88px);letter-spacing:.005em;overflow-wrap:normal;word-break:keep-all;
   text-shadow:0 2px 0 rgba(154,111,0,.14)}
 .hero h1 span{display:block}
 .hero .lead{font-family:var(--zh);font-weight:900;font-size:clamp(22px,2.7vw,34px);line-height:1.35;margin:26px 0 14px;letter-spacing:.01em;max-width:22ch}
@@ -166,7 +166,7 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
   .nav .brand{font-size:16px}
   .nav .link{font-size:12.5px;padding:7px 11px}
   .hero{min-height:auto;padding-top:24px;padding-bottom:36px}
-  .hero h1{font-size:11.5vw}
+  .hero h1{font-size:10vw}
   .hero .lead{max-width:100%}
   .hero .phone{position:relative;right:auto;bottom:auto;height:auto;width:62%;max-height:none;margin:22px auto 0;display:block}
   footer .tg{font-size:clamp(21px,6.2vw,28px)}
