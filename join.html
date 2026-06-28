@@ -29,7 +29,7 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   opacity:.15;mix-blend-mode:multiply}
 img{display:block;max-width:100%}
 .icon{width:22px;height:22px;stroke-width:2;flex:none}
-.wrap{max-width:980px;margin:0 auto;padding:0 clamp(28px,6vw,44px)}
+.wrap{max-width:980px;margin:0 auto;padding:0 clamp(32px,7vw,44px)}
 .bleed{width:100vw;margin-left:calc(50% - 50vw)}
 /* 中文斷句：用瀏覽器預設避頭尾（標點不開頭、永不溢出），關鍵詞用 .nb 不斷行 */
 h1,h2,h3,h4,p,li,.title,.lead,.sub,.tg{overflow-wrap:break-word;line-break:strict}
@@ -72,7 +72,7 @@ p.lead,.hero .lead,.hero .sub,.find p{text-wrap:pretty}
 section{position:relative;z-index:2}
 
 /* HERO */
-.hero{position:relative;min-height:calc(100vh - 110px);display:flex;flex-direction:column;justify-content:center;padding:36px 0 48px}
+.hero{position:relative;min-height:calc(100vh - 110px);display:flex;flex-direction:column;justify-content:center;padding-top:36px;padding-bottom:48px}
 .hero .copy{position:relative;z-index:3;max-width:760px}
 .hero-slogan{display:inline-flex;align-items:center;gap:8px;font-family:var(--zh);font-weight:700;font-size:14px;letter-spacing:.04em;
   background:var(--gold);color:var(--ink);padding:8px 17px;border-radius:999px;margin-bottom:22px}
@@ -173,9 +173,9 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
 
 @media(max-width:760px){
   .cordlayer{display:none}
-  .nav .brand{font-size:17px}
-  .nav .link{font-size:13px;padding:7px 13px}
-  .hero{min-height:auto;padding:24px 0 36px}
+  .nav .brand{font-size:16px}
+  .nav .link{font-size:12.5px;padding:7px 11px}
+  .hero{min-height:auto;padding-top:24px;padding-bottom:36px}
   .hero h1{font-size:15.5vw}
   .hero .lead{max-width:100%}
   .hero .phone{position:relative;right:auto;bottom:auto;height:auto;width:60%;max-height:none;margin:22px auto 0;display:block}
