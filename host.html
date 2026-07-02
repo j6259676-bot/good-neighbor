@@ -463,6 +463,8 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
   }
 
   // cord spine (serpentine generated from page height, drawn on scroll)
+  // 單一 ScrollTrigger 驅動：重建前先殺掉舊的，避免多條 trigger 搶寫同一條 path 造成閃爍
+  let cordTween=null;
   function buildCord(){
     const svg=document.querySelector('.cordlayer svg'), path=document.getElementById('cord'), page=document.querySelector('.page');
     if(!svg||!path||!page)return;
@@ -476,10 +478,13 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
     path.setAttribute('d',d);
     const len=path.getTotalLength(); path.style.strokeDasharray=len;
     if(reduceMotion||!window.gsap){path.style.strokeDashoffset=0;return;}
+    // 殺掉上一條 cord tween + 它的 ScrollTrigger（只保留唯一一條）
+    if(cordTween){ if(cordTween.scrollTrigger)cordTween.scrollTrigger.kill(); cordTween.kill(); cordTween=null; }
     path.style.strokeDashoffset=len;
     gsap.registerPlugin(ScrollTrigger);
-    gsap.to(path,{strokeDashoffset:0,ease:'none',
-      scrollTrigger:{trigger:'.page',start:'top top',end:'+=1300',scrub:true}});
+    // scrub:1 = 1 秒平滑跟隨（絲滑，取代 scrub:true 的硬綁死）；end:'bottom bottom' 讓線條全程橫跨整頁隨捲動繪製
+    cordTween=gsap.to(path,{strokeDashoffset:0,ease:'none',
+      scrollTrigger:{trigger:'.page',start:'top top',end:'bottom bottom',scrub:1}});
   }
 
   window.addEventListener('load',function(){
@@ -488,6 +493,13 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
       if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>ScrollTrigger.refresh());
       setTimeout(()=>ScrollTrigger.refresh(),700);
     }
+  });
+
+  // 視窗尺寸改變會讓內容重排、頁高變動 → debounce 後重建 cord 幾何並 refresh，維持貼合
+  let cordResizeT=null;
+  window.addEventListener('resize',function(){
+    clearTimeout(cordResizeT);
+    cordResizeT=setTimeout(function(){ buildCord(); if(window.ScrollTrigger)ScrollTrigger.refresh(); },200);
   });
 
   // 計數動畫
@@ -533,10 +545,11 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
     });
     if(pts.length>1)moMap.fitBounds(pts,{padding:[48,48],maxZoom:9});
     else if(pts.length===1)moMap.setView(pts[0],8);
-    setTimeout(()=>moMap.invalidateSize(),250);
+    setTimeout(()=>{ moMap.invalidateSize(); if(window.ScrollTrigger)ScrollTrigger.refresh(); },250);
 
     document.getElementById('momentum').querySelectorAll('.rv').forEach(el=>io.observe(el));
     lucide.createIcons();
+    // momentum 區塊變可見 → 頁高改變，重建 cord（buildCord 會殺掉舊 trigger）並 refresh
     if(window.ScrollTrigger){buildCord();ScrollTrigger.refresh();}
   }
 </script>
