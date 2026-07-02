@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Good Neighbor ｜ Host 申請 ｜ The Hope</title>
+<!-- 社群分享預覽（LINE / Facebook 等讀 Open Graph） -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Good Neighbor ｜ The Hope">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:title" content="Good Neighbor ｜ Host 申請 ｜ The Hope">
+<meta property="og:description" content="打開家門，約幾個朋友一起參與線上 Hope 主日。8/16 到 9/6 選一週舉辦就好，報名截止 7/22。">
+<meta property="og:url" content="https://j6259676-bot.github.io/good-neighbor/host.html">
+<meta property="og:image" content="https://j6259676-bot.github.io/good-neighbor/images/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://j6259676-bot.github.io/good-neighbor/images/og-cover.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -464,6 +476,8 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
 
   // cord spine (serpentine generated from page height, drawn on scroll)
   // 單一 ScrollTrigger 驅動：重建前先殺掉舊的，避免多條 trigger 搶寫同一條 path 造成閃爍
+  // 線頭「錨定視口」：用 y→弧長 查表反算 dashoffset，線頭永遠畫到視口高度 ~88% 處、捲到底剛好畫完
+  // （舊版用捲動百分比×路徑總長，路徑長/頁高隨視窗寬度變 → 寬螢幕線下來的位置會漂）
   let cordTween=null;
   function buildCord(){
     const svg=document.querySelector('.cordlayer svg'), path=document.getElementById('cord'), page=document.querySelector('.page');
@@ -480,11 +494,26 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
     if(reduceMotion||!window.gsap){path.style.strokeDashoffset=0;return;}
     // 殺掉上一條 cord tween + 它的 ScrollTrigger（只保留唯一一條）
     if(cordTween){ if(cordTween.scrollTrigger)cordTween.scrollTrigger.kill(); cordTween.kill(); cordTween=null; }
-    path.style.strokeDashoffset=len;
+    // y→弧長 查表（蛇形路徑 y 單調遞增，可二分搜尋反查）
+    const N=600, tbl=new Float32Array(N+1);
+    for(let i=0;i<=N;i++)tbl[i]=path.getPointAtLength(len*i/N).y;
+    const sAtY=function(y){
+      if(y<=tbl[0])return 0; if(y>=tbl[N])return len;
+      let lo=0,hi=N;
+      while(hi-lo>1){const mid=(lo+hi)>>1; if(tbl[mid]<y)lo=mid; else hi=mid;}
+      const t=tbl[hi]>tbl[lo]?(y-tbl[lo])/(tbl[hi]-tbl[lo]):0;
+      return (lo+t)*len/N;
+    };
     gsap.registerPlugin(ScrollTrigger);
-    // scrub:1 = 1 秒平滑跟隨（絲滑，取代 scrub:true 的硬綁死）；end:'bottom bottom' 讓線條全程橫跨整頁隨捲動繪製
-    cordTween=gsap.to(path,{strokeDashoffset:0,ease:'none',
+    // scrub:1 = 1 秒平滑跟隨；p=0 線頭在視口 88% 高處、p=1（捲到底）整條畫完 — 與視窗寬窄無關
+    const state={p:0};
+    const apply=function(){
+      const yTip=window.innerHeight*0.88 + state.p*(H-window.innerHeight*0.88);
+      path.style.strokeDashoffset=len-sAtY(yTip);
+    };
+    cordTween=gsap.to(state,{p:1,ease:'none',onUpdate:apply,
       scrollTrigger:{trigger:'.page',start:'top top',end:'bottom bottom',scrub:1}});
+    apply();
   }
 
   window.addEventListener('load',function(){
