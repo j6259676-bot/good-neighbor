@@ -474,20 +474,34 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
     gsap.from('.hero .phone',{opacity:0,x:60,duration:1.1,ease:'power3.out',delay:.25});
   }
 
-  // cord spine (serpentine generated from page height, drawn on scroll)
-  // 單一 ScrollTrigger 驅動：重建前先殺掉舊的，避免多條 trigger 搶寫同一條 path 造成閃爍
-  // 線頭「錨定視口」：用 y→弧長 查表反算 dashoffset，線頭永遠畫到視口高度 ~88% 處、捲到底剛好畫完
-  // （舊版用捲動百分比×路徑總長，路徑長/頁高隨視窗寬度變 → 寬螢幕線下來的位置會漂）
+  // cord spine — 單一 ScrollTrigger（重建前先 kill 舊的，防多條搶寫閃爍）
+  // 路徑設計 v3（2026-07-02）：
+  //  ① 起點＝hero 話筒下緣（線從電話後方長出來），不再從頁頂垂下壓過主題大字
+  //  ② 蛇形範圍鎖在「內容欄右緣～視窗右緣」的右側欄，振幅以像素計算
+  //     → 任何視窗寬度視覺一致，寬螢幕不會橫掃過內容（舊版 x 用視窗百分比，越寬橫移越大）
+  //  ③ 繪製進度「錨定視口」：y→弧長查表反算 dashoffset，線頭永遠在視口 ~88% 高處、捲到底畫完
   let cordTween=null;
+  function cordPageXY(el,page){let x=0,y=0;while(el&&el!==page){x+=el.offsetLeft;y+=el.offsetTop;el=el.offsetParent;}return[x,y];}
   function buildCord(){
     const svg=document.querySelector('.cordlayer svg'), path=document.getElementById('cord'), page=document.querySelector('.page');
     if(!svg||!path||!page)return;
-    const H=page.offsetHeight; svg.setAttribute('viewBox','0 0 1000 '+H);
-    const xR=910, xL=565, waves=Math.max(5,Math.round(H/680)), seg=H/waves;
-    let prevX=xR, prevY=Math.round(seg*0.18), d='M '+prevX+' '+prevY;
-    for(let i=1;i<=waves;i++){
-      const y=Math.round(seg*i), x=(i%2===0)?xR:xL, m=prevY+(y-prevY)*0.5;
-      d+=' C '+prevX+' '+m+', '+x+' '+m+', '+x+' '+y; prevX=x; prevY=y;
+    const H=page.offsetHeight, vw=window.innerWidth, U=1000/vw;
+    svg.setAttribute('viewBox','0 0 1000 '+H);
+    // 起點：hero 電話（offset* 不受 transform 影響，進場動畫中讀也正確）
+    const phone=document.querySelector('.hero .phone'), wrap=document.querySelector('.hero.wrap')||document.querySelector('.wrap');
+    let sx,sy;
+    if(phone&&phone.offsetHeight){const po=cordPageXY(phone,page);sx=po[0]+phone.offsetWidth/2;sy=po[1]+phone.offsetHeight-26;}
+    else{sx=vw*0.88;sy=window.innerHeight*0.62;}
+    // 右側欄：內容欄右緣～視窗右緣；振幅 70–150px，並確保不出視窗右緣
+    const cr=wrap?(cordPageXY(wrap,page)[0]+wrap.offsetWidth):vw*0.82, mg=Math.max(60,vw-cr);
+    let amp=Math.min(150,Math.max(70,mg*0.36)), cx=cr+mg*0.5;
+    if(cx+amp>vw-14)cx=vw-14-amp;
+    const drop=Math.max(600,H-40-sy), n=Math.max(3,Math.round(drop/640)), seg=drop/n;
+    let prevX=sx*U, prevY=sy, d='M '+prevX.toFixed(1)+' '+Math.round(sy);
+    for(let i=1;i<=n;i++){
+      const y=Math.round(sy+seg*i), x=((i%2===1)?cx-amp:cx+amp)*U, m=prevY+(y-prevY)*0.5;
+      d+=' C '+prevX.toFixed(1)+' '+Math.round(m)+', '+x.toFixed(1)+' '+Math.round(m)+', '+x.toFixed(1)+' '+y;
+      prevX=x;prevY=y;
     }
     path.setAttribute('d',d);
     const len=path.getTotalLength(); path.style.strokeDasharray=len;
@@ -505,7 +519,7 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
       return (lo+t)*len/N;
     };
     gsap.registerPlugin(ScrollTrigger);
-    // scrub:1 = 1 秒平滑跟隨；p=0 線頭在視口 88% 高處、p=1（捲到底）整條畫完 — 與視窗寬窄無關
+    // scrub:1 = 1 秒平滑跟隨；線頭錨定視口 88% 高處、捲到底整條畫完 — 與視窗寬窄無關
     const state={p:0};
     const apply=function(){
       const yTip=window.innerHeight*0.88 + state.p*(H-window.innerHeight*0.88);
@@ -519,8 +533,9 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
   window.addEventListener('load',function(){
     buildCord();
     if(window.ScrollTrigger){
-      if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>ScrollTrigger.refresh());
-      setTimeout(()=>ScrollTrigger.refresh(),700);
+      // 字型載入會改變頁高與電話位置 → 重建路徑（不只 refresh）
+      if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){buildCord();ScrollTrigger.refresh();});
+      setTimeout(function(){buildCord();ScrollTrigger.refresh();},700);
     }
   });
 
