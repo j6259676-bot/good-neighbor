@@ -336,52 +336,33 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
     gsap.from('.hero .phone',{opacity:0,x:60,duration:1.1,ease:'power3.out',delay:.25});
   }
 
-  // cord spine — 單一 ScrollTrigger（重建前先 kill 舊的，防多條搶寫閃爍）
-  // 路徑 v3：起點＝hero 話筒下緣；蛇形鎖在右側欄（振幅以像素計）→ 任何寬度視覺一致；
-  // 繪製進度「錨定視口」：y→弧長查表反算 dashoffset，線頭永遠在視口 ~88% 高處、捲到底畫完
+  // cord spine v4 — 經典「隨捲動描繪」：下捲線變長、上捲線縮短（scrub 直接綁 strokeDashoffset）
+  //  大振幅蛇形（隨寬度縮放＝大曲線、互動感強）；起點在主題大字下方（載入不壓字）；載入先露短樁
   let cordTween=null;
-  function cordPageXY(el,page){let x=0,y=0;while(el&&el!==page){x+=el.offsetLeft;y+=el.offsetTop;el=el.offsetParent;}return[x,y];}
   function buildCord(){
     const svg=document.querySelector('.cordlayer svg'), path=document.getElementById('cord'), page=document.querySelector('.page');
     if(!svg||!path||!page)return;
-    const H=page.offsetHeight, vw=window.innerWidth, U=1000/vw;
+    const H=page.offsetHeight;
     svg.setAttribute('viewBox','0 0 1000 '+H);
-    const phone=document.querySelector('.hero .phone'), wrap=document.querySelector('.hero.wrap')||document.querySelector('.wrap');
-    let sx,sy;
-    if(phone&&phone.offsetHeight){const po=cordPageXY(phone,page);sx=po[0]+phone.offsetWidth/2;sy=po[1]+phone.offsetHeight-26;}
-    else{sx=vw*0.88;sy=window.innerHeight*0.62;}
-    const cr=wrap?(cordPageXY(wrap,page)[0]+wrap.offsetWidth):vw*0.82, mg=Math.max(60,vw-cr);
-    let amp=Math.min(150,Math.max(70,mg*0.36)), cx=cr+mg*0.5;
-    if(cx+amp>vw-14)cx=vw-14-amp;
-    const drop=Math.max(600,H-40-sy), n=Math.max(3,Math.round(drop/640)), seg=drop/n;
-    let prevX=sx*U, prevY=sy, d='M '+prevX.toFixed(1)+' '+Math.round(sy);
-    for(let i=1;i<=n;i++){
-      const y=Math.round(sy+seg*i), x=((i%2===1)?cx-amp:cx+amp)*U, m=prevY+(y-prevY)*0.5;
-      d+=' C '+prevX.toFixed(1)+' '+Math.round(m)+', '+x.toFixed(1)+' '+Math.round(m)+', '+x.toFixed(1)+' '+y;
-      prevX=x;prevY=y;
+    const h1=document.querySelector('.hero h1');
+    let startY=170;
+    if(h1){const r=h1.getBoundingClientRect(); startY=r.bottom+window.scrollY+42;}
+    const xR=905, xL=560;
+    const drop=Math.max(500,H-startY), waves=Math.max(4,Math.round(drop/820)), seg=drop/waves;
+    let prevX=xR, prevY=startY, d='M '+xR+' '+Math.round(startY);
+    for(let i=1;i<=waves;i++){
+      const y=Math.round(startY+seg*i), x=(i%2===0)?xR:xL, m=prevY+(y-prevY)*0.5;
+      d+=' C '+prevX+' '+Math.round(m)+', '+x+' '+Math.round(m)+', '+x+' '+y; prevX=x; prevY=y;
     }
     path.setAttribute('d',d);
     const len=path.getTotalLength(); path.style.strokeDasharray=len;
     if(reduceMotion||!window.gsap){path.style.strokeDashoffset=0;return;}
     if(cordTween){ if(cordTween.scrollTrigger)cordTween.scrollTrigger.kill(); cordTween.kill(); cordTween=null; }
-    const N=600, tbl=new Float32Array(N+1);
-    for(let i=0;i<=N;i++)tbl[i]=path.getPointAtLength(len*i/N).y;
-    const sAtY=function(y){
-      if(y<=tbl[0])return 0; if(y>=tbl[N])return len;
-      let lo=0,hi=N;
-      while(hi-lo>1){const mid=(lo+hi)>>1; if(tbl[mid]<y)lo=mid; else hi=mid;}
-      const t=tbl[hi]>tbl[lo]?(y-tbl[lo])/(tbl[hi]-tbl[lo]):0;
-      return (lo+t)*len/N;
-    };
+    const stub=Math.min(len*0.05,130);
+    path.style.strokeDashoffset=len-stub;
     gsap.registerPlugin(ScrollTrigger);
-    const state={p:0};
-    const apply=function(){
-      const yTip=window.innerHeight*0.88 + state.p*(H-window.innerHeight*0.88);
-      path.style.strokeDashoffset=len-sAtY(yTip);
-    };
-    cordTween=gsap.to(state,{p:1,ease:'none',onUpdate:apply,
+    cordTween=gsap.to(path,{strokeDashoffset:0,ease:'none',
       scrollTrigger:{trigger:'.page',start:'top top',end:'bottom bottom',scrub:1}});
-    apply();
   }
   window.addEventListener('load',function(){
     buildCord();
