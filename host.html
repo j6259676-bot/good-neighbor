@@ -192,14 +192,10 @@ p.lead{font-size:17px;color:var(--ink-soft);line-height:1.95;max-width:58ch}
 .mo-mapwrap{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 22px 48px rgba(60,55,45,.16)}
 #mo-map{width:100%;height:400px;background:#E8E4DC;z-index:1}
 #mo-map-ov{width:100%;height:340px;background:#E8E4DC;z-index:1}
-.mo-count{position:absolute;left:14px;bottom:14px;z-index:500;display:inline-flex;align-items:center;gap:7px;
-  background:var(--paper);border-radius:999px;padding:9px 17px;font-weight:700;font-size:14.5px;color:var(--ink);box-shadow:0 8px 18px rgba(0,0,0,.16)}
-.mo-count b{font-family:var(--display);font-size:18px;color:var(--gold-deep)}
 .mo-pin{width:34px;height:34px;border-radius:50% 50% 50% 0;background:var(--gold);border:2px solid var(--ink);transform:rotate(-45deg);
   box-shadow:0 4px 10px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center}
 .mo-pin span{transform:rotate(45deg);font-family:var(--display);font-size:13px;font-weight:900;color:var(--ink);line-height:1}
-.mo-overseas{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:18px}
-.mo-overseas .lab{font-weight:700;font-size:14px;color:var(--ink-soft)}
+.mo-regionlist{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
 .region-chip{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:14px;color:var(--ink);
   background:var(--paper);border-radius:999px;padding:7px 15px;box-shadow:0 6px 16px rgba(0,0,0,.1)}
 .region-chip .n{font-family:var(--display);font-size:12px;color:var(--ink);background:var(--gold);border-radius:999px;padding:0 7px;line-height:1.6}
@@ -397,16 +393,13 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
       <div class="mo-maplabel"><i class="icon" data-lucide="map-pin"></i>台灣</div>
       <div class="mo-mapwrap">
         <div id="mo-map"></div>
-        <div class="mo-count"><b id="mo-n">0</b> 位夥伴 ・ <span id="mo-r">0</span> 個地區</div>
       </div>
+      <div class="mo-regionlist" id="mo-tw-list"></div>
       <div class="mo-maplabel" id="mo-ov-label" style="display:none"><i class="icon" data-lucide="globe"></i>海外</div>
       <div class="mo-mapwrap" id="mo-ov-wrap" style="display:none">
         <div id="mo-map-ov"></div>
       </div>
-      <div class="mo-overseas" id="mo-overseas" style="display:none">
-        <span class="lab"><i class="icon" data-lucide="globe" style="width:15px;height:15px;vertical-align:-2px"></i> 其他地區也有</span>
-        <span id="mo-ov" style="display:inline-flex;flex-wrap:wrap;gap:10px"></span>
-      </div>
+      <div class="mo-regionlist" id="mo-ov-list" style="display:none"></div>
     </div>
   </section>
 
@@ -533,24 +526,14 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
     cordResizeT=setTimeout(function(){ buildCord(); if(window.ScrollTrigger)ScrollTrigger.refresh(); },200);
   });
 
-  // 計數動畫
-  function countUp(el,target){
-    if(reduceMotion||!window.gsap){el.textContent=target;return;}
-    const o={v:0};
-    gsap.to(o,{v:target,duration:1.2,ease:'power2.out',onUpdate:()=>{el.textContent=Math.round(o.v);}});
-  }
-
-  // 已申請地區地圖（社群證明）：讀 GAS stats — 台灣縣市上地圖、海外當 chip；只拿地區名/座標/筆數，無個資
+  // 已申請地區地圖（社群證明）：讀 GAS stats — 台灣縣市上地圖、海外上世界地圖，兩張地圖下方各列地區清單；只拿地區名/座標/筆數，無個資
   const GN_STATS='https://script.google.com/macros/s/AKfycbwZOkck7wxHumuHmgkFUKpjDfoQyL-ArZQxIPpk7fRhAkQlrR8ak6oY3UMtnqvr_hOk/exec?stats=1';
   fetch(GN_STATS+'&t='+Date.now()).then(r=>r.json()).then(d=>{ if(d&&d.ok&&d.total)buildMomentum(d); }).catch(()=>{});
 
   function buildMomentum(d){
     const dom=Array.isArray(d.domestic)?d.domestic:[], ovs=Array.isArray(d.overseas)?d.overseas:[];
-    const regionCount=dom.length+ovs.length;
     document.getElementById('mo-h').textContent='已經有 '+d.total+' 位夥伴申請了。';
     document.getElementById('momentum').style.display='';
-    countUp(document.getElementById('mo-n'),d.total);
-    countUp(document.getElementById('mo-r'),regionCount);
 
     // 海外國家 → 概略座標對照（GAS 只回國家層級、無座標；查得到的上世界地圖，查不到的留 chip）
     const COUNTRY_GEO={
@@ -593,10 +576,19 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
       L.marker([x.lat,x.lng],{icon}).addTo(map).bindTooltip(x.area+(x.count>1?'（'+x.count+'）':''),{direction:'top',offset:[0,-30]});
       pts.push([x.lat,x.lng]);
     }
+    // 地圖下方地區清單：名稱 + 數量（>1 才標數字），依既有排序（數量多→少）
+    function buildChips(el,items){
+      items.forEach(x=>{
+        const c=document.createElement('span');c.className='region-chip';
+        c.appendChild(document.createTextNode(x.area));
+        if(x.count>1){const n=document.createElement('span');n.className='n';n.textContent=x.count;c.appendChild(n);}
+        el.appendChild(c);
+      });
+    }
 
-    // 海外分流：有座標 → 世界地圖；無座標 → chip fallback
-    const ovsMap=[], ovsChip=[];
-    ovs.forEach(x=>{const g=geoOf(x.area); if(g)ovsMap.push({area:x.area,count:x.count,lat:g[0],lng:g[1]}); else ovsChip.push(x);});
+    // 海外有座標的 → 上世界地圖（清單則列全部海外）
+    const ovsMap=[];
+    ovs.forEach(x=>{const g=geoOf(x.area); if(g)ovsMap.push({area:x.area,count:x.count,lat:g[0],lng:g[1]});});
 
     // fit 到所有點：容器可見後才 fit 才準（避免 display:none → 尺寸為 0 → fit 失準）
     const fitView=(map,p,fb,single)=>{ if(p.length>1)map.fitBounds(p,fb); else if(p.length===1)map.setView(p[0],single); };
@@ -608,28 +600,21 @@ footer .fcopy{margin-top:24px;font-size:12.5px;color:var(--muted)}
     const pts=[];
     dom.forEach(x=>{ if(x.lat!=null&&x.lng!=null)addPin(moMap,x,pts); });
     fitView(moMap,pts,TW_FB,8);
+    buildChips(document.getElementById('mo-tw-list'),dom);   // 台灣城市清單
 
-    // 海外世界地圖
+    // 海外：有任何海外就顯示 label + 清單；有座標的才上世界地圖
     let ovMap=null; const ovpts=[];
-    if(ovsMap.length){
+    if(ovs.length){
       document.getElementById('mo-ov-label').style.display='';
-      document.getElementById('mo-ov-wrap').style.display='';
-      ovMap=L.map('mo-map-ov',{scrollWheelZoom:false,zoomControl:false,attributionControl:false,dragging:true,worldCopyJump:true}).setView([20,60],2);
-      L.tileLayer(tileUrl,{maxZoom:19,noWrap:false}).addTo(ovMap);
-      ovsMap.forEach(x=>addPin(ovMap,x,ovpts));
-      fitView(ovMap,ovpts,OV_FB,4);
-    }
-
-    // 查無座標的海外地區 → 保留 chip
-    if(ovsChip.length){
-      const ov=document.getElementById('mo-ov');
-      ovsChip.forEach(x=>{
-        const c=document.createElement('span');c.className='region-chip';
-        c.appendChild(document.createTextNode(x.area));
-        if(x.count>1){const n=document.createElement('span');n.className='n';n.textContent=x.count;c.appendChild(n);}
-        ov.appendChild(c);
-      });
-      document.getElementById('mo-overseas').style.display='';
+      buildChips(document.getElementById('mo-ov-list'),ovs);  // 海外國家清單（列全部）
+      document.getElementById('mo-ov-list').style.display='';
+      if(ovsMap.length){
+        document.getElementById('mo-ov-wrap').style.display='';
+        ovMap=L.map('mo-map-ov',{scrollWheelZoom:false,zoomControl:false,attributionControl:false,dragging:true,worldCopyJump:true}).setView([20,60],2);
+        L.tileLayer(tileUrl,{maxZoom:19,noWrap:false}).addTo(ovMap);
+        ovsMap.forEach(x=>addPin(ovMap,x,ovpts));
+        fitView(ovMap,ovpts,OV_FB,4);
+      }
     }
 
     setTimeout(()=>{
