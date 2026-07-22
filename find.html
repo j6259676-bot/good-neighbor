@@ -128,6 +128,7 @@
   .st-tag{font-size:10.5px;font-weight:700;padding:2px 10px;border-radius:999px}
   .st-tag.closed{background:var(--gray);color:var(--ink)}
   .st-tag.full{background:var(--gray);color:var(--ink)}
+  .st-tag.expired{background:var(--gray);color:var(--ink)}
   .loc.dim{opacity:.6}
   .thumb.has-img{background:none;overflow:hidden;padding:0}
   .thumb-img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in}
@@ -175,6 +176,13 @@
   .field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
   .field input{width:100%;border:1.5px solid var(--line);border-radius:14px;padding:13px 16px;font-family:inherit;font-size:15px;outline:none;background:var(--paper);transition:.16s}
   .field input:focus{border-color:var(--gold)}
+  .wk-pick{display:flex;flex-wrap:wrap;gap:8px}
+  .wk-chip{display:inline-flex;align-items:center;gap:5px;font-family:inherit;font-size:13.5px;font-weight:700;padding:9px 15px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;transition:.15s}
+  .wk-chip.sel{background:var(--gold);border-color:var(--gold)}
+  .wk-chip.full{background:var(--gray);border-color:var(--gray);color:var(--ink-soft);cursor:not-allowed}
+  .wk-chip .icon{width:15px;height:15px}
+  .wk-note{font-size:11.5px;color:var(--gold-deep);margin-top:8px;display:flex;align-items:flex-start;gap:5px}
+  .wk-note .icon{width:14px;height:14px;margin-top:1px;flex:none}
   .modal .submit{width:100%;background:var(--gold);color:var(--ink);border:0;font-family:inherit;font-weight:700;font-size:16px;padding:16px;border-radius:999px;cursor:pointer;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,box-shadow .15s}
   .modal .submit:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(244,180,0,.38)}
   .modal .demo-tip{font-size:12px;color:var(--muted);text-align:center;margin-top:12px;background:var(--cream);border-radius:12px;padding:10px}
@@ -259,6 +267,11 @@
     <div id="modal-form">
       <h3 id="m-name">場次名稱</h3>
       <div class="loc-meta"><i class="icon" data-lucide="map-pin" style="width:14px;height:14px"></i><span id="m-area"></span></div>
+      <div class="field" id="m-weeks-field" style="display:none">
+        <label>你要參加哪幾週？<span style="color:var(--muted);font-weight:400">（可複選）</span></label>
+        <div class="wk-pick" id="m-weeks"></div>
+        <div class="wk-note"><i class="icon" data-lucide="info"></i>人數會分別算進你勾選的每一週</div>
+      </div>
       <div class="field"><label for="f-name">你的名字</label><input id="f-name" type="text" placeholder="怎麼稱呼你？"></div>
       <div class="field"><label for="f-email">Email</label><input id="f-email" type="email" placeholder="報名成功通知會寄到這裡"></div>
       <div class="field"><label for="f-phone">手機</label><input id="f-phone" type="tel" placeholder="Host 會用這個聯絡你"></div>
@@ -272,6 +285,7 @@
       <div class="done">
         <div class="ic"><i class="icon" data-lucide="check" style="width:32px;height:32px;color:var(--ink);stroke-width:3"></i></div>
         <h3>已送出！</h3>
+        <p id="m-weeks-done" style="font-size:14px;color:var(--gold-deep);font-weight:700;margin-bottom:8px;display:none"></p>
         <p><b id="m-name-done"></b> 的 Host<br>會在一週內主動聯絡你。<br>期待跟你一起主日！</p>
         <button class="submit" style="margin-top:18px" onclick="closeModal()">好的</button>
       </div>
@@ -354,6 +368,7 @@
       p.textContent=[l.area,(l.week?l.week+' 主日':''),(l.time?l.time+'（'+(l.tz||'當地時間')+'）':'')].filter(Boolean).join(' ・ ');
       const b=document.createElement('button');
       if(l.open===false){b.textContent='此場無對外開放';b.disabled=true;b.className='disabled';}
+      else if(l.allExpired===true){b.textContent='報名已截止';b.disabled=true;b.className='disabled';}
       else if(l.full===true){b.textContent='已額滿';b.disabled=true;b.className='disabled';}
       else if(l.formUrl){b.textContent='前往報名';b.addEventListener('click',()=>window.open(l.formUrl,'_blank','noopener'));} // 方案 A：host 自訂表單直接跳轉
       else{b.textContent='送出聯繫';b.addEventListener('click',()=>openModal(l.id));}
@@ -368,10 +383,17 @@
     fetch(GAS_URL+(GAS_URL.indexOf('?')<0?'?':'&')+'t='+Date.now()).then(r=>r.json()).then(d=>{
       if(d&&d.ok&&Array.isArray(d.locations)){
         // 連上 Sheet 就用真實資料（含空陣列＝目前無公開場次）
-        LOCS=d.locations.map(x=>({id:x.id,name:x.name,area:x.area,lat:x.lat,lng:x.lng,
-          week:(x.weeks&&x.weeks.length)?x.weeks.join('、'):(x.week||''),
-          time:x.time,tz:x.tz,language:x.language,hostLabel:x.hostLabel,spots:x.spots,
-          open:x.open,full:x.full,thumb:x.thumb,formUrl:x.formUrl||''}));
+        LOCS=d.locations.map(x=>{
+          const ws=Array.isArray(x.weekStatus)?x.weekStatus:[];
+          const vis=ws.filter(s=>!s.expired);           // 過期週不顯示
+          const weekTxt=ws.length
+            ? vis.map(s=>s.w+(s.full?'（額滿）':'')).join('、')
+            : ((x.weeks&&x.weeks.length)?x.weeks.join('、'):(x.week||''));
+          return {id:x.id,name:x.name,area:x.area,lat:x.lat,lng:x.lng,
+            week:weekTxt, weeks:x.weeks||[], weekStatus:ws, allExpired:!!x.allExpired,
+            time:x.time,tz:x.tz,language:x.language,hostLabel:x.hostLabel,spots:x.spots,
+            open:x.open,full:x.full,thumb:x.thumb,formUrl:x.formUrl||''};
+        });
       }else{LOCS=DEMO;} // 連線失敗才退回示意資料
       render(LOCS);buildMarkers();
     }).catch(()=>{LOCS=DEMO;render(LOCS);buildMarkers();});
@@ -390,8 +412,8 @@
     list.replaceChildren();
     if(!items.length){const e=document.createElement('div');e.className='empty';e.textContent='找不到符合的地點 — 換個關鍵字試試';list.appendChild(e);return;}
     items.forEach(l=>{
-      const closed=(l.open===false), full=(l.full===true);
-      const row=document.createElement('div');row.className='loc'+((closed||full)?' dim':'');row.dataset.id=l.id;
+      const closed=(l.open===false), expired=(l.allExpired===true), full=(l.full===true);
+      const row=document.createElement('div');row.className='loc'+((closed||expired||full)?' dim':'');row.dataset.id=l.id;
       row.addEventListener('click',()=>highlight(l.id,true));
       const thumb=document.createElement('div');thumb.className='thumb';
       if(l.thumb){const im=document.createElement('img');im.src=l.thumb;im.alt='';im.className='thumb-img';im.addEventListener('click',e=>{e.stopPropagation();openLightbox(l.thumb);});thumb.classList.add('has-img');thumb.appendChild(im);}
@@ -401,6 +423,7 @@
       const meta1=document.createElement('div');meta1.className='meta';
       const tag=document.createElement('span');tag.className='ch-tag';tag.textContent='Watch Party';meta1.appendChild(tag);
       if(closed){const c=document.createElement('span');c.className='st-tag closed';c.textContent='無對外開放';meta1.appendChild(c);}
+      else if(expired){const c=document.createElement('span');c.className='st-tag expired';c.textContent='報名已截止';meta1.appendChild(c);}
       else if(full){const c=document.createElement('span');c.className='st-tag full';c.textContent='已額滿';meta1.appendChild(c);}
       if(l.week){const w=document.createElement('span');w.className='week';w.appendChild(ic('calendar',13));w.append(' '+l.week);meta1.appendChild(w);}
       if(l.time){const t=document.createElement('span');t.className='week';t.appendChild(ic('clock',13));t.append(' '+l.time+'（'+(l.tz||'當地時間')+'）');meta1.appendChild(t);}
@@ -409,6 +432,7 @@
       // 列表內的行動按鈕：直接在列表區送出，手機不必滑回地圖找按鈕
       const act=document.createElement('button');act.className='loc-act';
       if(closed){act.textContent='無對外開放';act.disabled=true;act.classList.add('off');}
+      else if(expired){act.textContent='報名已截止';act.disabled=true;act.classList.add('off');}
       else if(full){act.textContent='已額滿';act.disabled=true;act.classList.add('full');}
       else if(l.formUrl){act.textContent='前往報名';act.addEventListener('click',e=>{e.stopPropagation();window.open(l.formUrl,'_blank','noopener');});}
       else{act.textContent='申請加入';act.addEventListener('click',e=>{e.stopPropagation();openModal(l.id);});}
@@ -418,16 +442,39 @@
   }
   function filter(q){q=q.trim().toLowerCase();render(LOCS.filter(l=>(l.name+l.area).toLowerCase().includes(q)));}
 
-  let current=null, submitting=false;
+  let current=null, submitting=false, selWeeks=[];
   function resetSubmit(){const b=document.getElementById('f-submit');b.disabled=false;b.replaceChildren(ic('send',17),document.createTextNode('送出聯繫'));submitting=false;lucide.createIcons();}
+  // 週次複選膠囊：過期週不列、額滿週停用；只有一（或零）個可報週就不顯示選擇器（隱含）
+  function buildWeekPicker(){
+    const field=document.getElementById('m-weeks-field'), box=document.getElementById('m-weeks');
+    box.replaceChildren(); selWeeks=[];
+    const ws=Array.isArray(current.weekStatus)?current.weekStatus:[];
+    const avail=ws.filter(s=>!s.expired);
+    if(avail.length<=1){ field.style.display='none'; selWeeks=avail.filter(s=>!s.full).map(s=>s.w); return; }
+    field.style.display='block';
+    avail.forEach(s=>{
+      const chip=document.createElement('button');chip.type='button';chip.className='wk-chip'+(s.full?' full':'');
+      if(s.full){chip.disabled=true;chip.textContent=s.w+'（已額滿）';box.appendChild(chip);return;}
+      chip.dataset.w=s.w;
+      const paint=()=>{chip.replaceChildren();if(chip.classList.contains('sel'))chip.appendChild(ic('check',15));chip.appendChild(document.createTextNode(s.w));lucide.createIcons();};
+      chip.addEventListener('click',()=>{
+        chip.classList.toggle('sel');const w=chip.dataset.w;
+        if(chip.classList.contains('sel')){if(selWeeks.indexOf(w)<0)selWeeks.push(w);}else{selWeeks=selWeeks.filter(x=>x!==w);}
+        paint();
+      });
+      if(selWeeks.length===0){chip.classList.add('sel');selWeeks.push(s.w);} // 預選第一個可報週
+      paint();box.appendChild(chip);
+    });
+  }
   function openModal(id){
     current=LOCS.find(l=>l.id===id);
-    if(!current||current.open===false||current.full===true)return; // 無對外開放／額滿不開表單
+    if(!current||current.open===false||current.allExpired===true||current.full===true)return; // 無對外開放／截止／額滿不開表單
     if(current.formUrl){window.open(current.formUrl,'_blank','noopener');return;} // 方案 A：host 自訂表單直接跳轉
     document.getElementById('m-name').textContent=current.name;
     const t=current.time?current.time+'（'+(current.tz||'當地時間')+'）':'';
     document.getElementById('m-area').textContent=[current.area,t,(current.week?current.week+' 主日':'')].filter(Boolean).join(' ・ ');
     resetSubmit(); // 每次開啟都把按鈕復位，避免上一場卡在「送出中…」
+    buildWeekPicker();
     document.getElementById('modal-form').style.display='block';
     document.getElementById('modal-done').style.display='none';
     document.getElementById('modal').classList.add('show');
@@ -435,11 +482,21 @@
     lucide.createIcons();
   }
   function val(id){const el=document.getElementById(id);return el?el.value.trim():'';}
-  function showDone(){document.getElementById('m-name-done').textContent=current.name;document.getElementById('modal-form').style.display='none';document.getElementById('modal-done').style.display='block';lucide.createIcons();}
+  function showDone(d){
+    document.getElementById('m-name-done').textContent=current.name;
+    const wd=document.getElementById('m-weeks-done');
+    const joined=(d&&Array.isArray(d.joined))?d.joined:selWeeks;
+    let txt=(joined&&joined.length)?('參加週次：'+joined.join('、')):'';
+    if(d&&Array.isArray(d.full)&&d.full.length)txt+=(txt?'　':'')+'（'+d.full.join('、')+' 已額滿，未加入）';
+    wd.textContent=txt;wd.style.display=txt?'block':'none';
+    document.getElementById('modal-form').style.display='none';document.getElementById('modal-done').style.display='block';lucide.createIcons();
+  }
   function submitContact(){
     if(submitting)return; // 防連點：避免同一次送出重複觸發
     if(!val('f-name')||!val('f-email')){alert('請至少填寫名字和 Email');return;}
-    const payload={sessionId:current.id,name:val('f-name'),email:val('f-email'),phone:val('f-phone'),people:val('f-people'),inviter:val('f-inviter'),message:val('f-message')};
+    const pickerOn=document.getElementById('m-weeks-field').style.display!=='none';
+    if(pickerOn&&selWeeks.length===0){alert('請至少選一個你要參加的週次');return;}
+    const payload={sessionId:current.id,weeks:selWeeks.slice(),name:val('f-name'),email:val('f-email'),phone:val('f-phone'),people:val('f-people'),inviter:val('f-inviter'),message:val('f-message')};
     if(!GAS_URL){showDone();return;}
     submitting=true;
     const btn=document.getElementById('f-submit');btn.disabled=true;btn.textContent='送出中…';
@@ -449,8 +506,9 @@
     const to=setTimeout(()=>finish(()=>showDone()),8000);
     fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
       .then(r=>r.json()).then(d=>{
-        if(d&&d.ok===false&&d.full){finish(()=>{alert('這場剛好額滿了，請改選其他場次');resetSubmit();loadData();});return;}
-        finish(()=>showDone()); // 含 duplicate（重複送出後端會擋，仍視為成功）
+        // 選的週全部額滿（沒任何成功）→ 提示改選、重載最新額度
+        if(d&&Array.isArray(d.full)&&d.full.length&&(!d.joined||!d.joined.length)){finish(()=>{alert('你選的週次剛好額滿了，請改選其他週或其他場次');resetSubmit();loadData();});return;}
+        finish(()=>showDone(d)); // 含 duplicate（重複送出後端會擋，仍視為成功）
       }).catch(()=>finish(()=>showDone()));
   }
   function closeModal(){document.getElementById('modal').classList.remove('show');}

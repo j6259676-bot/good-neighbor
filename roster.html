@@ -56,6 +56,11 @@
   .reminder .icon{width:16px;height:16px;color:var(--gold-deep);margin-top:2px}
 
   .listhead{font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:.04em;color:var(--muted);margin:22px 0 10px;display:flex;align-items:center;gap:7px}
+  .wcard{background:var(--paper);border-radius:14px;box-shadow:0 10px 24px rgba(60,55,45,.08);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .wcard .wk{font-size:14px;font-weight:900;display:flex;align-items:center;gap:6px}
+  .wcard .wk .icon{width:15px;height:15px;color:var(--gold-deep)}
+  .wcard .wn{font-size:12.5px;color:var(--muted);font-weight:700;white-space:nowrap}
+  .wtag{font-size:10.5px;font-weight:700;padding:1px 9px;border-radius:999px;background:var(--gray);color:var(--ink)}
 
   .person{background:var(--paper);border-radius:16px;box-shadow:0 14px 32px rgba(60,55,45,.09);padding:16px 16px;margin-bottom:12px}
   .person .top{display:flex;align-items:flex-start;gap:11px}
@@ -139,10 +144,36 @@
       }).catch(()=>stateMsg('wifi-off','連線出了點問題，請稍後再試一次。'));
   }
 
+  function weekOf(p,weeks){ if(p.week) return p.week; return (weeks&&weeks.length===1)?weeks[0].w:''; }
+  function takenOfWeek(w){ const weeks=(DATA.host.weeks||[]); return (DATA.people||[]).filter(p=>weekOf(p,weeks)===w && p.status!=='不會來').reduce((s,p)=>s+(parseInt(p.people,10)||1),0); }
+
+  function personCard(p){
+    const ini=(String(p.name||'?').trim().slice(-1))||'?';
+    const contacts=[];
+    if(p.phone) contacts.push(E('a',{href:'tel:'+p.phone},[icon('phone',14), p.phone]));
+    if(p.email) contacts.push(E('a',{href:'mailto:'+p.email},[icon('mail',14), p.email]));
+    const metaParts=[];
+    if(p.inviter) metaParts.push('邀請人：'+p.inviter);
+    if(p.ts) metaParts.push(p.ts);
+    const who=E('div',{class:'who'},[
+      E('div',{class:'nm'},[ (p.name||'（未填名）'), E('span',{class:'ppl',text:'共 '+p.people+' 位'}) ]),
+      p.message? E('div',{class:'msg',text:p.message}) : null,
+      metaParts.length? E('div',{class:'meta'},[icon('clock',12), metaParts.join('・')]) : null,
+      contacts.length? E('div',{class:'contacts'},contacts) : null
+    ]);
+    const top=E('div',{class:'top'},[ E('div',{class:'ava',text:ini}), who ]);
+    const seg=E('div',{class:'seg'}, STATUS.map(s=>
+      E('button',{'data-on':s,class:(p.status===s?'active':''),onclick:(ev)=>setStatus(p.joinId,s,ev.currentTarget)},
+        [icon(SICON[s],14), s])
+    ));
+    return E('div',{class:'person'},[top,seg]);
+  }
+
   function render(){
     const h=DATA.host, ppl=DATA.people||[];
-    const spotsTxt = h.spots==='' ? '不限人數' : ('上限 '+h.spots+' 人');
-    const remain = (h.spots==='') ? '' : ('・還可收 '+Math.max(0,h.spots-h.taken)+' 位');
+    const weeks=h.weeks||[];
+    const multi=weeks.length>1;
+    const spotsTxt = h.spots==='' ? '不限人數' : ((multi?'每週上限 ':'上限 ')+h.spots+' 人');
 
     const hero=E('div',{class:'hero'},[E('div',{class:'wrap'},[
       E('div',{class:'kick',text:'我的 WATCH PARTY 名單'}),
@@ -150,9 +181,10 @@
       E('div',{class:'area'},[icon('map-pin',15), (h.area||'')])
     ])]);
 
+    const remain = (h.spots==='') ? '' : ('・還可收 '+Math.max(0,h.spots-h.taken)+' 位');
     const countCard=E('div',{class:'count'},[
-      E('div',{},[E('div',{class:'big'},[String(h.taken), E('span',{text:' 人'})])]),
-      E('div',{class:'lab'},[ '已報名', E('br'), E('b',{text:spotsTxt}), remain ]),
+      E('div',{},[E('div',{class:'big'},[String(h.taken), E('span',{text:multi?' 人次':' 人'})])]),
+      E('div',{class:'lab'},[ multi?'累計報名':'已報名', E('br'), E('b',{text:spotsTxt}), multi?'':remain ]),
       E('div',{class:'edit',onclick:editSpots},[icon('pencil',15),'改名額'])
     ]);
 
@@ -162,43 +194,49 @@
     ]);
 
     const reminder=E('div',{class:'reminder'},[icon('info',16),
-      E('div',{text:'名額有變動嗎？人數限制可以直接按上面「改名額」自己調整，會即時反映到地圖，也會通知我們。'})]);
+      E('div',{text:(multi?'名額是每一週各自計算的。人數限制可按上面「改名額」自己調整（套用到每一週），會即時反映到地圖，也會通知我們。':'名額有變動嗎？人數限制可以直接按上面「改名額」自己調整，會即時反映到地圖，也會通知我們。')})]);
 
-    const listhead=E('div',{class:'listhead'},[icon('users',15),'報名清單（'+ppl.length+' 筆）']);
-
-    const sec=E('div',{class:'sec'},[E('div',{class:'wrap'},[countCard,actions,reminder,listhead])]);
+    const sec=E('div',{class:'sec'},[E('div',{class:'wrap'},[countCard])]);
     const wrapInner=sec.firstChild;
+
+    if(multi){
+      const wc=E('div',{style:'display:flex;flex-direction:column;gap:8px;margin-top:12px'});
+      weeks.forEach(w=>{
+        const t=takenOfWeek(w.w);
+        const cap = h.spots===''?'不限':('上限 '+h.spots);
+        const remainW = h.spots===''?'':('・還可收 '+Math.max(0,h.spots-t)+' 位');
+        const tags=[];
+        if(w.expired) tags.push(E('span',{class:'wtag',text:'已結束'}));
+        else if(h.spots!==''&&t>=h.spots) tags.push(E('span',{class:'wtag',text:'已額滿'}));
+        wc.appendChild(E('div',{class:'wcard'},[
+          E('div',{class:'wk'},[icon('calendar',15), w.w+' 主日', ...tags]),
+          E('div',{class:'wn',text:'已報 '+t+' ／ '+cap+remainW})
+        ]));
+      });
+      wrapInner.appendChild(wc);
+    }
+
+    wrapInner.appendChild(actions);
+    wrapInner.appendChild(reminder);
 
     if(!ppl.length){
       wrapInner.appendChild(E('div',{class:'state',style:'padding:30px 10px'},[icon('inbox',30),
         E('div',{text:'還沒有人報名，分享出去邀請鄰居吧！'})]));
-    } else {
-      ppl.forEach(p=>{
-        const ini=(String(p.name||'?').trim().slice(-1))||'?';
-        const contacts=[];
-        if(p.phone) contacts.push(E('a',{href:'tel:'+p.phone},[icon('phone',14), p.phone]));
-        if(p.email) contacts.push(E('a',{href:'mailto:'+p.email},[icon('mail',14), p.email]));
-        const metaParts=[];
-        if(p.inviter) metaParts.push('邀請人：'+p.inviter);
-        if(p.ts) metaParts.push(p.ts);
-
-        const who=E('div',{class:'who'},[
-          E('div',{class:'nm'},[ (p.name||'（未填名）'),
-            E('span',{class:'ppl',text:'共 '+p.people+' 位'}) ]),
-          p.message? E('div',{class:'msg',text:p.message}) : null,
-          metaParts.length? E('div',{class:'meta'},[icon('clock',12), metaParts.join('・')]) : null,
-          contacts.length? E('div',{class:'contacts'},contacts) : null
-        ]);
-
-        const top=E('div',{class:'top'},[ E('div',{class:'ava',text:ini}), who ]);
-
-        const seg=E('div',{class:'seg'}, STATUS.map(s=>
-          E('button',{'data-on':s,class:(p.status===s?'active':''),onclick:(ev)=>setStatus(p.joinId,s,ev.currentTarget)},
-            [icon(SICON[s],14), s])
-        ));
-
-        wrapInner.appendChild(E('div',{class:'person'},[top,seg]));
+    } else if(multi){
+      weeks.forEach(w=>{
+        const list=ppl.filter(p=>weekOf(p,weeks)===w.w);
+        wrapInner.appendChild(E('div',{class:'listhead'},[icon('calendar',15), w.w+' 主日（'+list.length+' 筆）']));
+        if(!list.length) wrapInner.appendChild(E('div',{class:'state',style:'padding:16px 10px'},[icon('inbox',24),E('div',{text:'這一週還沒有人報名'})]));
+        else list.forEach(p=>wrapInner.appendChild(personCard(p)));
       });
+      const others=ppl.filter(p=>{const w=weekOf(p,weeks);return !weeks.some(x=>x.w===w);});
+      if(others.length){
+        wrapInner.appendChild(E('div',{class:'listhead'},[icon('users',15),'其他（'+others.length+' 筆）']));
+        others.forEach(p=>wrapInner.appendChild(personCard(p)));
+      }
+    } else {
+      wrapInner.appendChild(E('div',{class:'listhead'},[icon('users',15),'報名清單（'+ppl.length+' 筆）']));
+      ppl.forEach(p=>wrapInner.appendChild(personCard(p)));
     }
 
     app.replaceChildren(hero, sec);
@@ -217,7 +255,8 @@
 
   function editSpots(){
     const cur=DATA.host.spots===''?'':DATA.host.spots;
-    const v=prompt('這場最多開放幾人報名？（清空＝不限人數）',cur);
+    const multi=(DATA.host.weeks||[]).length>1;
+    const v=prompt((multi?'每一週最多開放幾人報名？（套用到每一週；清空＝不限人數）':'這場最多開放幾人報名？（清空＝不限人數）'),cur);
     if(v===null) return;
     const n=v.trim()===''?0:parseInt(v,10);
     if(v.trim()!=='' && (isNaN(n)||n<0)){ toast('請輸入數字'); return; }
@@ -230,7 +269,7 @@
   function copyContacts(){
     const ppl=DATA.people||[];
     if(!ppl.length){ toast('還沒有人報名'); return; }
-    const txt=ppl.map(p=>{ let l=p.name+'（'+p.people+' 位）'; if(p.phone)l+=' '+p.phone; if(p.email)l+=' '+p.email; return l; }).join('\n');
+    const txt=ppl.map(p=>{ let l=p.name+'（'+p.people+' 位'+(p.week?'｜'+p.week:'')+'）'; if(p.phone)l+=' '+p.phone; if(p.email)l+=' '+p.email; return l; }).join('\n');
     copy(txt,'已複製所有人聯絡方式');
   }
   function copyTemplate(){
