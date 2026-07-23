@@ -354,6 +354,8 @@
   }
   function dist(a,b,c,d){const R=6371,p=Math.PI/180,x=(c-a)*p,y=(d-b)*p,s=Math.sin(x/2)**2+Math.cos(a*p)*Math.cos(c*p)*Math.sin(y/2)**2;return 2*R*Math.asin(Math.sqrt(s));}
   function sortByDistance(lat,lng){LOCS.sort((m,n)=>dist(lat,lng,m.lat,m.lng)-dist(lat,lng,n.lat,n.lng));render(LOCS);}
+  // 預設依地區排序：同城市／地區的場次相鄰，方便尋找（次序：地區 → 場次名稱）
+  function sortByArea(){LOCS.sort((a,b)=>{const A=String(a.area||''),B=String(b.area||'');return A.localeCompare(B,'zh-Hant')||String(a.name||'').localeCompare(String(b.name||''),'zh-Hant');});}
 
   const markers={};
   function makeIcon(a){const pin=document.createElement('div');pin.className='pin'+(a?' active':'');pin.appendChild(document.createElement('span'));return L.divIcon({className:'',html:pin,iconSize:[32,32],iconAnchor:[16,32],popupAnchor:[0,-32]});}
@@ -379,7 +381,7 @@
   }
   // 載入場次：有 GAS_URL 吃 Sheet 即時資料，否則示意資料
   function loadData(){
-    if(!GAS_URL){LOCS=DEMO;render(LOCS);buildMarkers();return;}
+    if(!GAS_URL){LOCS=DEMO;sortByArea();render(LOCS);buildMarkers();return;}
     fetch(GAS_URL+(GAS_URL.indexOf('?')<0?'?':'&')+'t='+Date.now()).then(r=>r.json()).then(d=>{
       if(d&&d.ok&&Array.isArray(d.locations)){
         // 連上 Sheet 就用真實資料（含空陣列＝目前無公開場次）
@@ -395,8 +397,8 @@
             open:x.open,full:x.full,thumb:x.thumb,formUrl:x.formUrl||''};
         });
       }else{LOCS=DEMO;} // 連線失敗才退回示意資料
-      render(LOCS);buildMarkers();
-    }).catch(()=>{LOCS=DEMO;render(LOCS);buildMarkers();});
+      sortByArea();render(LOCS);buildMarkers();
+    }).catch(()=>{LOCS=DEMO;sortByArea();render(LOCS);buildMarkers();});
   }
 
   function highlight(id,fly){
