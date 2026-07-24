@@ -323,7 +323,7 @@
 
   function ic(name,size){const i=document.createElement('i');i.className='icon';i.setAttribute('data-lucide',name);if(size){i.style.width=size+'px';i.style.height=size+'px';}return i;}
 
-  const map=L.map('map',{scrollWheelZoom:false,zoomControl:false}).setView([23.7,120.95],7);
+  const map=L.map('map',{scrollWheelZoom:false,zoomControl:false,worldCopyJump:true}).setView([23.7,120.95],7);
   L.control.zoom({position:'topright'}).addTo(map);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19}).addTo(map);
   setTimeout(()=>map.invalidateSize(),200);
@@ -380,25 +380,38 @@
     });
   }
   // 載入場次：有 GAS_URL 吃 Sheet 即時資料，否則示意資料
+  const CACHE_KEY='gn_locations_v1';
+  function normLocs(list){
+    return list.map(x=>{
+      const ws=Array.isArray(x.weekStatus)?x.weekStatus:[];
+      const vis=ws.filter(s=>!s.expired);           // 過期週不顯示
+      const weekTxt=ws.length
+        ? vis.map(s=>s.w+(s.full?'（額滿）':'')).join('、')
+        : ((x.weeks&&x.weeks.length)?x.weeks.join('、'):(x.week||''));
+      return {id:x.id,name:x.name,area:x.area,lat:x.lat,lng:x.lng,
+        week:weekTxt, weeks:x.weeks||[], weekStatus:ws, allExpired:!!x.allExpired,
+        time:x.time,tz:x.tz,language:x.language,hostLabel:x.hostLabel,spots:x.spots,
+        open:x.open,full:x.full,thumb:x.thumb,formUrl:x.formUrl||''};
+    });
+  }
+  function paint(){sortByArea();render(LOCS);buildMarkers();}
   function loadData(){
-    if(!GAS_URL){LOCS=DEMO;sortByArea();render(LOCS);buildMarkers();return;}
+    if(!GAS_URL){LOCS=DEMO;paint();return;}
+    // 1) 先用上次快取即時顯示（真實近況資料，秒開），背景再抓最新覆蓋
+    let hadCache=false;
+    try{
+      const c=JSON.parse(localStorage.getItem(CACHE_KEY)||'null');
+      if(c&&Array.isArray(c)&&c.length){LOCS=c;hadCache=true;paint();}
+    }catch(e){}
+    // 2) 背景抓最新
     fetch(GAS_URL+(GAS_URL.indexOf('?')<0?'?':'&')+'t='+Date.now()).then(r=>r.json()).then(d=>{
       if(d&&d.ok&&Array.isArray(d.locations)){
         // 連上 Sheet 就用真實資料（含空陣列＝目前無公開場次）
-        LOCS=d.locations.map(x=>{
-          const ws=Array.isArray(x.weekStatus)?x.weekStatus:[];
-          const vis=ws.filter(s=>!s.expired);           // 過期週不顯示
-          const weekTxt=ws.length
-            ? vis.map(s=>s.w+(s.full?'（額滿）':'')).join('、')
-            : ((x.weeks&&x.weeks.length)?x.weeks.join('、'):(x.week||''));
-          return {id:x.id,name:x.name,area:x.area,lat:x.lat,lng:x.lng,
-            week:weekTxt, weeks:x.weeks||[], weekStatus:ws, allExpired:!!x.allExpired,
-            time:x.time,tz:x.tz,language:x.language,hostLabel:x.hostLabel,spots:x.spots,
-            open:x.open,full:x.full,thumb:x.thumb,formUrl:x.formUrl||''};
-        });
-      }else{LOCS=DEMO;} // 連線失敗才退回示意資料
-      sortByArea();render(LOCS);buildMarkers();
-    }).catch(()=>{LOCS=DEMO;sortByArea();render(LOCS);buildMarkers();});
+        LOCS=normLocs(d.locations);
+        try{localStorage.setItem(CACHE_KEY,JSON.stringify(LOCS));}catch(e){}
+        paint();
+      }else if(!hadCache){LOCS=DEMO;paint();} // 沒快取又連線失敗才退回示意資料；有快取就維持不覆蓋
+    }).catch(()=>{if(!hadCache){LOCS=DEMO;paint();}});
   }
 
   function highlight(id,fly){
