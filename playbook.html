@@ -278,6 +278,28 @@ label.ck input:focus-visible+.box{outline:3px solid var(--gold);outline-offset:2
 .creed li{font-size:14.5px}
 .creed ul.dots li::before{background:var(--gold-deep)}
 
+/* ---------- 情境評估 ---------- */
+.when{background:var(--gold-tint);border-radius:12px;padding:13px 15px;margin-top:15px}
+.when b{display:block;font-size:12.5px;font-weight:900;color:var(--gold-deep);letter-spacing:.04em;margin-bottom:4px}
+.when p{font-size:14px !important;line-height:1.75 !important;color:var(--ink-soft);margin:0 !important}
+
+/* ---------- 跳到掃碼區 ---------- */
+button.gobtn{
+  display:flex;align-items:center;gap:10px;width:100%;margin-top:14px;
+  background:var(--ink);border:0;border-radius:14px;padding:13px 15px;cursor:pointer;
+  font-family:var(--zh);font-size:14.5px;font-weight:700;color:#fff;text-align:left
+}
+button.gobtn svg{flex:none;width:19px;height:19px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+button.gobtn span{flex:1;min-width:0}
+button.gobtn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+/* 掃碼卡被指向時閃一下 */
+.qr-card.flash{animation:flash 1.6s ease}
+@keyframes flash{
+  0%,100%{box-shadow:var(--shadow)}
+  20%,60%{box-shadow:0 0 0 3px var(--gold), var(--shadow)}
+}
+
 /* ---------- 外連按鈕 ---------- */
 .linkbtns{display:grid;gap:10px;margin-top:14px}
 @media(min-width:520px){.linkbtns{grid-template-columns:1fr 1fr}}
@@ -1122,24 +1144,268 @@ a.linkbtn em{display:block;font-style:normal;font-size:12.5px;font-weight:500;co
   </section>
 
   <section class="view" id="s4" aria-label="給出下一步">
-    <span class="eyebrow">④ 給出下一步</span>
+    <span class="eyebrow">階段 4・散會前</span>
     <h1 class="big">每個人帶走<br>一個屬於他的下一步。</h1>
-    <div class="todo">
-      <span class="tag">還在做・第 5 片</span>
-      <h3>這一區會有</h3>
-      <p>三個原則（一次只給一個、具體明確、強調連結感）、VIP 卡與 LINE@、訂閱 YouTube、一起聊一下、Belong 小組與 ONLINE BELONG、再邀請一次 Watch Party。每個選項都有台詞、報名管道與「什麼狀況給這個」。</p>
-      <p class="hint">要給人掃碼的話，現在就可以用下面導覽列的「掃碼」。</p>
+    <p class="lead"><b>不要讓聚會就這樣結束。</b>這是整場 Watch Party 最重要、也最容易被跳過的一步。</p>
+
+    <div class="creed">
+      <ul class="dots">
+        <li><b>一次只給一個</b>——依他的狀況挑最適合的那一個。一次給五個，等於沒給。</li>
+        <li><b>具體明確</b>——講出名稱、時間、報名方式，不要模糊帶過「歡迎你再來喔」。</li>
+        <li><b>強調連結感</b>——讓他知道下一步不是自己一個人去做一件事，而是和人建立關係。</li>
+      </ul>
     </div>
+
+    <div class="tools"><button class="expand-all" data-scope="s4">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>
+      <span>全部展開</span>
+    </button></div>
+
+    <details class="item">
+      <summary>
+        <span class="ix">4-1</span>
+        <span class="hd">
+          <b>留下聯絡方式：VIP 卡與 LINE@</b>
+          <span class="do">請他掃 VIP 卡上的 QR 加入 LINE@，並帶他填裡面的新朋友表單。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p><b>這一步最重要。</b>前面所有的用心，如果沒有留下聯絡方式，關係就斷在你家門口。有了資料，教會的 Next Step 團隊才能接手。</p>
+        <div class="pt">
+          <b>實體卡上的 QR 就是 LINE@ 的 QR（同一個）</b>
+          <p>他掃碼加入後，LINE@ 裡會收到一份新朋友表單，填完會送他一份小禮物——那份表單才是後台接手的入口。<b>要帶著他填完，不要只停在「加了 LINE」。</b></p>
+        </div>
+        <div class="pt">
+          <b>當場加、當場教他點一次左下角選單</b>
+          <p>LINE@ 是教會所有資訊的入口：活動、課程、小組報名都在裡面。當場教一次，比事後傳連結有效太多。</p>
+        </div>
+        <div class="pt">
+          <b>他沒在用 LINE 的話，給新朋友卡連結</b>
+          <p>海外的朋友常見。給 thehope.co/onlinevip，填的內容一樣，一樣進得了後台。</p>
+        </div>
+
+        <div class="snip">
+          <div class="snip-h"><span>可以這樣說</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <p class="snip-t">我們有一張小卡想給你，上面的 QR 掃進去就是我們線上分部的 LINE。加進去之後裡面會有一份新朋友的小表單，你填一下，我們會送你一份小禮物；之後教會的夥伴也可以跟你保持聯繫、為你禱告。活動資訊也都會在這個 LINE 裡面。</p>
+        </div>
+
+        <div class="snip">
+          <div class="snip-h"><span>他沒在用 LINE 的時候</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <p class="snip-t">你有在用 LINE 嗎？沒有也沒關係，我這邊有一個連結（thehope.co/onlinevip），你填一下基本資料就好，一樣可以收到我們的消息。</p>
+        </div>
+
+        <button class="gobtn" data-goscan="qr-line">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="3" y="15" width="6" height="6" rx="1"/><path d="M19 15h2"/><path d="M15 19h2"/></svg>
+          <span>打開 LINE@ 的 QR 給他掃</span>
+        </button>
+
+        <div class="when">
+          <b>什麼狀況給這個</b>
+          <p>每一位新朋友都要邀請，不分狀況。這是預設動作，不是選項之一。</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">4-2</span>
+        <span class="hd">
+          <b>訂閱 YouTube、開啟小鈴鐺</b>
+          <span class="do">教他訂閱 The Hope YouTube 頻道並開啟通知。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p>線上 Hope 主日每週日在 YouTube 直播，台灣時間 <b>9:30AM（雙語）、11:30AM、2PM（中文）</b>，每一場都是獨立直播，可以選最適合的時間。</p>
+        <p>直播通常晚上 8PM 下架，但<b>下架後也可以透過通知裡的連結重新完整參與</b>——這點對海外的朋友特別重要，記得講。</p>
+        <div class="snip">
+          <div class="snip-h"><span>可以這樣說</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <p class="snip-t">你平常有在用 YouTube 嗎？我們每個禮拜天都有線上主日，9:30、11:30、下午 2 點三場，你可以挑最方便的時間。搜尋 The Hope 訂閱、然後把小鈴鐺打開，時間到就會提醒你，不會錯過。</p>
+        </div>
+        <button class="gobtn" data-goscan="qr-yt">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="3" y="15" width="6" height="6" rx="1"/><path d="M19 15h2"/><path d="M15 19h2"/></svg>
+          <span>打開 YouTube 頻道的 QR</span>
+        </button>
+        <div class="when">
+          <b>什麼狀況給這個</b>
+          <p>他還在找可以穩定聚會的地方；或問「怎麼參加你們的聚會」；或因為時區、作息不方便固定參加實體聚會。</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">4-3</span>
+        <span class="hd">
+          <b>一起聊一下</b>
+          <span class="do">邀請他參加主日後的線上分組分享。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p>每週主日結束後有「一起聊一下」，大約 30 分鐘的線上分組分享與關懷——<b>就像我們今天聚會後做的這一段一樣</b>。這句類比很好用，因為他剛剛才體驗過，馬上就知道那是什麼。</p>
+        <div class="snip">
+          <div class="snip-h"><span>可以這樣說</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <p class="snip-t">其實我們每個禮拜主日結束後，線上也有一個「一起聊一下」，就像我們今天聊天這一段一樣，大概 30 分鐘。你如果喜歡今天這種感覺，下禮拜可以來試試看。</p>
+        </div>
+        <div class="when">
+          <b>什麼狀況給這個</b>
+          <p>他喜歡今天的分享時間、講了不少話；或他人在沒有小組的地區，想先有個地方連結人。</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">4-4</span>
+        <span class="hd">
+          <b>Belong 小組 / ONLINE BELONG</b>
+          <span class="do">想認識更多人，就邀他報名 ONLINE BELONG；你知道附近有小組，直接邀他來看看。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p>The Hope 的小組遍布各地，台灣各地區與海外（香港、日本、馬來西亞、美國、歐洲等）加起來有 60 個以上，有些線上聚會、有些在當地實體聚會。</p>
+        <div class="pt">
+          <b>你知道他家附近有小組，那是最快的路</b>
+          <p>直接邀請他來小組看看，比走報名流程更有溫度。</p>
+        </div>
+        <div class="pt">
+          <b>不確定的話，入口是 ONLINE BELONG</b>
+          <p>這是一個線上活動，幫助他了解 The Hope 對小組的期待，並和<b>同地區</b>的 Hope Nation 連結，討論加入或一起成立小組。</p>
+        </div>
+        <div class="pt">
+          <b>他那裡還沒有小組也沒關係</b>
+          <p>不用隱瞞，可以鼓勵他一起開始一個，教會會幫助他跟人連結。</p>
+        </div>
+        <div class="snip">
+          <div class="snip-h"><span>可以這樣說</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <p class="snip-t">你剛剛說想認識更多人，我們有一個叫 ONLINE BELONG 的線上活動，會幫你連結到你那個地區的其他 Hope Nation，看看要加入哪個小組、或一起開始一個。報名在 LINE 的選單裡面，我等等傳給你。</p>
+        </div>
+        <button class="gobtn" data-goscan="qr-belong">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="3" y="15" width="6" height="6" rx="1"/><path d="M19 15h2"/><path d="M15 19h2"/></svg>
+          <span>打開 ONLINE BELONG 報名的 QR</span>
+        </button>
+        <p class="snip-note">另一條路：LINE@（@thehopeonline）左下方選單 → 一起建造 → 報名 ONLINE BELONG。</p>
+        <div class="when">
+          <b>什麼狀況給這個</b>
+          <p>他提到「希望認識更多人」；或直接問「有小組可以參加嗎」；或今天聊得很開，明顯渴望持續的關係。</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">4-5</span>
+        <span class="hd">
+          <b>再邀請一次 Watch Party</b>
+          <span class="do">當場給出下一場的日期，邀請他再來。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p><b>提前給時間，讓他可以記進行事曆。</b>這是門檻最低的下一步——他已經來過、已經認識你了，再來一次幾乎沒有心理成本。也可以邀請他下次帶一個朋友來。</p>
+        <p>今年的四週主日：<b>8/16、8/23（教會生日）、8/30（BTS）、9/6</b>。</p>
+        <div class="snip">
+          <div class="snip-h"><span>可以這樣說</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <p class="snip-t">我們 8/30 還有一場，那天是 BTS，會很不一樣！你要不要先記一下，下次再一起來？也可以帶朋友來，多一個人更熱鬧。</p>
+        </div>
+        <div class="when">
+          <b>什麼狀況給這個</b>
+          <p>他今天玩得很開心但還沒準備好談信仰；或他是被朋友帶來的、還在觀望；或<b>任何你抓不準要給什麼的時候</b>——這是最安全的預設選項。</p>
+        </div>
+      </div>
+    </details>
   </section>
 
   <section class="view" id="s5" aria-label="會後回報">
-    <span class="eyebrow">⑤ 會後回報</span>
+    <span class="eyebrow">階段 5・散會後 24 小時內 - 一週</span>
     <h1 class="big">他被問候；<br>團隊收到照片與人數。</h1>
-    <div class="todo">
-      <span class="tag">還在做・第 5 片</span>
-      <h3>這一區會有</h3>
-      <p>24 小時內傳一則問候、回報給團隊（可複製的回報格式）、團隊回顧、持續關懷。</p>
-    </div>
+
+    <div class="tools"><button class="expand-all" data-scope="s5">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>
+      <span>全部展開</span>
+    </button></div>
+
+    <details class="item">
+      <summary>
+        <span class="ix">5-1</span>
+        <span class="hd">
+          <b>24 小時內傳一則問候</b>
+          <span class="do">聚會後 24 小時內，傳一則簡單的訊息給每一位來的人。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p><b>讓他感受到被記得、被重視</b>，而不是「參加完一場活動就結束了」。不用長，一兩句話就好，可以提到今天他分享的某件事——那會讓他知道你真的有在聽。</p>
+        <div class="snip">
+          <div class="snip-h"><span>問候訊息</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <p class="snip-t">嗨 ○○，今天很開心你來！你分享的那段○○我一直記著，這禮拜會為你禱告。
+我們 8/30 還有一場，到時候再一起來啊！</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">5-2</span>
+        <span class="hd">
+          <b>回報給團隊</b>
+          <span class="do">把照片、總參與人數、新朋友人數回傳到 Good Neighbor host LINE 群組。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p>這是團隊掌握整體狀況、也是為每一位來賓持續禱告的依據。<b>有幾位加了 LINE@、填了新朋友表單，也一起回報</b>——教會後台才知道要接手關心誰。</p>
+        <div class="snip">
+          <div class="snip-h"><span>回報格式</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <p class="snip-t">【Good Neighbor 回報】
+場次：○○場・8/23
+總參與人數：○ 位
+新朋友人數：○ 位
+已加 LINE@／填新朋友表單：○ 位
+照片：（附上 3-5 張）
+今天的亮點／見證：
+下次可以更好的地方：</p>
+        </div>
+        <p class="snip-note">照片記得在聚會中就拍——散會後補拍不到。</p>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">5-3</span>
+        <span class="hd">
+          <b>團隊回顧</b>
+          <span class="do">和一起服事的夥伴花十分鐘聊聊今天。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p>三個問題就夠，趁記憶新鮮的時候講，下一場會明顯不一樣。</p>
+        <ul class="dots">
+          <li>今天很棒的地方是什麼？</li>
+          <li>發生了什麼見證？</li>
+          <li>下次可以更好的地方是什麼？</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">5-4</span>
+        <span class="hd">
+          <b>持續關懷</b>
+          <span class="do">建立一個 LINE 群組，讓關係從聚會延伸到日常。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p>建群組，適時傳關心訊息、分享感動與代禱事項。重點不是熱鬧，是<b>讓關係不只停留在那兩小時</b>——讓人感受到真實的友誼，那才是基督的愛具體的樣子。</p>
+        <p class="snip-note">名單頁有「群組邀請範本」可以一鍵複製，貼進群組就能開場。</p>
+      </div>
+    </details>
   </section>
 
   <!-- ============ 掃碼區 ============ -->
@@ -1331,6 +1597,22 @@ a.linkbtn em{display:block;font-style:normal;font-size:12.5px;font-weight:500;co
       var anyClosed = Array.prototype.some.call(items, function(d){ return !d.open; });
       Array.prototype.forEach.call(items, function(d){ d.open = anyClosed; });
       btn.querySelector("span").textContent = anyClosed ? "全部收合" : "全部展開";
+    });
+  });
+
+  /* ---- 從「下一步」跳到掃碼區的對應那張 ---- */
+  Array.prototype.forEach.call(document.querySelectorAll("button.gobtn"), function(b){
+    b.addEventListener("click", function(){
+      var key = (b.dataset.goscan || "").replace("qr-", "");
+      show("scan", true);
+      var target = document.querySelector('.qr-btn[data-qr="' + key + '"]');
+      var card = target ? target.closest(".qr-card") : null;
+      if(!card){ return; }
+      card.scrollIntoView({ block: "center", behavior: "smooth" });
+      card.classList.remove("flash");
+      void card.offsetWidth;
+      card.classList.add("flash");
+      setTimeout(function(){ card.classList.remove("flash"); }, 1800);
     });
   });
 
