@@ -53,6 +53,66 @@ p{text-wrap:pretty}
 .brand .pb{font-size:12px;font-weight:700;color:var(--gold-deep);letter-spacing:.06em}
 .brand:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
 
+.topbar-in{display:flex;align-items:center;gap:8px;max-width:760px;margin:0 auto;padding-right:clamp(8px,3vw,16px)}
+.topbar-in .brand{flex:1;min-width:0}
+button.searchBtn{
+  flex:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);
+  background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center
+}
+button.searchBtn svg{width:19px;height:19px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+button.searchBtn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+/* ---------- 搜尋 ---------- */
+.search{position:fixed;inset:0;z-index:95;background:var(--silver1);display:flex;flex-direction:column}
+.search[hidden]{display:none}
+.search-bar{
+  display:flex;align-items:center;gap:10px;padding:14px clamp(14px,5vw,20px);
+  background:#fff;border-bottom:1px solid var(--line)
+}
+.search-bar svg{flex:none;width:19px;height:19px;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.search-bar input{
+  flex:1;min-width:0;border:0;outline:0;background:none;
+  font-family:var(--zh);font-size:16px;color:var(--ink);padding:6px 0
+}
+.search-bar input::placeholder{color:#a8a49a}
+#searchClose{
+  flex:none;background:none;border:0;font-family:var(--zh);font-size:14px;font-weight:700;
+  color:var(--gold-deep);cursor:pointer;padding:6px 4px
+}
+.search-res{flex:1;overflow-y:auto;padding:10px clamp(14px,5vw,20px) 30px;-webkit-overflow-scrolling:touch}
+.res{
+  display:flex;align-items:flex-start;gap:11px;width:100%;text-align:left;
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 14px;
+  margin-top:10px;cursor:pointer;font-family:var(--zh);color:var(--ink)
+}
+.res .rix{
+  flex:none;font-size:11.5px;font-weight:900;color:var(--gold-deep);
+  background:var(--gold-tint);border-radius:7px;padding:3px 7px;margin-top:2px;white-space:nowrap
+}
+.res .rtx{flex:1;min-width:0}
+.res .rtx b{display:block;font-size:15px;font-weight:900;line-height:1.5}
+.res .rtx span{display:block;font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px}
+.res:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.search-empty{text-align:center;color:var(--muted);font-size:14px;padding:40px 20px;line-height:1.9;white-space:pre-line}
+
+/* 被搜尋命中的節閃一下 */
+details.item.hit{animation:hit 1.8s ease}
+@keyframes hit{
+  0%,100%{box-shadow:var(--shadow)}
+  20%,60%{box-shadow:0 0 0 3px var(--gold), var(--shadow)}
+}
+
+/* ---------- 頁尾「更多」 ---------- */
+footer.more{
+  order:4;width:100%;max-width:760px;margin:0 auto;
+  padding:14px clamp(16px,5vw,28px) 46px;border-top:1px solid var(--line);margin-top:26px
+}
+footer.more .mh{font-size:13px;font-weight:900;color:var(--muted);letter-spacing:.06em;margin-bottom:4px}
+footer.more .sign{
+  text-align:center;margin-top:28px;font-size:13.5px;color:var(--muted);line-height:1.9
+}
+footer.more .sign b{display:block;font-size:15px;color:var(--ink);margin-bottom:4px}
+
 /* ---------- layout ---------- */
 .wrap{order:3;width:100%;max-width:760px;margin:0 auto;padding:0 clamp(16px,5vw,28px)}
 .view{display:none;padding:22px 0 40px}
@@ -436,11 +496,25 @@ a.linkbtn em{display:block;font-style:normal;font-size:12.5px;font-weight:500;co
 <body>
 
 <header class="topbar">
-  <button class="brand" id="homeBtn" aria-label="回到開頁">
-    <span class="gn">GOOD NEIGHBOR</span>
-    <span class="pb">HOST PLAY BOOK</span>
-  </button>
+  <div class="topbar-in">
+    <button class="brand" id="homeBtn" aria-label="回到開頁">
+      <span class="gn">GOOD NEIGHBOR</span>
+      <span class="pb">HOST PLAY BOOK</span>
+    </button>
+    <button class="searchBtn" id="searchBtn" aria-label="搜尋整份手冊">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    </button>
+  </div>
 </header>
+
+<div class="search" id="searchSheet" hidden role="dialog" aria-modal="true" aria-label="搜尋整份手冊">
+  <div class="search-bar">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input id="searchInput" type="search" placeholder="搜尋：婉拒、音量、小組…" autocomplete="off" autocorrect="off" spellcheck="false">
+    <button id="searchClose">關閉</button>
+  </div>
+  <div class="search-res" id="searchRes"></div>
+</div>
 
 <main class="wrap">
 
@@ -1463,6 +1537,145 @@ a.linkbtn em{display:block;font-style:normal;font-size:12.5px;font-weight:500;co
 
 </main>
 
+<footer class="more" id="more">
+  <p class="mh">更多</p>
+
+  <details class="fold">
+    <summary>
+      <span class="st">禱告：從頭到尾<em>不是最後沒辦法才做的事</em></span>
+      <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </summary>
+    <div class="body">
+      <p><b>Watch Party 不是靠流程完成的，而是邀請神親自工作。</b></p>
+      <div class="verse">腓立比書 4:6-7｜應當一無掛慮，只要凡事藉著禱告、祈求和感謝，將你們所要的告訴神。神所賜出人意外的平安，必在基督耶穌裡保守你們的心懷意念。</div>
+      <div class="pt">
+        <b>「一無掛慮」不是叫我們不做規劃</b>
+        <p>而是不讓活動的成敗成為偶像。我們一定會焦慮——擔心沒人來、擔心冷場、擔心設備出問題。<b>人數不是你的成績單。</b></p>
+      </div>
+      <h4>從一開始就要禱告的五件事</h4>
+      <ul class="dots">
+        <li><b>邀請之前</b>：為你心裡想到的那個人禱告</li>
+        <li><b>場地</b>：為聚會的空間求平安</li>
+        <li><b>設備</b>：特別為網路與器材的穩定禱告（這件事真的要禱告）</li>
+        <li><b>人的心</b>：為每一位要來的人預備心</li>
+        <li><b>聚會後</b>：為每一位來賓持續守望</li>
+      </ul>
+      <p class="snip-note">也鼓勵你在 host 群組裡分享禱告文，彼此堅固。你不是一個人在做這件事。</p>
+    </div>
+  </details>
+
+  <details class="fold">
+    <summary>
+      <span class="st">資源包內容<em>寄到你家的那一箱有什麼</em></span>
+      <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </summary>
+    <div class="body">
+      <div class="pt">
+        <b>佈置物</b>
+        <p>You Belong Here 小旗子、Welcome Home 串旗。</p>
+      </div>
+      <div class="pt">
+        <b>新朋友禮物</b>
+        <p>VIP 卡（實體卡，卡上 QR 就是線上分部 LINE@ 的 QR）、手環、貼紙。</p>
+      </div>
+      <div class="pt">
+        <b>給 host 與服事夥伴的</b>
+        <p><b>傳福音工具書——這本是給已經信主的你和服事夥伴，用來對朋友分享福音的工具，不是給新朋友的禮物。</b>另外還有職場禱告卡。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="fold">
+    <summary>
+      <span class="st">常用連結<em>音樂、素材、報名管道</em></span>
+      <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </summary>
+    <div class="body">
+      <div class="linkbtns">
+        <a class="linkbtn" href="https://open.spotify.com/playlist/0ImvTDLJcdFo1zzq5uH33Y" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14.5c2.5-1 5.5-.8 7.5.5"/><path d="M7 11.5c3-1.2 7-1 9.5.8"/></svg>
+          <span>Spotify 入場音樂<em>官方播放清單</em></span>
+        </a>
+        <a class="linkbtn" href="https://music.youtube.com/playlist?list=PLX4BXz0SrFG_2wBWpAgEKzd9bFLNhlVn6" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3z"/></svg>
+          <span>YouTube 入場音樂<em>同一份清單</em></span>
+        </a>
+        <a class="linkbtn" href="https://drive.google.com/drive/folders/1yskOUnWBHyYzRmGgAU69eqJ5eOOFSQi0" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+          <span>Good Neighbor 素材資料夾<em>視覺素材</em></span>
+        </a>
+        <a class="linkbtn" href="https://lin.ee/Pyo0AMl" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+          <span>線上分部 LINE@<em>@thehopeonline</em></span>
+        </a>
+        <a class="linkbtn" href="https://thehope.co/onlinevip" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 10h5"/><path d="M7 14h8"/></svg>
+          <span>新朋友卡<em>thehope.co/onlinevip</em></span>
+        </a>
+        <a class="linkbtn" href="https://onlinemeetandgreet.paperform.co/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6"/><path d="M22 11h-6"/></svg>
+          <span>ONLINE BELONG 報名<em>想加入小組的入口</em></span>
+        </a>
+        <a class="linkbtn" href="https://www.youtube.com/@TheHopeTV" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3z"/></svg>
+          <span>The Hope YouTube 頻道<em>線上主日直播</em></span>
+        </a>
+        <a class="linkbtn" href="https://j6259676-bot.github.io/good-neighbor/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/></svg>
+          <span>Good Neighbor 活動網站<em>對外的活動頁</em></span>
+        </a>
+      </div>
+      <p class="snip-note">你的名單頁不在這裡——它是你專屬的連結，在報名通知信的「查看完整名單」按鈕裡。</p>
+    </div>
+  </details>
+
+  <details class="fold">
+    <summary>
+      <span class="st">重要日期與時間<em>四週主日與三個場次</em></span>
+      <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </summary>
+    <div class="body">
+      <div class="pt">
+        <b>四週主日</b>
+        <p>8/16、8/23（教會生日）、8/30（BTS）、9/6。</p>
+      </div>
+      <div class="pt">
+        <b>主日場次（台灣時間，YouTube 直播）</b>
+        <p>9:30AM（雙語）、11:30AM（中文）、2PM（中文）。每場都是獨立直播。</p>
+      </div>
+      <div class="pt">
+        <b>直播下架時間</b>
+        <p>約晚上 8PM 下架；下架後仍可透過通知裡的連結完整回看——海外的朋友記得跟他說。</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="fold">
+    <summary>
+      <span class="st">需要幫忙，找誰<em>不要自己硬撐</em></span>
+      <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </summary>
+    <div class="body">
+      <p><b>在 Good Neighbor host LINE 群組裡直接找 staff</b>——不用繞 LINE@，群組裡就找得到人。</p>
+      <h4>遇到這些情況，直接開口</h4>
+      <ul class="dots">
+        <li>對方的訊號讓你不太確定、心裡不踏實</li>
+        <li>對方施壓、越界，或讓你感到不舒服</li>
+        <li>你想找人一起接待，但手邊沒有人手</li>
+        <li>設備、報名、名單頁出狀況</li>
+        <li>任何「我不知道該怎麼處理」的時刻</li>
+      </ul>
+      <p class="snip-note">寧可多問一句，不要自己硬撐。我們做你的後盾。</p>
+    </div>
+  </details>
+
+  <p class="sign">
+    <b>YOU BELONG HERE</b>
+    你打開的不只是一扇門，是一個讓人被接住的空間。<br>
+    謝謝你打開家門。The Hope｜Good Neighbor
+  </p>
+</footer>
+
 <nav class="tabbar" role="tablist" aria-label="主導覽">
   <button class="tab" role="tab" data-view="s1" aria-selected="false">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
@@ -1710,6 +1923,145 @@ a.linkbtn em{display:block;font-style:normal;font-size:12.5px;font-weight:500;co
   });
   document.addEventListener("keydown", function(e){
     if(e.key === "Escape" && !sheet.hidden){ closeSheet(); }
+  });
+
+  /* ---- 搜尋 ---- */
+  var LABEL = {
+    mind: "心態", s1: "聯繫", s2: "場地", s3: "現場",
+    s4: "下一步", s5: "回報", scan: "掃碼", more: "更多"
+  };
+  var index = [];
+
+  Array.prototype.forEach.call(document.querySelectorAll("details.item"), function(d){
+    var view = d.closest(".view");
+    var ixEl = d.querySelector(".ix");
+    var titleEl = d.querySelector(".hd b");
+    var doEl = d.querySelector(".hd .do");
+    index.push({
+      kind: "item",
+      node: d,
+      view: view ? view.id : "mind",
+      ix: ixEl ? ixEl.textContent.trim() : "",
+      title: titleEl ? titleEl.textContent.trim() : "",
+      sub: doEl ? doEl.textContent.trim() : "",
+      text: d.textContent.toLowerCase()
+    });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".qr-card"), function(c){
+    index.push({
+      kind: "qr",
+      node: c,
+      view: "scan",
+      ix: "掃碼",
+      title: c.querySelector("h3").textContent.trim(),
+      sub: c.querySelector(".qr-when").textContent.trim(),
+      text: c.textContent.toLowerCase()
+    });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll("footer.more details.fold"), function(f){
+    var st = f.querySelector(".st");
+    var em = st ? st.querySelector("em") : null;
+    var title = st ? st.textContent.trim() : "";
+    if(em){ title = title.replace(em.textContent.trim(), "").trim(); }
+    index.push({
+      kind: "fold",
+      node: f,
+      view: "more",
+      ix: "更多",
+      title: title,
+      sub: em ? em.textContent.trim() : "",
+      text: f.textContent.toLowerCase()
+    });
+  });
+
+  var sheetS = document.getElementById("searchSheet");
+  var input = document.getElementById("searchInput");
+  var resBox = document.getElementById("searchRes");
+
+  function goTo(entry){
+    closeSearch();
+    if(entry.kind === "fold"){
+      entry.node.open = true;
+      setTimeout(function(){
+        entry.node.scrollIntoView({ block: "center", behavior: "smooth" });
+      }, 60);
+      return;
+    }
+    show(entry.view, true);
+    setTimeout(function(){
+      if(entry.kind === "item"){ entry.node.open = true; }
+      entry.node.scrollIntoView({ block: "center", behavior: "smooth" });
+      var cls = entry.kind === "qr" ? "flash" : "hit";
+      entry.node.classList.remove(cls);
+      void entry.node.offsetWidth;
+      entry.node.classList.add(cls);
+      setTimeout(function(){ entry.node.classList.remove(cls); }, 1900);
+    }, 60);
+  }
+
+  function renderResults(q){
+    resBox.textContent = "";
+    var query = q.trim().toLowerCase();
+    if(!query){
+      var tip = document.createElement("p");
+      tip.className = "search-empty";
+      tip.textContent = "輸入關鍵字找內容，例如：婉拒、音量、地址、小組、VIP、回報。";
+      resBox.appendChild(tip);
+      return;
+    }
+    var hits = index.filter(function(e){ return e.text.indexOf(query) !== -1; });
+    hits.sort(function(a, b){
+      var at = a.title.toLowerCase().indexOf(query) !== -1 ? 0 : 1;
+      var bt = b.title.toLowerCase().indexOf(query) !== -1 ? 0 : 1;
+      return at - bt;
+    });
+    if(!hits.length){
+      var none = document.createElement("p");
+      none.className = "search-empty";
+      none.textContent = "找不到「" + q.trim() + "」。\n換個說法試試，或直接用下面的導覽列翻。";
+      resBox.appendChild(none);
+      return;
+    }
+    hits.slice(0, 14).forEach(function(e){
+      var b = document.createElement("button");
+      b.className = "res";
+      var ix = document.createElement("span");
+      ix.className = "rix";
+      ix.textContent = e.ix || LABEL[e.view] || "";
+      var tx = document.createElement("span");
+      tx.className = "rtx";
+      var t = document.createElement("b");
+      t.textContent = e.title;
+      var s = document.createElement("span");
+      s.textContent = (LABEL[e.view] || "") + (e.sub ? "　" + e.sub : "");
+      tx.appendChild(t);
+      tx.appendChild(s);
+      b.appendChild(ix);
+      b.appendChild(tx);
+      b.addEventListener("click", function(){ goTo(e); });
+      resBox.appendChild(b);
+    });
+  }
+
+  function openSearch(){
+    sheetS.hidden = false;
+    document.body.style.overflow = "hidden";
+    input.value = "";
+    renderResults("");
+    input.focus();
+  }
+  function closeSearch(){
+    sheetS.hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  document.getElementById("searchBtn").addEventListener("click", openSearch);
+  document.getElementById("searchClose").addEventListener("click", closeSearch);
+  input.addEventListener("input", function(){ renderResults(input.value); });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && !sheetS.hidden){ closeSearch(); }
   });
 
   show(location.hash.replace("#","") || "mind", false);
