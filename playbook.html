@@ -132,6 +132,106 @@ details.fold[open]>summary .chev{transform:rotate(180deg)}
 details.fold>summary:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
 details.fold .body{padding:2px 20px 20px}
 
+/* ---------- 區塊工具列 ---------- */
+.tools{display:flex;justify-content:flex-end;margin-top:16px}
+.tools button{
+  display:inline-flex;align-items:center;gap:7px;
+  background:none;border:1px solid var(--line);border-radius:999px;
+  padding:8px 15px;font-family:var(--zh);font-size:13px;font-weight:700;
+  color:var(--ink-soft);cursor:pointer
+}
+.tools button:hover{background:#fff}
+.tools button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.tools svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- 節（兩層） ---------- */
+details.item{
+  background:var(--paper);border:1px solid var(--line);border-radius:18px;
+  box-shadow:var(--shadow);margin-top:12px;overflow:hidden
+}
+details.item>summary{
+  list-style:none;cursor:pointer;padding:16px 18px;
+  display:flex;align-items:flex-start;gap:12px
+}
+details.item>summary::-webkit-details-marker{display:none}
+details.item>summary:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
+details.item .ix{
+  flex:none;font-size:12px;font-weight:900;color:var(--gold-deep);
+  background:var(--gold-tint);border-radius:8px;padding:3px 7px;margin-top:3px;line-height:1.4
+}
+details.item .hd{flex:1;min-width:0}
+details.item .hd b{display:block;font-size:16px;font-weight:900;line-height:1.55}
+details.item .hd .do{display:block;font-size:14.5px;line-height:1.75;color:var(--muted);margin-top:4px}
+details.item .chev{flex:none;width:20px;height:20px;margin-top:4px;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s ease}
+details.item[open]>summary .chev{transform:rotate(180deg)}
+details.item[open]>summary .hd .do{color:var(--ink-soft)}
+details.item .body{padding:2px 18px 20px;border-top:1px solid var(--line);margin-top:2px;padding-top:16px}
+details.item .body p{font-size:15px;line-height:1.85}
+details.item .body p+p{margin-top:12px}
+details.item .body h4{font-size:14.5px;font-weight:900;margin:18px 0 8px}
+
+/* ---------- 可複製片段 ---------- */
+.snip{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:14px;background:#FCFBF7}
+.snip-h{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 12px 10px 14px;border-bottom:1px solid var(--line);background:#fff
+}
+.snip-h span{font-size:13px;font-weight:900;color:var(--ink-soft)}
+button.copy{
+  flex:none;display:inline-flex;align-items:center;gap:6px;
+  background:var(--gold);border:0;border-radius:999px;padding:7px 14px;
+  font-family:var(--zh);font-size:12.5px;font-weight:900;color:var(--ink);cursor:pointer;
+  transition:background .16s ease
+}
+button.copy:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+button.copy.done{background:var(--ink);color:#fff}
+button.copy svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.snip-t{
+  white-space:pre-line;padding:13px 14px;font-size:14.5px;line-height:1.85;color:var(--ink-soft)
+}
+.snip-note{font-size:13px;color:var(--muted);margin-top:8px}
+
+/* ---------- 條列 ---------- */
+ul.dots{list-style:none;margin-top:8px}
+ul.dots li{position:relative;padding-left:19px;margin-top:8px;font-size:14.5px;line-height:1.8;color:var(--ink-soft)}
+ul.dots li::before{content:"";position:absolute;left:2px;top:.78em;width:7px;height:7px;border-radius:50%;background:var(--gold)}
+
+/* 安全訊號兩欄 */
+.signal{border-left:3px solid var(--line);padding-left:14px;margin-top:16px}
+.signal.ok{border-left-color:#3f8f63}
+.signal.warn{border-left-color:#b5583c}
+.signal h4{margin-top:0 !important}
+.signal.ok h4{color:#2c6b49}
+.signal.warn h4{color:#8d4229}
+.signal ul.dots li::before{background:currentColor;opacity:.5}
+.signal.ok ul.dots li::before{background:#3f8f63}
+.signal.warn ul.dots li::before{background:#b5583c}
+
+/* 編號守則 */
+ol.rules{list-style:none;counter-reset:r;margin-top:10px}
+ol.rules li{counter-increment:r;position:relative;padding-left:38px;margin-top:14px;font-size:14.5px;line-height:1.8;color:var(--ink-soft)}
+ol.rules li::before{
+  content:counter(r);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:50%;
+  background:var(--gold);color:var(--ink);font-size:13px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;line-height:1
+}
+ol.rules li b{color:var(--ink)}
+
+/* 五步驟總覽 */
+.flow{display:grid;gap:8px;margin-top:16px}
+@media(min-width:560px){.flow{grid-template-columns:repeat(5,1fr)}}
+.flow .st{
+  display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);
+  border-radius:12px;padding:11px 13px;font-size:13.5px;color:var(--muted)
+}
+@media(min-width:560px){.flow .st{flex-direction:column;text-align:center;gap:6px;font-size:12.5px}}
+.flow .st i{
+  flex:none;font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--silver2);
+  color:var(--ink);font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center
+}
+.flow .st.you{border-color:var(--gold);background:var(--gold-tint);color:var(--ink);font-weight:700}
+.flow .st.you i{background:var(--gold)}
+
 /* ---------- scan section ---------- */
 .qr-grid{display:grid;gap:16px;margin-top:18px}
 @media(min-width:640px){.qr-grid{grid-template-columns:1fr 1fr}}
@@ -329,13 +429,215 @@ details.fold .body{padding:2px 20px 20px}
 
   <!-- ============ 五塊（片 2-5 施作） ============ -->
   <section class="view" id="s1" aria-label="聯繫新朋友">
-    <span class="eyebrow">① 聯繫新朋友</span>
+    <span class="eyebrow">階段 1・收到報名通知那天起</span>
     <h1 class="big">他知道有人在等他，<br>並回覆你確認會來。</h1>
-    <div class="todo">
-      <span class="tag">還在做・第 2 片</span>
-      <h3>這一區會有</h3>
-      <p>報名通知信怎麼看、打開你的名單頁、一週內主動聯繫（含可複製的訊息範本）、聯絡完回名單頁標記、在對話裡認識對方、安全紅綠燈、第一次見面的四個守則、需要婉拒或改約時的三句話。</p>
+
+    <div class="flow">
+      <div class="st"><i>1</i>有人在地圖上找到你</div>
+      <div class="st"><i>2</i>你收到通知信</div>
+      <div class="st you"><i>3</i>打開你的名單頁</div>
+      <div class="st you"><i>4</i>一週內主動聯繫</div>
+      <div class="st"><i>5</i>第一次見面</div>
     </div>
+    <p class="hint">系統幫你做了 1、2、5 的通知與收攏。<b>你真正要動手的是第 3、4 步。</b></p>
+
+    <div class="tools"><button class="expand-all" data-scope="s1">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>
+      <span>全部展開</span>
+    </button></div>
+
+    <details class="item">
+      <summary>
+        <span class="ix">1-1</span>
+        <span class="hd">
+          <b>有人報名了，你會收到一封通知信</b>
+          <span class="do">每有一個人報名你的場次，你就會收到一封 Email，信裡有他的所有資料。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p>信裡會寫他的名字、幾位一起來、手機、Email、想說的話；如果你開的是多週的場次，也會寫他要參加哪幾週。</p>
+        <p>信的最下方有一顆黃色按鈕「查看完整名單」——<b>那是進入你管理頁的入口</b>。</p>
+        <p class="snip-note">找不到信的話，先看垃圾郵件匣，寄件者是 The Hope Good Neighbor（online@thehope.co）。</p>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">1-2</span>
+        <span class="hd">
+          <b>打開你的名單頁</b>
+          <span class="do">從通知信的「查看完整名單」進去，把它加到手機書籤。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p>名單頁是一頁看懂你這場的全部狀況：累計報名幾位、每週上限、每一週還可以收幾位。多週的場次會<b>依週分組</b>，每個人都列出電話、Email 和留言，可以直接點著撥號或寄信。</p>
+        <p>你也可以在這一頁<b>自己調整名額上限</b>（例如原本開 8 位，發現空間還夠，可以改成 10 位），改完地圖上就會即時反映。</p>
+        <p class="snip-note">這是你專屬的連結，內容只有你看得到，請不要轉傳給別人。</p>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">1-3</span>
+        <span class="hd">
+          <b>一週內主動聯繫</b>
+          <span class="do">收到報名通知後一週內主動聯絡他，約好第一次見面的時間與地點。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p>越快越好，讓他知道有人在等他。用他報名時留的手機或 Email；<b>先傳訊息（手機／LINE）通常比直接打電話自在</b>。</p>
+        <p>這通聯繫要做到三件事：<b>自我介紹 → 確認他報名了哪一場 → 給下一步，並留一個問題讓他回話。</b>最後留一個問題很重要，那決定他會不會回你。</p>
+        <h4>名單頁有三個工具讓這件事更快</h4>
+        <ul class="dots">
+          <li><b>一鍵撥號／寄信</b>——直接點名單上的電話或 Email</li>
+          <li><b>複製聯絡方式</b>——一次複製所有報名者的資料，貼到記事本或群組</li>
+          <li><b>群組邀請範本</b>——一鍵複製招呼語，貼進 LINE 群組就能開場</li>
+        </ul>
+
+        <div class="snip">
+          <div class="snip-h"><span>首次聯繫訊息</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <p class="snip-t">嗨 ○○ 你好，我是 Good Neighbor「○○○」Watch Party 的 host ○○。
+謝謝你報名加入我們 8/23 的聚會！我們會一起看線上 Hope 主日，看完有一段輕鬆的分享，帶自己來就好。
+想先跟你確認一下——這個時間你方便嗎？也想認識你一下，你是怎麼知道這個活動的呢？或是我們可以約一個時間電話或碰面聊聊！</p>
+        </div>
+
+        <div class="snip">
+          <div class="snip-h"><span>三天沒回覆，輕輕跟進</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <p class="snip-t">嗨 ○○，怕上一則訊息被洗掉，再跟你確認一下 8/23 的聚會～如果時間不合也沒關係，再跟我說一聲就好！</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">1-4</span>
+        <span class="hd">
+          <b>聯絡完，回名單頁標記</b>
+          <span class="do">每聯絡完一位，就在名單頁標「待聯繫／會來／不會來」。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p>這不只是給你自己看的紀錄。<b>標「不會來」會把名額釋放回地圖，讓其他人補上</b>——所以請誠實標記，這直接影響還有多少人能加入你這場。</p>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">1-5</span>
+        <span class="hd">
+          <b>在對話裡認識對方</b>
+          <span class="do">聯繫不只是報時間地點，順便自然地認識他。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p>別做成身家調查，就是聊天。報名表上如果他填了「邀請人」，這是很好的線索——如果那是你或線上分部認得的人，你可以私下跟那位邀請人確認一下，馬上就安心許多。</p>
+        <div class="snip">
+          <div class="snip-h"><span>可以問的問題</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <p class="snip-t">你是怎麼知道這個 Watch Party 的？
+什麼原因讓你想來 The Hope 的聚會，並且參加這次的 Watch Party？
+你之前有接觸過 The Hope 或線上主日嗎？過去有參與過教會活動嗎？
+這次會有幾個人一起來？彼此是朋友還是家人？
+對這次聚會，你有沒有什麼期待，或想先問的？</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">1-6</span>
+        <span class="hd">
+          <b>安全紅綠燈</b>
+          <span class="do">聯繫的過程中，留意幾個訊號，判斷這個人適不適合進到你家。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p>沒有百分之百的公式，看的是「整體感覺」。這不是要你疑神疑鬼，而是讓你能放心地熱情。</p>
+
+        <div class="signal ok">
+          <h4>比較安心的訊號</h4>
+          <ul class="dots">
+            <li>願意回答基本問題，講得出自己是誰、怎麼來的</li>
+            <li>有具體的邀請人，或本來就在教會、小組的關係網裡</li>
+            <li>對聚會的期待單純（想認識人、想試試看、朋友揪的）</li>
+            <li>溝通有來有往、尊重你的安排</li>
+          </ul>
+        </div>
+
+        <div class="signal warn">
+          <h4>需要多留意的訊號</h4>
+          <p class="snip-note">不代表一定有問題，但請放慢、找團隊討論。</p>
+          <ul class="dots">
+            <li>一直迴避「你是誰、怎麼知道這活動」這類基本問題</li>
+            <li>很快、很急地想拿到你的<b>住家地址</b>，或想單獨見面</li>
+            <li>對你個人過度好奇（感情狀況、是否獨居、幾點只有你在家）</li>
+            <li>言語越界、讓你感到不舒服或被施壓</li>
+            <li>說法前後兜不起來；服裝儀容明顯不整</li>
+          </ul>
+        </div>
+
+        <h4>一個簡單原則：資訊分階段給</h4>
+        <p>第一次聯繫先給大方向——聚會時間、大概區域、活動內容。<b>確切地址等到你確認安心、也快到聚會時再給。</b>先在對話裡認識，不急著把家門的鑰匙交出去。</p>
+        <p><b>你有權隨時取消不合適的參與者。</b>覺得不對，就交給團隊處理。</p>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">1-7</span>
+        <span class="hd">
+          <b>第一次見面的四個守則</b>
+          <span class="do">第一次聚會務必做到這四件事，之後熟了再放鬆。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <ol class="rules">
+          <li><b>不要只有你一個人在場。</b>找另一位服事夥伴、家人或共同 host 一起接待。人多不只更安全，氣氛也更自在。</li>
+          <li><b>或者第一次先約在公共空間</b>（咖啡廳、教會據點、社區空間），彼此見過面、確認 OK，之後再約到家裡。</li>
+          <li><b>讓別人知道你的行程。</b>告訴一位線上分部的夥伴或家人：今天幾點、有誰要來、大概多久。給自己一個「有人知道」的後盾。</li>
+          <li><b>獨居或女性 host 特別建議</b>：第一次一定至少兩人一起接待，或先約在外面。<b>這不是軟弱，是智慧。</b></li>
+        </ol>
+        <p>另外：家裡貴重物品、家人作息，不需要主動揭露。</p>
+        <p><b>相信你的直覺。</b>如果過程中感覺不對，你隨時可以改約公共場合、請團隊介入，或婉拒。你不需要為了「不好意思」勉強自己。</p>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">1-8</span>
+        <span class="hd">
+          <b>需要婉拒或改約時</b>
+          <span class="do">用這三句話，溫和又清楚地踩住界線。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p><b>婉拒不是拒絕人，而是把他交回團隊、找更合適的安排。</b>你永遠可以說「我再幫你問問看」，把難題交給我們。</p>
+
+        <div class="snip">
+          <div class="snip-h"><span>改約到公共場合</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <p class="snip-t">這次我們先約在○○（咖啡廳／教會據點）碰面認識一下，之後有機會再到家裡聚，好嗎？</p>
+        </div>
+
+        <div class="snip">
+          <div class="snip-h"><span>需要時間再確認</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <p class="snip-t">這場我想再跟團隊確認一下細節，我晚點回覆你確切的時間地點喔！</p>
+        </div>
+
+        <div class="snip">
+          <div class="snip-h"><span>婉拒這一場</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <p class="snip-t">不好意思，這場的名額和安排剛好不太合適。我幫你留意其他更適合的場次，再告訴你好嗎？</p>
+        </div>
+
+        <p class="snip-note">任何時候不確定，交給團隊：在 Good Neighbor host LINE 群組裡直接找 staff。</p>
+      </div>
+    </details>
   </section>
 
   <section class="view" id="s2" aria-label="場地預備">
@@ -500,6 +802,60 @@ details.fold .body{padding:2px 20px 20px}
   });
   document.getElementById("homeBtn").addEventListener("click", function(){ show("mind", true); });
   window.addEventListener("hashchange", function(){ show(location.hash.replace("#",""), false); });
+
+  /* ---- 一鍵複製 ---- */
+  function copyText(txt){
+    if(navigator.clipboard && window.isSecureContext){
+      return navigator.clipboard.writeText(txt);
+    }
+    return new Promise(function(res, rej){
+      var ta = document.createElement("textarea");
+      ta.value = txt;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try{ ok = document.execCommand("copy"); }catch(e){ ok = false; }
+      document.body.removeChild(ta);
+      ok ? res() : rej(new Error("copy failed"));
+    });
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll("button.copy"), function(btn){
+    btn.addEventListener("click", function(e){
+      e.preventDefault();
+      var snip = btn.closest(".snip");
+      var body = snip ? snip.querySelector(".snip-t") : null;
+      if(!body){ return; }
+      var txt = body.textContent.split("\n").map(function(l){ return l.trim(); }).join("\n").trim();
+      var label = btn.querySelector(".lb");
+      copyText(txt).then(function(){
+        btn.classList.add("done");
+        label.textContent = "已複製";
+      }).catch(function(){
+        label.textContent = "請長按複製";
+      });
+      clearTimeout(btn._t);
+      btn._t = setTimeout(function(){
+        btn.classList.remove("done");
+        label.textContent = "複製";
+      }, 1800);
+    });
+  });
+
+  /* ---- 全部展開 / 收合 ---- */
+  Array.prototype.forEach.call(document.querySelectorAll(".expand-all"), function(btn){
+    btn.addEventListener("click", function(){
+      var scope = document.getElementById(btn.dataset.scope);
+      if(!scope){ return; }
+      var items = scope.querySelectorAll("details.item");
+      var anyClosed = Array.prototype.some.call(items, function(d){ return !d.open; });
+      Array.prototype.forEach.call(items, function(d){ d.open = anyClosed; });
+      btn.querySelector("span").textContent = anyClosed ? "全部收合" : "全部展開";
+    });
+  });
 
   /* ---- fullscreen QR ---- */
   var sheet = document.getElementById("sheet");
