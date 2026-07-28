@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Host Play Book ｜ Good Neighbor ｜ The Hope</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F4F1E8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>@import url("https://fontsapi.zeoseven.com/745/main/result.css");</style>
+<style>
+:root{
+  --ink:#191817; --ink-soft:#46443f; --muted:#5f5e58;
+  --gold:#F4B400; --gold-deep:#8a6500; --gold-tint:rgba(244,180,0,.16);
+  --silver1:#F4F1E8; --silver2:#CDC9BD;
+  --paper:#fff; --line:#e6e3da;
+  --zh:"Noto Sans TC",-apple-system,BlinkMacSystemFont,sans-serif;
+  --display:"Mantou Sans","Noto Sans TC",sans-serif;
+  --bar:64px;
+  --shadow:0 2px 10px rgba(25,24,23,.06), 0 12px 30px rgba(25,24,23,.07);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--zh);color:var(--ink);line-height:1.78;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  display:flex;flex-direction:column;min-height:100vh;
+  padding-bottom:calc(var(--bar) + env(safe-area-inset-bottom));
+  background:
+    radial-gradient(90% 60% at 82% -6%, rgba(244,180,0,.20), rgba(244,180,0,0) 50%),
+    radial-gradient(130% 78% at 50% 0%, var(--silver1), var(--silver2));
+  background-attachment:fixed;
+}
+img,svg{display:block;max-width:100%}
+h1,h2,h3,p,li{overflow-wrap:break-word;line-break:strict}
+h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
+
+/* ---------- top bar ---------- */
+.topbar{
+  order:1;position:sticky;top:0;z-index:40;
+  background:rgba(244,241,232,.86);backdrop-filter:saturate(1.4) blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.brand{
+  display:flex;align-items:baseline;gap:10px;width:100%;
+  padding:12px clamp(16px,5vw,28px);background:none;border:0;cursor:pointer;
+  font-family:var(--zh);text-align:left;color:var(--ink);
+}
+.brand .gn{font-family:var(--display);font-size:clamp(17px,4.6vw,21px);letter-spacing:.02em;line-height:1.1}
+.brand .pb{font-size:12px;font-weight:700;color:var(--gold-deep);letter-spacing:.06em}
+.brand:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
+
+/* ---------- layout ---------- */
+.wrap{order:3;width:100%;max-width:760px;margin:0 auto;padding:0 clamp(16px,5vw,28px)}
+.view{display:none;padding:22px 0 40px}
+.view.on{display:block;animation:fade .22s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.eyebrow{
+  display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;
+  color:var(--ink);background:var(--gold);padding:5px 13px;border-radius:999px;margin-bottom:12px
+}
+h1.big{font-size:clamp(25px,7vw,34px);font-weight:900;line-height:1.32;letter-spacing:-.01em}
+h2.sec{font-size:clamp(19px,5vw,23px);font-weight:900;line-height:1.4;margin:30px 0 12px}
+h3.sub{font-size:16px;font-weight:700;margin:20px 0 6px}
+p.lead{font-size:16px;color:var(--ink-soft);margin-top:12px}
+.card{
+  background:var(--paper);border:1px solid var(--line);border-radius:18px;
+  padding:20px;box-shadow:var(--shadow);margin-top:16px
+}
+.card h3{font-size:16px;font-weight:900;margin-bottom:8px}
+.card p+p{margin-top:10px}
+ul.tick{list-style:none;margin-top:10px}
+ul.tick li{position:relative;padding-left:22px;margin-top:9px;color:var(--ink-soft)}
+ul.tick li::before{
+  content:"";position:absolute;left:2px;top:.72em;width:8px;height:8px;
+  border-radius:50%;background:var(--gold)
+}
+ul.tick li b{color:var(--ink)}
+.verse{
+  border-left:4px solid var(--gold);background:var(--gold-tint);
+  border-radius:0 14px 14px 0;padding:14px 16px;margin-top:16px;
+  font-size:15px;color:var(--ink-soft)
+}
+.hint{font-size:13.5px;color:var(--muted);margin-top:10px}
+
+/* ---------- scan section ---------- */
+.qr-grid{display:grid;gap:16px;margin-top:18px}
+@media(min-width:640px){.qr-grid{grid-template-columns:1fr 1fr}}
+.qr-card{
+  background:var(--paper);border:1px solid var(--line);border-radius:20px;
+  padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column
+}
+.qr-card h3{font-size:17px;font-weight:900}
+.qr-when{font-size:13.5px;color:var(--muted);margin-top:4px;min-height:2.6em}
+.qr-btn{
+  margin:14px auto 0;padding:10px;background:#fff;border:1px solid var(--line);
+  border-radius:14px;cursor:pointer;display:block;line-height:0;
+  transition:transform .16s ease,box-shadow .16s ease
+}
+.qr-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(25,24,23,.12)}
+.qr-btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.qr-btn svg{width:150px;height:150px}
+.qr-tap{display:block;text-align:center;font-size:12.5px;color:var(--gold-deep);font-weight:700;margin-top:8px}
+.qr-link{
+  display:block;margin-top:12px;font-size:13px;color:var(--muted);
+  text-align:center;word-break:break-all;text-decoration:none;border-top:1px dashed var(--line);padding-top:11px
+}
+.qr-link:hover{color:var(--ink);text-decoration:underline}
+
+/* ---------- fullscreen QR ---------- */
+.sheet{
+  position:fixed;inset:0;z-index:90;background:#fff;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;gap:14px
+}
+.sheet[hidden]{display:none}
+.sheet h3{font-size:20px;font-weight:900;text-align:center}
+.sheet .sheet-when{font-size:14px;color:var(--muted);text-align:center;max-width:34ch}
+.sheet .qbox{padding:14px;background:#fff}
+.sheet .qbox svg{width:min(78vw,380px);height:min(78vw,380px)}
+.sheet .sheet-url{font-size:13px;color:var(--muted);word-break:break-all;text-align:center}
+.sheet .close{
+  position:absolute;top:14px;right:14px;width:44px;height:44px;border-radius:50%;
+  border:1px solid var(--line);background:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center
+}
+.sheet .close:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+/* ---------- placeholder ---------- */
+.todo{
+  background:var(--paper);border:1px dashed #c8c4b8;border-radius:18px;
+  padding:24px;margin-top:18px;text-align:left
+}
+.todo .tag{
+  display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;
+  background:var(--gold-tint);color:var(--gold-deep);padding:4px 11px;border-radius:999px
+}
+.todo h3{font-size:17px;font-weight:900;margin:12px 0 6px}
+.todo p{color:var(--ink-soft);font-size:15px}
+
+/* ---------- bottom tab bar ---------- */
+.tabbar{
+  order:2;position:fixed;left:0;right:0;bottom:0;z-index:50;
+  display:grid;grid-template-columns:repeat(6,1fr);
+  background:rgba(255,255,255,.94);backdrop-filter:saturate(1.4) blur(12px);
+  border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom);
+  box-shadow:0 -4px 20px rgba(25,24,23,.06)
+}
+.tab{
+  border:0;background:none;cursor:pointer;font-family:var(--zh);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  height:var(--bar);color:var(--muted);padding:0 2px;
+  transition:color .16s ease
+}
+.tab svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tab span{font-size:10.5px;font-weight:700;letter-spacing:-.02em;white-space:nowrap}
+.tab .num{font-size:9px;opacity:.65;display:block;line-height:1}
+.tab[aria-selected="true"]{color:var(--ink)}
+.tab[aria-selected="true"] svg{color:var(--gold-deep)}
+.tab:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
+.tab.scan{color:var(--gold-deep)}
+.tab.scan[aria-selected="true"]{color:var(--ink)}
+.tab.scan::before{
+  content:"";position:absolute;inset:6px 5px;border-radius:14px;
+  background:var(--gold-tint);z-index:-1
+}
+.tab.scan{position:relative;isolation:isolate}
+
+@media(min-width:900px){
+  :root{--bar:0px}
+  body{padding-bottom:40px}
+  .tabbar{
+    position:sticky;top:57px;bottom:auto;grid-template-columns:repeat(6,auto);
+    justify-content:center;gap:4px;padding:8px clamp(16px,5vw,28px);
+    border-top:0;border-bottom:1px solid var(--line);box-shadow:none;
+    background:rgba(244,241,232,.9)
+  }
+  .tab{flex-direction:row;height:auto;padding:9px 16px;border-radius:999px;gap:8px}
+  .tab span{font-size:14px}
+  .tab .num{display:inline;font-size:12px}
+  .tab[aria-selected="true"]{background:var(--gold);color:var(--ink)}
+  .tab[aria-selected="true"] svg{color:var(--ink)}
+  .tab.scan::before{inset:0;border-radius:999px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="brand" id="homeBtn" aria-label="回到開頁">
+    <span class="gn">GOOD NEIGHBOR</span>
+    <span class="pb">HOST PLAY BOOK</span>
+  </button>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ 心態（開頁） ============ -->
+  <section class="view on" id="mind" aria-label="心態">
+    <span class="eyebrow">給打開家門的你</span>
+    <h1 class="big">你不只在辦聚會，<br>是在城市中預備一個<br>讓人遇見神的空間。</h1>
+    <p class="lead">從收到報名通知，到聚會結束後的那通問候，這裡有你需要的每一步。急著找答案時，看每一節的第一句就好。</p>
+
+    <h2 class="sec">Why　為什麼要做這個服事</h2>
+    <div class="card">
+      <ul class="tick">
+        <li><b>你不只在辦聚會，是在城市中預備一個讓人遇見神的空間。</b>每一場 Watch Party，都是一顆播在鄰舍心中的種子。</li>
+        <li><b>這比傳一個連結更深。</b>傳連結是給資訊，打開家門是給關係。透過肢體關係，生命有機會影響生命，福音的種子也有機會發芽。</li>
+        <li><b>不是從人多開始，是從你心裡有一個人開始。</b>你不需要把活動辦大。想想身邊那個正在面對壓力的人、對信仰有一點好奇的人——為他禱告，給他一個被歡迎、被陪伴的空間，這就夠了。</li>
+      </ul>
+      <div class="verse">馬太福音 28:18-20｜耶穌對門徒說：我已得到天上地下所有的權柄。所以你們要去，使萬民作我的門徒，奉父、子、聖靈的名給他們施洗，凡我所吩咐你們的，都教訓他們遵守。</div>
+    </div>
+
+    <h2 class="sec">Focus &amp; Goal　我們的焦點與目標</h2>
+    <div class="card">
+      <ul class="tick">
+        <li>讓人<b>感覺像回到家</b>，而不是來參加一場活動。</li>
+        <li>讓人<b>真正「參與」一場主日</b>，而不是「看」一場主日。</li>
+        <li>讓每一個人離開時，<b>都帶著一個屬於他的下一步</b>。</li>
+        <li>讓你<b>放心地熱情</b>——先把界線立好，你才能全心接待。安全和熱情，從來不衝突。</li>
+      </ul>
+    </div>
+
+    <h2 class="sec">Wins　做到什麼算成功</h2>
+    <div class="card">
+      <ul class="tick">
+        <li>他一進門就感受到被接待與歡迎，放鬆下來，願意開口說話、願意開口唱。</li>
+        <li>分享時他說出真實的近況，願意讓你為他禱告。</li>
+        <li>他填了 VIP 卡、加了 LINE@，教會後台能接手繼續關心他。</li>
+        <li>他願意再來一次，或下次帶朋友來。</li>
+      </ul>
+    </div>
+
+    <h2 class="sec">五個階段，你現在在哪一段</h2>
+    <div class="card">
+      <ul class="tick">
+        <li><b>① 聯繫新朋友</b>（收到報名通知那天起）　他知道有人在等他，並回覆你確認會來</li>
+        <li><b>② 場地預備</b>（聚會前一週 - 前一小時）　他一進門就感受到被接待，覺得像回到家</li>
+        <li><b>③ 現場帶領</b>（聚會進行中）　他不是「看一場主日」，是「參與一場主日」</li>
+        <li><b>④ 給出下一步</b>（散會前）　每個人帶走一個屬於他的下一步</li>
+        <li><b>⑤ 會後回報</b>（散會後 24 小時內 - 一週）　他被問候；團隊收到照片與人數</li>
+      </ul>
+      <p class="hint">下面的導覽列可以直接跳到任何一段。最右邊的「掃碼」是散會前要給下一步時，一鍵拿出來給人掃的四個 QR。</p>
+    </div>
+  </section>
+
+  <!-- ============ 五塊（片 2-5 施作） ============ -->
+  <section class="view" id="s1" aria-label="聯繫新朋友">
+    <span class="eyebrow">① 聯繫新朋友</span>
+    <h1 class="big">他知道有人在等他，<br>並回覆你確認會來。</h1>
+    <div class="todo">
+      <span class="tag">還在做・第 2 片</span>
+      <h3>這一區會有</h3>
+      <p>報名通知信怎麼看、打開你的名單頁、一週內主動聯繫（含可複製的訊息範本）、聯絡完回名單頁標記、在對話裡認識對方、安全紅綠燈、第一次見面的四個守則、需要婉拒或改約時的三句話。</p>
+    </div>
+  </section>
+
+  <section class="view" id="s2" aria-label="場地預備">
+    <span class="eyebrow">② 場地預備</span>
+    <h1 class="big">他一進門就感受到被接待，<br>覺得像回到家。</h1>
+    <div class="todo">
+      <span class="tag">還在做・第 3 片</span>
+      <h3>這一區會有</h3>
+      <p>用三個感官打造「像回到家」、空間整理（可勾選清單）、設備測試（可勾選清單）、點心與飲料、寵物安排、抵達資訊與會前提醒、資源包佈置與入場音樂。</p>
+    </div>
+  </section>
+
+  <section class="view" id="s3" aria-label="現場帶領">
+    <span class="eyebrow">③ 現場帶領</span>
+    <h1 class="big">他不是「看一場主日」，<br>是「參與一場主日」。</h1>
+    <div class="todo">
+      <span class="tag">還在做・第 4 片</span>
+      <h3>這一區會有</h3>
+      <p>當天流程時間表、開始前十分鐘的開場、一起敬拜、一起領受、一起連結的三層提問題庫、為他禱告、Host 現場守則。</p>
+    </div>
+  </section>
+
+  <section class="view" id="s4" aria-label="給出下一步">
+    <span class="eyebrow">④ 給出下一步</span>
+    <h1 class="big">每個人帶走<br>一個屬於他的下一步。</h1>
+    <div class="todo">
+      <span class="tag">還在做・第 5 片</span>
+      <h3>這一區會有</h3>
+      <p>三個原則（一次只給一個、具體明確、強調連結感）、VIP 卡與 LINE@、訂閱 YouTube、一起聊一下、Belong 小組與 ONLINE BELONG、再邀請一次 Watch Party。每個選項都有台詞、報名管道與「什麼狀況給這個」。</p>
+      <p class="hint">要給人掃碼的話，現在就可以用下面導覽列的「掃碼」。</p>
+    </div>
+  </section>
+
+  <section class="view" id="s5" aria-label="會後回報">
+    <span class="eyebrow">⑤ 會後回報</span>
+    <h1 class="big">他被問候；<br>團隊收到照片與人數。</h1>
+    <div class="todo">
+      <span class="tag">還在做・第 5 片</span>
+      <h3>這一區會有</h3>
+      <p>24 小時內傳一則問候、回報給團隊（可複製的回報格式）、團隊回顧、持續關懷。</p>
+    </div>
+  </section>
+
+  <!-- ============ 掃碼區 ============ -->
+  <section class="view" id="scan" aria-label="掃碼">
+    <span class="eyebrow">散會前，把手機拿給他掃</span>
+    <h1 class="big">掃碼區</h1>
+    <p class="lead">點任一張 QR 可以放大到全螢幕。原則是<b>一次只給一個</b>——依他的狀況挑最適合的那一張。</p>
+
+    <div class="qr-grid">
+
+      <article class="qr-card">
+        <h3>線上分部 LINE@</h3>
+        <p class="qr-when">每一位新朋友的預設動作。加入後帶他填裡面的新朋友表單，填完送小禮物。</p>
+        <button class="qr-btn" data-qr="line" aria-label="放大線上分部 LINE@ 的 QR Code">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 33" shape-rendering="crispEdges"><path fill="#ffffff" d="M0 0h33v33H0z"/><path stroke="#000000" d="M4 4.5h7m2 0h1m1 0h3m2 0h1m1 0h7M4 5.5h1m5 0h1m2 0h3m1 0h4m1 0h1m5 0h1M4 6.5h1m1 0h3m1 0h1m1 0h1m5 0h2m2 0h1m1 0h3m1 0h1M4 7.5h1m1 0h3m1 0h1m1 0h3m2 0h1m2 0h1m1 0h1m1 0h3m1 0h1M4 8.5h1m1 0h3m1 0h1m1 0h2m1 0h1m2 0h1m1 0h1m1 0h1m1 0h3m1 0h1M4 9.5h1m5 0h1m1 0h1m1 0h1m4 0h1m2 0h1m5 0h1M4 10.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M12 11.5h1m1 0h1m1 0h1m2 0h1M4 12.5h1m1 0h5m2 0h1m1 0h2m1 0h3m1 0h5M4 13.5h6m2 0h3m1 0h1m2 0h2m2 0h1m3 0h1M5 14.5h1m1 0h4m2 0h3m3 0h2m4 0h1m1 0h2M5 15.5h2m4 0h4m1 0h1m1 0h1m1 0h5m3 0h1M6 16.5h2m1 0h4m2 0h1m2 0h1m2 0h2m1 0h1m1 0h3M4 17.5h2m5 0h3m2 0h2m5 0h1m1 0h1m1 0h1M4 18.5h1m2 0h2m1 0h1m3 0h1m3 0h4m1 0h3m1 0h2M4 19.5h1m2 0h1m4 0h2m2 0h1m1 0h3m2 0h2m3 0h1M4 20.5h1m4 0h2m3 0h1m1 0h9m1 0h1M12 21.5h2m3 0h1m1 0h2m3 0h2M4 22.5h7m4 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h3M4 23.5h1m5 0h1m1 0h1m2 0h1m4 0h1m3 0h2M4 24.5h1m1 0h3m1 0h1m1 0h1m1 0h2m3 0h6m1 0h3M4 25.5h1m1 0h3m1 0h1m1 0h2m2 0h2m4 0h1m1 0h5M4 26.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h2m6 0h2m1 0h1M4 27.5h1m5 0h1m2 0h2m1 0h2m1 0h3m1 0h3m2 0h1M4 28.5h7m1 0h1m1 0h1m1 0h1m1 0h1m4 0h6"/></svg>
+        </button>
+        <span class="qr-tap">點一下放大</span>
+        <a class="qr-link" href="https://lin.ee/Pyo0AMl" target="_blank" rel="noopener">lin.ee/Pyo0AMl　（ID：@thehopeonline）</a>
+      </article>
+
+      <article class="qr-card">
+        <h3>新朋友卡</h3>
+        <p class="qr-when">對方沒在用 LINE 時的備援（海外的朋友常見），填的內容一樣。</p>
+        <button class="qr-btn" data-qr="vip" aria-label="放大新朋友卡的 QR Code">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><path fill="#ffffff" d="M0 0h37v37H0z"/><path stroke="#000000" d="M4 4.5h7m5 0h4m1 0h4m1 0h7M4 5.5h1m5 0h1m3 0h2m1 0h4m1 0h1m3 0h1m5 0h1M4 6.5h1m1 0h3m1 0h1m1 0h2m1 0h3m1 0h1m4 0h1m1 0h1m1 0h3m1 0h1M4 7.5h1m1 0h3m1 0h1m1 0h2m4 0h2m1 0h1m1 0h1m2 0h1m1 0h3m1 0h1M4 8.5h1m1 0h3m1 0h1m1 0h1m2 0h2m2 0h6m1 0h1m1 0h3m1 0h1M4 9.5h1m5 0h1m1 0h2m1 0h1m5 0h1m4 0h1m5 0h1M4 10.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M12 11.5h1m5 0h1m1 0h1m1 0h3M4 12.5h1m1 0h5m2 0h4m3 0h2m1 0h1m2 0h5M5 13.5h1m1 0h1m4 0h1m1 0h1m2 0h3m2 0h7m3 0h1M4 14.5h1m2 0h6m2 0h1m1 0h4m3 0h1m1 0h1m1 0h1M4 15.5h5m2 0h4m1 0h2m1 0h1m3 0h2m1 0h1m2 0h1m1 0h1M10 16.5h2m6 0h2m1 0h1m1 0h1m5 0h2M4 17.5h1m1 0h3m3 0h3m4 0h2m2 0h2m1 0h3m3 0h1M5 18.5h1m1 0h2m1 0h1m1 0h1m3 0h1m4 0h1m2 0h2m1 0h4M11 19.5h2m5 0h1m1 0h1m1 0h4m1 0h2m2 0h1M4 20.5h3m1 0h1m1 0h2m8 0h2m1 0h1m5 0h2M4 21.5h1m2 0h3m4 0h6m1 0h3m1 0h4m1 0h1m1 0h1M4 22.5h1m1 0h1m3 0h4m3 0h4m1 0h1m1 0h1m3 0h1m1 0h1M4 23.5h1m1 0h3m4 0h1m1 0h1m1 0h1m1 0h1m3 0h2m6 0h1M4 24.5h1m2 0h5m2 0h3m1 0h2m1 0h1m1 0h6m1 0h3M12 25.5h1m2 0h1m3 0h2m3 0h1m3 0h5M4 26.5h7m2 0h2m1 0h1m5 0h3m1 0h1m1 0h3M4 27.5h1m5 0h1m1 0h2m4 0h1m1 0h1m1 0h3m3 0h1m2 0h1M4 28.5h1m1 0h3m1 0h1m1 0h2m1 0h1m4 0h1m1 0h1m1 0h5m1 0h1m1 0h1M4 29.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h3m1 0h5m3 0h2M4 30.5h1m1 0h3m1 0h1m1 0h3m4 0h3m3 0h7M4 31.5h1m5 0h1m2 0h1m2 0h1m1 0h2m1 0h2m1 0h1m1 0h1m1 0h2m1 0h1M4 32.5h7m1 0h1m1 0h2m1 0h3m3 0h1m1 0h6"/></svg>
+        </button>
+        <span class="qr-tap">點一下放大</span>
+        <a class="qr-link" href="https://thehope.co/onlinevip" target="_blank" rel="noopener">thehope.co/onlinevip</a>
+      </article>
+
+      <article class="qr-card">
+        <h3>The Hope YouTube 頻道</h3>
+        <p class="qr-when">他想自己在家看主日。請他訂閱並開啟小鈴鐺，時間到就會通知。</p>
+        <button class="qr-btn" data-qr="yt" aria-label="放大 The Hope YouTube 頻道的 QR Code">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><path fill="#ffffff" d="M0 0h37v37H0z"/><path stroke="#000000" d="M4 4.5h7m4 0h1m3 0h2m1 0h1m3 0h7M4 5.5h1m5 0h1m1 0h1m2 0h4m1 0h1m3 0h1m1 0h1m5 0h1M4 6.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m1 0h1m3 0h2m1 0h1m1 0h3m1 0h1M4 7.5h1m1 0h3m1 0h1m1 0h2m1 0h1m4 0h5m1 0h1m1 0h3m1 0h1M4 8.5h1m1 0h3m1 0h1m2 0h1m2 0h1m2 0h6m1 0h1m1 0h3m1 0h1M4 9.5h1m5 0h1m3 0h1m1 0h1m2 0h1m1 0h1m2 0h1m1 0h1m5 0h1M4 10.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M12 11.5h2m2 0h1m1 0h3m2 0h1M4 12.5h1m5 0h1m1 0h1m12 0h2m2 0h3M4 13.5h2m1 0h3m1 0h1m2 0h2m1 0h1m2 0h1m1 0h2m1 0h1m1 0h2m1 0h2M4 14.5h2m1 0h1m2 0h1m2 0h1m2 0h4m2 0h1m2 0h2M7 15.5h1m3 0h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h4m1 0h1m1 0h1M10 16.5h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m2 0h1m1 0h2m4 0h1M4 17.5h1m2 0h1m5 0h1m1 0h1m4 0h1m2 0h1m2 0h1m1 0h1m2 0h2M6 18.5h2m1 0h3m1 0h1m1 0h1m3 0h1m4 0h1m1 0h2m1 0h2M4 19.5h2m6 0h1m1 0h1m7 0h1m2 0h1m1 0h2m1 0h1m1 0h1M7 20.5h2m1 0h2m4 0h1m2 0h3m5 0h1m1 0h2M4 21.5h2m1 0h2m2 0h2m2 0h1m1 0h2m1 0h9m1 0h3M4 22.5h3m3 0h1m1 0h1m1 0h3m2 0h1m1 0h4m1 0h1m2 0h1m2 0h1M4 23.5h1m3 0h2m1 0h1m1 0h2m2 0h1m2 0h1m1 0h2m1 0h1m1 0h2M4 24.5h1m1 0h2m1 0h2m4 0h2m1 0h2m1 0h1m2 0h5m1 0h3M12 25.5h3m3 0h2m2 0h1m1 0h1m3 0h2M4 26.5h7m2 0h2m1 0h1m2 0h1m3 0h2m1 0h1m1 0h3M4 27.5h1m5 0h1m4 0h2m1 0h1m4 0h2m3 0h1m3 0h1M4 28.5h1m1 0h3m1 0h1m2 0h1m1 0h5m1 0h1m1 0h7m1 0h2M4 29.5h1m1 0h3m1 0h1m3 0h2m2 0h6m1 0h1m1 0h1m1 0h2m1 0h1M4 30.5h1m1 0h3m1 0h1m3 0h2m1 0h4m1 0h2m2 0h6M4 31.5h1m5 0h1m2 0h4m2 0h1m2 0h2m1 0h3m1 0h2m1 0h1M4 32.5h7m1 0h1m1 0h1m6 0h1m1 0h1m1 0h1m1 0h4"/></svg>
+        </button>
+        <span class="qr-tap">點一下放大</span>
+        <a class="qr-link" href="https://www.youtube.com/@TheHopeTV" target="_blank" rel="noopener">youtube.com/@TheHopeTV</a>
+      </article>
+
+      <article class="qr-card">
+        <h3>ONLINE BELONG 報名</h3>
+        <p class="qr-when">他想認識更多人、想加入小組。會幫他連結同地區的 Hope Nation。</p>
+        <button class="qr-btn" data-qr="belong" aria-label="放大 ONLINE BELONG 報名的 QR Code">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><path fill="#ffffff" d="M0 0h37v37H0z"/><path stroke="#000000" d="M4 4.5h7m6 0h1m5 0h2m1 0h7M4 5.5h1m5 0h1m2 0h1m2 0h7m1 0h1m1 0h1m5 0h1M4 6.5h1m1 0h3m1 0h1m1 0h2m1 0h1m3 0h2m1 0h3m1 0h1m1 0h3m1 0h1M4 7.5h1m1 0h3m1 0h1m1 0h1m3 0h3m2 0h1m4 0h1m1 0h3m1 0h1M4 8.5h1m1 0h3m1 0h1m1 0h1m2 0h2m3 0h1m1 0h3m1 0h1m1 0h3m1 0h1M4 9.5h1m5 0h1m1 0h1m2 0h3m1 0h1m6 0h1m5 0h1M4 10.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M12 11.5h5m1 0h1m5 0h1M4 12.5h1m1 0h5m3 0h1m2 0h5m4 0h5M4 13.5h1m1 0h1m5 0h1m1 0h2m1 0h1m2 0h1m1 0h7m3 0h1M6 14.5h2m1 0h2m2 0h1m3 0h4m5 0h3M4 15.5h4m3 0h3m1 0h2m1 0h1m1 0h1m2 0h4m2 0h1m1 0h1M6 16.5h1m1 0h3m1 0h1m1 0h2m1 0h1m3 0h1m1 0h1m5 0h2M4 17.5h1m2 0h1m4 0h1m1 0h1m2 0h1m2 0h1m2 0h6m3 0h1M6 18.5h1m2 0h3m4 0h4m4 0h1m3 0h3M5 19.5h1m1 0h1m1 0h1m3 0h4m1 0h1m1 0h1m1 0h1m4 0h1m3 0h1M4 20.5h4m1 0h8m2 0h1m1 0h2m6 0h2M4 21.5h1m3 0h1m2 0h3m3 0h1m2 0h9m1 0h1m1 0h1M4 22.5h1m1 0h2m2 0h1m1 0h2m2 0h4m1 0h1m4 0h1m3 0h1M4 23.5h1m1 0h1m4 0h1m2 0h1m1 0h2m4 0h1m1 0h1m2 0h1m3 0h1M4 24.5h1m2 0h1m1 0h2m1 0h1m3 0h1m1 0h4m2 0h5m1 0h3M12 25.5h1m1 0h1m5 0h1m2 0h2m3 0h5M4 26.5h7m3 0h1m4 0h2m1 0h3m1 0h1m1 0h3M4 27.5h1m5 0h1m1 0h2m4 0h3m1 0h3m3 0h1m2 0h1M4 28.5h1m1 0h3m1 0h1m1 0h2m1 0h2m2 0h1m1 0h1m2 0h5m1 0h3M4 29.5h1m1 0h3m1 0h1m1 0h1m1 0h2m1 0h2m1 0h1m1 0h2m5 0h4M4 30.5h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h2m2 0h2m1 0h7M4 31.5h1m5 0h1m4 0h1m2 0h2m4 0h1m2 0h1m1 0h1m1 0h1M4 32.5h7m1 0h1m2 0h1m1 0h5m1 0h1m3 0h1m2 0h1"/></svg>
+        </button>
+        <span class="qr-tap">點一下放大</span>
+        <a class="qr-link" href="https://onlinemeetandgreet.paperform.co/" target="_blank" rel="noopener">onlinemeetandgreet.paperform.co</a>
+      </article>
+
+    </div>
+
+    <p class="hint">四個 QR 都存在這一頁裡面，網路不通也叫得出來。你可以把這一區單獨加到手機書籤：現在的網址就會直接回到掃碼區。</p>
+  </section>
+
+</main>
+
+<nav class="tabbar" role="tablist" aria-label="主導覽">
+  <button class="tab" role="tab" data-view="s1" aria-selected="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+    <span><span class="num">①</span>聯繫</span>
+  </button>
+  <button class="tab" role="tab" data-view="s2" aria-selected="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+    <span><span class="num">②</span>場地</span>
+  </button>
+  <button class="tab" role="tab" data-view="s3" aria-selected="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="m17 2-5 5-5-5"/></svg>
+    <span><span class="num">③</span>現場</span>
+  </button>
+  <button class="tab" role="tab" data-view="s4" aria-selected="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="m12 8 4 4-4 4"/></svg>
+    <span><span class="num">④</span>下一步</span>
+  </button>
+  <button class="tab" role="tab" data-view="s5" aria-selected="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
+    <span><span class="num">⑤</span>回報</span>
+  </button>
+  <button class="tab scan" role="tab" data-view="scan" aria-selected="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="3" y="15" width="6" height="6" rx="1"/><path d="M15 15h2v2h-2z"/><path d="M19 15h2"/><path d="M15 19h2"/><path d="M19 19h2v2h-2z"/></svg>
+    <span>掃碼</span>
+  </button>
+</nav>
+
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <button class="close" id="sheetClose" aria-label="關閉">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#191817" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+  </button>
+  <h3 id="sheetTitle"></h3>
+  <p class="sheet-when" id="sheetWhen"></p>
+  <div class="qbox" id="sheetQr"></div>
+  <p class="sheet-url" id="sheetUrl"></p>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var VIEWS = ["mind","s1","s2","s3","s4","s5","scan"];
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+
+  function show(id, push){
+    if(VIEWS.indexOf(id) === -1){ id = "mind"; }
+    VIEWS.forEach(function(v){
+      var el = document.getElementById(v);
+      if(el){ el.classList.toggle("on", v === id); }
+    });
+    tabs.forEach(function(t){
+      t.setAttribute("aria-selected", String(t.dataset.view === id));
+    });
+    if(push && location.hash !== "#" + id){
+      history.pushState(null, "", "#" + id);
+    }
+    window.scrollTo(0, 0);
+  }
+
+  tabs.forEach(function(t){
+    t.addEventListener("click", function(){ show(t.dataset.view, true); });
+  });
+  document.getElementById("homeBtn").addEventListener("click", function(){ show("mind", true); });
+  window.addEventListener("hashchange", function(){ show(location.hash.replace("#",""), false); });
+
+  /* ---- fullscreen QR ---- */
+  var sheet = document.getElementById("sheet");
+  var sheetQr = document.getElementById("sheetQr");
+  var lastFocus = null;
+
+  function openSheet(btn){
+    var card = btn.closest(".qr-card");
+    lastFocus = btn;
+    document.getElementById("sheetTitle").textContent = card.querySelector("h3").textContent;
+    document.getElementById("sheetWhen").textContent = card.querySelector(".qr-when").textContent;
+    document.getElementById("sheetUrl").textContent = card.querySelector(".qr-link").getAttribute("href");
+    sheetQr.textContent = "";
+    var svg = btn.querySelector("svg");
+    if(svg){ sheetQr.appendChild(svg.cloneNode(true)); }
+    sheet.hidden = false;
+    document.body.style.overflow = "hidden";
+    document.getElementById("sheetClose").focus();
+  }
+  function closeSheet(){
+    sheet.hidden = true;
+    document.body.style.overflow = "";
+    if(lastFocus){ lastFocus.focus(); }
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll(".qr-btn"), function(b){
+    b.addEventListener("click", function(){ openSheet(b); });
+  });
+  document.getElementById("sheetClose").addEventListener("click", closeSheet);
+  sheet.addEventListener("click", function(e){
+    if(e.target === sheet){ closeSheet(); }
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && !sheet.hidden){ closeSheet(); }
+  });
+
+  show(location.hash.replace("#","") || "mind", false);
+})();
+</script>
+</body>
+</html>
