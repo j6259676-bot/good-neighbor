@@ -804,22 +804,29 @@ ol.rules li b{color:var(--ink)}
   window.addEventListener("hashchange", function(){ show(location.hash.replace("#",""), false); });
 
   /* ---- 一鍵複製 ---- */
+  /* 先試 Clipboard API；失敗（LINE 內建瀏覽器、權限政策、舊版 iOS）再退回 execCommand */
   function copyText(txt){
-    if(navigator.clipboard && window.isSecureContext){
-      return navigator.clipboard.writeText(txt);
-    }
     return new Promise(function(res, rej){
-      var ta = document.createElement("textarea");
-      ta.value = txt;
-      ta.setAttribute("readonly", "");
-      ta.style.position = "fixed";
-      ta.style.opacity = "0";
-      document.body.appendChild(ta);
-      ta.select();
-      var ok = false;
-      try{ ok = document.execCommand("copy"); }catch(e){ ok = false; }
-      document.body.removeChild(ta);
-      ok ? res() : rej(new Error("copy failed"));
+      function legacy(){
+        var ta = document.createElement("textarea");
+        ta.value = txt;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.top = "0";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.setSelectionRange(0, txt.length);
+        var ok = false;
+        try{ ok = document.execCommand("copy"); }catch(e){ ok = false; }
+        document.body.removeChild(ta);
+        ok ? res("legacy") : rej(new Error("copy failed"));
+      }
+      if(navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(txt).then(function(){ res("api"); }, legacy);
+      }else{
+        legacy();
+      }
     });
   }
 
