@@ -169,6 +169,9 @@ details.item .body{padding:2px 18px 20px;border-top:1px solid var(--line);margin
 details.item .body p{font-size:15px;line-height:1.85}
 details.item .body p+p{margin-top:12px}
 details.item .body h4{font-size:14.5px;font-weight:900;margin:18px 0 8px}
+details.item .body .pt b{font-size:15.5px}
+details.item .body .pt:first-child{padding-top:0}
+details.item .body .pt+.snip{margin-top:16px}
 
 /* ---------- 可複製片段 ---------- */
 .snip{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:14px;background:#FCFBF7}
@@ -737,12 +740,18 @@ a.linkbtn em{display:block;font-style:normal;font-size:12.5px;font-weight:500;co
         <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
       </summary>
       <div class="body">
-        <h4>聽覺——他一進門聽見什麼？</h4>
-        <p>想像你緊張地走進一個地方，迎接你的是一片安靜，還是輕快的音樂？兩種感覺天差地遠。<b>入場請放輕快、歡樂的音樂，不要放太過安靜、催眠的音樂。</b>有背景音，人才敢開口說話。</p>
-        <h4>視覺——他進來後看見什麼？</h4>
-        <p>空間整潔、明亮、舒適，人一進來就會放鬆。<b>還有你的微笑</b>——真誠的笑容，是最便宜也最有效的佈置。</p>
-        <h4>嗅覺與味覺——坐下來後聞到、感覺到什麼？</h4>
-        <p>是流通的空氣、淡淡的香氣，還是悶住的霉味？不用很香，空氣流通或一點簡單香氛就夠了。食物的香氣也算——一點點點心的味道，會讓空間立刻有「家」的感覺。</p>
+        <div class="pt">
+          <b>聽覺——放輕快的音樂，不要太安靜</b>
+          <p>一片安靜和一點輕快音樂，走進來的感覺天差地遠。有背景音，人才敢開口說話。避免太安靜、催眠的音樂。</p>
+        </div>
+        <div class="pt">
+          <b>視覺——整潔、明亮，加上你的微笑</b>
+          <p>空間乾淨舒適，人一進來就會放鬆。真誠的笑容是最便宜也最有效的佈置。</p>
+        </div>
+        <div class="pt">
+          <b>嗅覺——空氣流通就夠了</b>
+          <p>不用很香，通風或一點簡單香氛即可。一點點心的味道也算，會讓空間立刻有「家」的感覺。</p>
+        </div>
       </div>
     </details>
 
@@ -810,6 +819,7 @@ a.linkbtn em{display:block;font-style:normal;font-size:12.5px;font-weight:500;co
       <div class="body">
         <p>食物不需要澎湃，<b>重點是真誠與用心</b>。一邊吃一邊聊，是最自然的破冰。</p>
         <p>有一招很好用：<b>邀請新朋友一起來幫忙準備。</b>我們去到別人家，最尷尬的就是「不知道自己可以做什麼」——被指派一個小任務（切水果、擺盤、倒飲料），尷尬和戒心會馬上降下來。</p>
+        <p class="snip-note"><b>點心是入場和會後用的。</b>主日進行中不鼓勵邊吃邊看——那會讓人分心，也會有人一直起身走動。</p>
       </div>
     </details>
 
@@ -943,14 +953,19 @@ a.linkbtn em{display:block;font-style:normal;font-size:12.5px;font-weight:500;co
         <p><b>新朋友最大的不安是「我不知道等一下要幹嘛」。</b>你花兩分鐘講清楚流程，他接下來兩小時都會自在很多。</p>
         <h4>要講的三件事</h4>
         <p><b>① 等一下會發生什麼事</b>——用白話解釋每一段，不要只報名詞：</p>
-        <ul class="dots">
-          <li><b>敬拜</b>：我們透過歌唱來讚美神，也預備自己的心</li>
-          <li><b>講道</b>：牧師會分享一些話，幫助我們更認識神的心意</li>
-          <li><b>禱告</b>：就是跟上帝說話</li>
-          <li>然後我們會留一段時間一起聊聊</li>
-        </ul>
+        <div class="snip">
+          <div class="snip-h"><span>可以照著講</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <ul class="dots snip-list">
+            <li><b>主日</b>：聚在一起，把心思焦點轉向神身上的聚會</li>
+            <li><b>敬拜</b>：透過歌唱把眼光轉向神，向祂獻上感謝與尊榮</li>
+            <li><b>講道</b>：透過聖經認識神，明白祂的心意，最近的主題跟職場有關</li>
+            <li><b>禱告</b>：跟神說話，向祂傾心並尋求祂的帶領</li>
+            <li>然後我們會留一段時間一起聊聊</li>
+          </ul>
+        </div>
+        <p class="snip-note">講道主題依當期系列調整，講之前確認一下最近在講什麼。</p>
         <p><b>② 敬拜時可以站起來一起唱</b>，但不勉強。</p>
-        <p><b>③ 中間想去洗手間、想拿東西吃都可以</b>，不用拘束。</p>
+        <p><b>③ 中間需要去洗手間隨時可以</b>，不用拘束。</p>
         <p class="snip-note">順便營造氣氛：謝謝大家今天來、簡單自我介紹一輪（如果人不多）。</p>
       </div>
     </details>
@@ -966,12 +981,18 @@ a.linkbtn em{display:block;font-style:normal;font-size:12.5px;font-weight:500;co
       </summary>
       <div class="body">
         <p><b>這不是播放音樂，而是一起把焦點轉向神。</b></p>
-        <h4>現場音量要足夠</h4>
-        <p>這件事非常重要：音量要大到<b>讓人不會清楚聽見旁邊人的歌聲</b>。聲音太小，每個人都聽得見自己和鄰座微弱的聲音，就會尷尬、不敢開口。足夠的音量反而讓人放鬆、敢唱。</p>
-        <h4>你自己要先投入</h4>
-        <p>如果你很小聲、很保留，現場的人也不敢開口。當你願意大聲唱、真實地敬拜，大家自然會跟上。<b>不需要唱得完美</b>——新朋友不會評價你的歌聲，但會看見你敬拜神的心。</p>
-        <h4>鼓勵用肢體回應神</h4>
-        <p>站立、舉手，用自己習慣的方式。這些動作不是表演，是幫助我們把心轉向神，也會把整個 Watch Party 帶進更深的敬拜。</p>
+        <div class="pt">
+          <b>音量要大到讓人不會清楚聽見旁邊人的歌聲</b>
+          <p>聲音太小，每個人都聽得見自己和鄰座微弱的聲音，就會尷尬、不敢開口。足夠的音量反而讓人放鬆、敢唱。</p>
+        </div>
+        <div class="pt">
+          <b>你自己要先投入</b>
+          <p>你很保留，現場的人也不敢開口。不需要唱得完美——新朋友不會評價你的歌聲，但會看見你敬拜神的心。</p>
+        </div>
+        <div class="pt">
+          <b>勇敢用肢體回應神</b>
+          <p>站立、舉手，用自己習慣的方式。這不是表演，是幫助我們把心轉向神。</p>
+        </div>
         <div class="verse">詩篇 81:10｜你要大大張口，我就給你充滿。</div>
         <div class="verse">詩篇 100:1-5｜普天下當向耶和華歡呼！你們當樂意事奉耶和華，當來向他歌唱！你們當曉得耶和華是神！我們是他造的，也是屬他的；我們是他的民，也是他草場的羊。當稱謝進入他的門；當讚美進入他的院。當感謝他，稱頌他的名！</div>
       </div>
@@ -988,12 +1009,18 @@ a.linkbtn em{display:block;font-style:normal;font-size:12.5px;font-weight:500;co
       </summary>
       <div class="body">
         <p><b>這不是一起看螢幕，而是一起聽神的話。</b></p>
-        <h4>一起專注</h4>
-        <p>放下手機，把會影響你的外務全部放下。讓環境成為幫手：座位可以舒服，但不要舒服到會睡著；燈光不要太暗。一群人一起專注，本身就會彼此扶持。</p>
-        <h4>Host 特別注意</h4>
-        <p><b>主日進行中，不要忙著煮東西、倒水、收東西。</b>你一起身，全場的注意力就跟著跑掉了。所有雜事在主日開始前做完，開始後你就坐下來，跟大家一起領受。</p>
-        <h4>一起回應——你是 Front Row Support</h4>
-        <p>你不只是坐著看，你是氣氛的帶領者。當講員分享到重點、或現場有鼓勵歡呼時，自然地拍手、說「Yes」「阿們」。這些簡單的動作能把飄走的注意力拉回來，讓人<b>不只是「看一場主日」，而是真正「參與一場主日」</b>。</p>
+        <div class="pt">
+          <b>一起專注</b>
+          <p>放下手機。座位可以舒服，但不要舒服到會睡著；燈光不要太暗。一群人一起專注，本身就會彼此扶持。</p>
+        </div>
+        <div class="pt">
+          <b>主日進行中不要離席做事</b>
+          <p>不要忙著煮東西、倒水、收東西。你一起身，全場的注意力就跟著跑掉了。雜事在主日開始前做完。</p>
+        </div>
+        <div class="pt">
+          <b>你是 Front Row Support</b>
+          <p>講員說到重點、或現場有歡呼時，自然地拍手、說「Yes」「阿們」。這能把飄走的注意力拉回來，讓人從「看主日」變成「參與主日」。</p>
+        </div>
       </div>
     </details>
 
@@ -1052,8 +1079,14 @@ a.linkbtn em{display:block;font-style:normal;font-size:12.5px;font-weight:500;co
         <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
       </summary>
       <div class="body">
-        <p><b>順序很重要：先聽，再問，才禱告。</b>不要一開口就說「我來為你禱告」——先透過第三層問題了解他的狀況，知道他正在面對什麼，禱告才有針對性，他也才會感受到被聽見。</p>
-        <p><b>這部分需要我們的勇敢。</b>為人禱告常常是最讓人卻步的一步，但也正是福音進入一個人生命的關鍵時刻。當我們真心關心、勇敢開口，事情就會發生。</p>
+        <div class="pt">
+          <b>順序很重要：先聽，再問，才禱告</b>
+          <p>不要一開口就說「我來為你禱告」。先透過第三層問題了解他正在面對什麼，禱告才有針對性，他也才會感受到被聽見。</p>
+        </div>
+        <div class="pt">
+          <b>這部分需要我們的勇敢</b>
+          <p>為人禱告常常是最讓人卻步的一步，但也正是福音進入生命的關鍵時刻。真心關心、勇敢開口，事情就會發生。</p>
+        </div>
         <h4>禱告的四個要點</h4>
         <ul class="dots">
           <li>先讚美神，為他的生命感謝神</li>
