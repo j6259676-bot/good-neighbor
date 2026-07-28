@@ -220,6 +220,52 @@ ol.rules li::before{
 }
 ol.rules li b{color:var(--ink)}
 
+/* ---------- 可勾選清單 ---------- */
+.check{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:14px;background:#FCFBF7}
+.check-h{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:11px 12px 11px 14px;border-bottom:1px solid var(--line);background:#fff
+}
+.check-h .ttl{font-size:13px;font-weight:900;color:var(--ink-soft)}
+.check-h .rt{display:flex;align-items:center;gap:10px}
+.check-h .cnt{font-size:12.5px;font-weight:900;color:var(--gold-deep);white-space:nowrap}
+button.reset{
+  background:none;border:1px solid var(--line);border-radius:999px;
+  padding:5px 12px;font-family:var(--zh);font-size:12px;font-weight:700;
+  color:var(--muted);cursor:pointer
+}
+button.reset:hover{background:#fff;color:var(--ink)}
+button.reset:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+label.ck{
+  display:flex;align-items:flex-start;gap:11px;padding:12px 14px;cursor:pointer;
+  border-top:1px solid #EFEDE5;font-size:14.5px;line-height:1.75;color:var(--ink-soft)
+}
+label.ck:first-of-type{border-top:0}
+label.ck input{position:absolute;opacity:0;width:0;height:0}
+label.ck .box{
+  flex:none;width:21px;height:21px;margin-top:2px;border:2px solid #C9C5B8;border-radius:6px;
+  background:#fff;display:flex;align-items:center;justify-content:center;transition:background .14s ease,border-color .14s ease
+}
+label.ck .box svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+label.ck input:checked+.box{background:var(--gold);border-color:var(--gold)}
+label.ck input:checked+.box svg{stroke:var(--ink);opacity:1}
+label.ck input:checked~.tx{color:var(--muted);text-decoration:line-through;text-decoration-color:#C9C5B8}
+label.ck input:focus-visible+.box{outline:3px solid var(--gold);outline-offset:2px}
+
+/* ---------- 外連按鈕 ---------- */
+.linkbtns{display:grid;gap:10px;margin-top:14px}
+@media(min-width:520px){.linkbtns{grid-template-columns:1fr 1fr}}
+a.linkbtn{
+  display:flex;align-items:center;gap:11px;text-decoration:none;
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 15px;
+  color:var(--ink);font-size:14.5px;font-weight:700;
+  transition:transform .16s ease,box-shadow .16s ease
+}
+a.linkbtn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(25,24,23,.11)}
+a.linkbtn svg{flex:none;width:19px;height:19px;stroke:var(--gold-deep);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+a.linkbtn span{flex:1;min-width:0}
+a.linkbtn em{display:block;font-style:normal;font-size:12.5px;font-weight:500;color:var(--muted);margin-top:1px}
+
 /* 五步驟總覽 */
 .flow{display:grid;gap:8px;margin-top:16px}
 @media(min-width:560px){.flow{grid-template-columns:repeat(5,1fr)}}
@@ -648,13 +694,167 @@ ol.rules li b{color:var(--ink)}
   </section>
 
   <section class="view" id="s2" aria-label="場地預備">
-    <span class="eyebrow">② 場地預備</span>
+    <span class="eyebrow">階段 2・聚會前一週 - 前一小時</span>
     <h1 class="big">他一進門就感受到被接待，<br>覺得像回到家。</h1>
-    <div class="todo">
-      <span class="tag">還在做・第 3 片</span>
-      <h3>這一區會有</h3>
-      <p>用三個感官打造「像回到家」、空間整理（可勾選清單）、設備測試（可勾選清單）、點心與飲料、寵物安排、抵達資訊與會前提醒、資源包佈置與入場音樂。</p>
-    </div>
+    <p class="lead">先想一件事：<b>你第一次去到一個不熟的人家裡，第一個感受是什麼？</b>會緊張嗎？會不知道手要放哪裡嗎？你要預備的，就是化解那個感受。</p>
+    <p class="hint">核心提醒：<b>乾淨、舒服、清楚，比完美更重要。用心準備就是最好的款待。</b></p>
+
+    <div class="tools"><button class="expand-all" data-scope="s2">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>
+      <span>全部展開</span>
+    </button></div>
+
+    <details class="item">
+      <summary>
+        <span class="ix">2-1</span>
+        <span class="hd">
+          <b>用三個感官打造「像回到家」</b>
+          <span class="do">從聽覺、視覺、嗅覺三個角度，走一遍客人進門的前三十秒。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <h4>聽覺——他一進門聽見什麼？</h4>
+        <p>想像你緊張地走進一個地方，迎接你的是一片安靜，還是輕快的音樂？兩種感覺天差地遠。<b>入場請放輕快、歡樂的音樂，不要放太過安靜、催眠的音樂。</b>有背景音，人才敢開口說話。</p>
+        <h4>視覺——他進來後看見什麼？</h4>
+        <p>空間整潔、明亮、舒適，人一進來就會放鬆。<b>還有你的微笑</b>——真誠的笑容，是最便宜也最有效的佈置。</p>
+        <h4>嗅覺與味覺——坐下來後聞到、感覺到什麼？</h4>
+        <p>是流通的空氣、淡淡的香氣，還是悶住的霉味？不用很香，空氣流通或一點簡單香氛就夠了。食物的香氣也算——一點點點心的味道，會讓空間立刻有「家」的感覺。</p>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">2-2</span>
+        <span class="hd">
+          <b>空間整理</b>
+          <span class="do">減少雜物、家具擺整齊、燈光調暖。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p>每個人對「乾淨」的定義不太一樣，所以給你幾個具體的：桌面清空、地上沒有東西擋路、椅子夠坐而且擺成大家看得到螢幕的方向、燈光柔和溫暖但<b>不要太暗</b>（太暗會想睡）。</p>
+        <div class="check" data-key="space">
+          <div class="check-h">
+            <span class="ttl">空間檢查清單</span>
+            <span class="rt"><span class="cnt"></span><button class="reset">重設</button></span>
+          </div>
+          <label class="ck"><input type="checkbox" data-id="sp1"><span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></span><span class="tx">桌面與地面清空，動線順暢</span></label>
+          <label class="ck"><input type="checkbox" data-id="sp2"><span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></span><span class="tx">椅子數量夠，且都看得到螢幕</span></label>
+          <label class="ck"><input type="checkbox" data-id="sp3"><span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></span><span class="tx">燈光充足、柔和溫暖，不昏暗</span></label>
+          <label class="ck"><input type="checkbox" data-id="sp4"><span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></span><span class="tx">空氣流通，或點上簡單香氛</span></label>
+          <label class="ck"><input type="checkbox" data-id="sp5"><span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></span><span class="tx">洗手間乾淨、備品足夠</span></label>
+        </div>
+        <p class="snip-note">勾選會留著，關掉再打開還在。下一場開始前按「重設」清空。</p>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">2-3</span>
+        <span class="hd">
+          <b>設備測試</b>
+          <span class="do">聚會前 60 分鐘測完螢幕、音響、網路。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p><b>最好的做法是用前一堂主日先測一次。</b>我們有 9:30AM、11:30AM、2PM 三堂，如果你辦的是 11:30AM 那場，就用 9:30AM 那堂實際播一次——直播、投影、音量全部走一遍，有問題還有兩小時可以救。</p>
+        <p>音量特別重要，怎麼抓見「現場」那一區的 3-3。</p>
+        <div class="check" data-key="gear">
+          <div class="check-h">
+            <span class="ttl">設備檢查清單</span>
+            <span class="rt"><span class="cnt"></span><button class="reset">重設</button></span>
+          </div>
+          <label class="ck"><input type="checkbox" data-id="gr1"><span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></span><span class="tx">螢幕／電視可以順利播放 YouTube 直播</span></label>
+          <label class="ck"><input type="checkbox" data-id="gr2"><span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></span><span class="tx">音響音量夠大（站在最遠的位置聽得清楚）</span></label>
+          <label class="ck"><input type="checkbox" data-id="gr3"><span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></span><span class="tx">網路連線穩定，畫質不卡</span></label>
+          <label class="ck"><input type="checkbox" data-id="gr4"><span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></span><span class="tx">電源線、延長線就位，手機或遙控器有電</span></label>
+          <label class="ck"><input type="checkbox" data-id="gr5"><span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></span><span class="tx">已用前一堂主日實際測過一次</span></label>
+        </div>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">2-4</span>
+        <span class="hd">
+          <b>點心與飲料</b>
+          <span class="do">準備簡單的點心或輕食，不用豐盛。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p>食物不需要澎湃，<b>重點是真誠與用心</b>。一邊吃一邊聊，是最自然的破冰。</p>
+        <p>有一招很好用：<b>邀請新朋友一起來幫忙準備。</b>我們去到別人家，最尷尬的就是「不知道自己可以做什麼」——被指派一個小任務（切水果、擺盤、倒飲料），尷尬和戒心會馬上降下來。</p>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">2-5</span>
+        <span class="hd">
+          <b>寵物安排</b>
+          <span class="do">家裡有寵物的話，提前安排一個牠舒服、也讓客人自在的空間。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p>不是要你把寵物關起來，而是先想過：有客人怕狗嗎？有人會過敏嗎？先在會前提醒裡告訴大家「家裡有一隻貓」，讓怕的人有心理準備，也讓寵物有自己安穩的角落。這樣照顧到的是每一個人，包括你的寵物。</p>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">2-6</span>
+        <span class="hd">
+          <b>抵達資訊與會前提醒</b>
+          <span class="do">聚會前再傳一次時間、地點、交通與停車資訊。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p><b>降低不確定感，就是降低他不來的機率。</b>提前給交通與停車資訊，幫助他安心抵達；聚會前一天再提醒一次時間地點；也可以簡單預告流程，幫助他預備心，不會一進門就手足無措。</p>
+        <div class="snip">
+          <div class="snip-h"><span>會前提醒訊息</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <p class="snip-t">嗨 ○○，明天 8/23 的 Watch Party 提醒你一下！
+時間：9:20AM 開始入場（主日 9:30AM 準時開始）
+地點：○○○（附近有○○停車場／捷運○○站步行 5 分鐘）
+我們會先一起看線上主日，大概兩小時，結束後有 20-30 分鐘輕鬆分享。準備了一些小點心，帶自己來就好！
+明天見！</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">2-7</span>
+        <span class="hd">
+          <b>資源包佈置與素材</b>
+          <span class="do">把 You Belong Here 小旗子、Welcome Home 串旗擺出來，入場音樂先開好。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p>佈置物不用多，一面串旗掛在客人一進門看得到的地方，那句「YOU BELONG HERE」就已經把話說完了。</p>
+        <p>入場音樂用官方播放清單，在客人抵達前 30 分鐘就開始播。</p>
+        <div class="linkbtns">
+          <a class="linkbtn" href="https://open.spotify.com/playlist/0ImvTDLJcdFo1zzq5uH33Y" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14.5c2.5-1 5.5-.8 7.5.5"/><path d="M7 11.5c3-1.2 7-1 9.5.8"/></svg>
+            <span>Spotify 入場音樂<em>官方播放清單</em></span>
+          </a>
+          <a class="linkbtn" href="https://music.youtube.com/playlist?list=PLX4BXz0SrFG_2wBWpAgEKzd9bFLNhlVn6" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3z"/></svg>
+            <span>YouTube 入場音樂<em>同一份清單，YouTube 版</em></span>
+          </a>
+          <a class="linkbtn" href="https://drive.google.com/drive/folders/1yskOUnWBHyYzRmGgAU69eqJ5eOOFSQi0" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+            <span>Good Neighbor 素材資料夾<em>視覺素材</em></span>
+          </a>
+        </div>
+        <p class="snip-note">資源包裡的傳福音工具書，是給已經信主的你和服事夥伴用來對朋友分享福音的，不是給新朋友的禮物。</p>
+      </div>
+    </details>
   </section>
 
   <section class="view" id="s3" aria-label="現場帶領">
@@ -878,6 +1078,49 @@ ol.rules li b{color:var(--ink)}
       Array.prototype.forEach.call(items, function(d){ d.open = anyClosed; });
       btn.querySelector("span").textContent = anyClosed ? "全部收合" : "全部展開";
     });
+  });
+
+  /* ---- 可勾選清單（狀態存在這支手機的瀏覽器裡） ---- */
+  var CK_KEY = "gnpb.checks";
+  function loadChecks(){
+    try{ return JSON.parse(localStorage.getItem(CK_KEY) || "{}"); }
+    catch(e){ return {}; }
+  }
+  function saveChecks(o){
+    try{ localStorage.setItem(CK_KEY, JSON.stringify(o)); }catch(e){}
+  }
+  var checkState = loadChecks();
+
+  Array.prototype.forEach.call(document.querySelectorAll(".check"), function(group){
+    var boxes = group.querySelectorAll('input[type="checkbox"]');
+    var cnt = group.querySelector(".cnt");
+    function render(){
+      var done = 0;
+      Array.prototype.forEach.call(boxes, function(b){ if(b.checked){ done++; } });
+      cnt.textContent = done + " / " + boxes.length;
+    }
+    Array.prototype.forEach.call(boxes, function(b){
+      b.checked = !!checkState[b.dataset.id];
+      b.addEventListener("change", function(){
+        if(b.checked){ checkState[b.dataset.id] = true; }
+        else{ delete checkState[b.dataset.id]; }
+        saveChecks(checkState);
+        render();
+      });
+    });
+    var rst = group.querySelector(".reset");
+    if(rst){
+      rst.addEventListener("click", function(e){
+        e.preventDefault();
+        Array.prototype.forEach.call(boxes, function(b){
+          b.checked = false;
+          delete checkState[b.dataset.id];
+        });
+        saveChecks(checkState);
+        render();
+      });
+    }
+    render();
   });
 
   /* ---- fullscreen QR ---- */
