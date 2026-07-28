@@ -190,6 +190,9 @@ button.copy svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-widt
   white-space:pre-line;padding:13px 14px;font-size:14.5px;line-height:1.85;color:var(--ink-soft)
 }
 .snip-note{font-size:13px;color:var(--muted);margin-top:8px}
+.snip .snip-list{margin:0;padding:12px 14px 14px}
+.snip .snip-list li{margin-top:10px;color:var(--ink-soft)}
+.snip .snip-list li:first-child{margin-top:0}
 
 /* ---------- 條列 ---------- */
 ul.dots{list-style:none;margin-top:8px}
@@ -501,8 +504,9 @@ ol.rules li b{color:var(--ink)}
           <div class="snip-h"><span>首次聯繫訊息</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
           <p class="snip-t">嗨 ○○ 你好，我是 Good Neighbor「○○○」Watch Party 的 host ○○。
 謝謝你報名加入我們 8/23 的聚會！我們會一起看線上 Hope 主日，看完有一段輕鬆的分享，帶自己來就好。
-想先跟你確認一下——這個時間你方便嗎？也想認識你一下，你是怎麼知道這個活動的呢？或是我們可以約一個時間電話或碰面聊聊！</p>
+想先跟你確認一下——這個時間你方便嗎？也想先認識你一下，不知道方不方便約在 ○/○（○）8PM，我們電話或視訊聊個 10 分鐘？</p>
         </div>
+        <p class="snip-note">不想約時間的話，最後一句換成一個輕的問題也可以：「你是怎麼知道這個活動的呢？」重點是留一個他可以回的東西。</p>
 
         <div class="snip">
           <div class="snip-h"><span>三天沒回覆，輕輕跟進</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
@@ -538,11 +542,13 @@ ol.rules li b{color:var(--ink)}
         <p>別做成身家調查，就是聊天。報名表上如果他填了「邀請人」，這是很好的線索——如果那是你或線上分部認得的人，你可以私下跟那位邀請人確認一下，馬上就安心許多。</p>
         <div class="snip">
           <div class="snip-h"><span>可以問的問題</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
-          <p class="snip-t">你是怎麼知道這個 Watch Party 的？
-什麼原因讓你想來 The Hope 的聚會，並且參加這次的 Watch Party？
-你之前有接觸過 The Hope 或線上主日嗎？過去有參與過教會活動嗎？
-這次會有幾個人一起來？彼此是朋友還是家人？
-對這次聚會，你有沒有什麼期待，或想先問的？</p>
+          <ul class="dots snip-list">
+            <li>你是怎麼知道這個 Watch Party 的？</li>
+            <li>什麼原因讓你想來 The Hope 的聚會，並且參加這次的 Watch Party？</li>
+            <li>你之前有接觸過 The Hope 或線上主日嗎？過去有參與過教會活動嗎？</li>
+            <li>這次會有幾個人一起來？彼此是朋友還是家人？</li>
+            <li>對這次聚會，你有沒有什麼期待，或想先問的？</li>
+          </ul>
         </div>
       </div>
     </details>
@@ -632,7 +638,8 @@ ol.rules li b{color:var(--ink)}
 
         <div class="snip">
           <div class="snip-h"><span>婉拒這一場</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
-          <p class="snip-t">不好意思，這場的名額和安排剛好不太合適。我幫你留意其他更適合的場次，再告訴你好嗎？</p>
+          <p class="snip-t">不好意思，由於空間限制，我們在更多思考之後，評估這次的 Watch Party 還是想先邀請比較熟識的朋友。未來如果找到更合適的空間、也有夥伴一起，再擴大邀請其他家人。
+謝謝你！也歡迎你參加主日後的「一起聊一下」，在那裡可以跟各地 The Hope 的家人連結。</p>
         </div>
 
         <p class="snip-note">任何時候不確定，交給團隊：在 Good Neighbor host LINE 群組裡直接找 staff。</p>
@@ -834,9 +841,18 @@ ol.rules li b{color:var(--ink)}
     btn.addEventListener("click", function(e){
       e.preventDefault();
       var snip = btn.closest(".snip");
-      var body = snip ? snip.querySelector(".snip-t") : null;
-      if(!body){ return; }
-      var txt = body.textContent.split("\n").map(function(l){ return l.trim(); }).join("\n").trim();
+      if(!snip){ return; }
+      var body = snip.querySelector(".snip-t");
+      var list = snip.querySelector(".snip-list");
+      var txt = "";
+      if(body){
+        txt = body.textContent.split("\n").map(function(l){ return l.trim(); }).join("\n").trim();
+      }else if(list){
+        txt = Array.prototype.map.call(list.querySelectorAll("li"), function(li){
+          return li.textContent.trim();
+        }).join("\n");
+      }
+      if(!txt){ return; }
       var label = btn.querySelector(".lb");
       copyText(txt).then(function(){
         btn.classList.add("done");
