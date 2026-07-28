@@ -252,6 +252,29 @@ label.ck input:checked+.box svg{stroke:var(--ink);opacity:1}
 label.ck input:checked~.tx{color:var(--muted);text-decoration:line-through;text-decoration-color:#C9C5B8}
 label.ck input:focus-visible+.box{outline:3px solid var(--gold);outline-offset:2px}
 
+/* ---------- 場次切換 ---------- */
+.seg{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;margin-top:6px}
+.seg button{
+  border:0;background:none;border-radius:999px;padding:8px 13px;
+  font-family:var(--zh);font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap
+}
+.seg button[aria-pressed="true"]{background:var(--gold);color:var(--ink)}
+.seg button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+
+/* ---------- 時間軸 ---------- */
+.tl{margin-top:14px}
+.tl-row{display:flex;gap:13px;padding:14px 0;border-top:1px solid var(--line)}
+.tl-row:first-child{border-top:0;padding-top:2px}
+.tl-t{flex:none;width:80px;font-size:14.5px;font-weight:900;line-height:1.45}
+.tl-t em{display:block;font-style:normal;font-size:11.5px;font-weight:500;color:var(--muted);margin-top:3px;line-height:1.5}
+.tl-c{flex:1;min-width:0;font-size:14.5px;line-height:1.75;color:var(--ink-soft)}
+.tl-c em{display:block;font-style:normal;font-size:12.5px;color:var(--muted);margin-top:3px}
+
+/* ---------- 守則卡 ---------- */
+.creed{background:var(--gold-tint);border:1px solid rgba(244,180,0,.45);border-radius:16px;padding:16px 18px;margin-top:14px}
+.creed li{font-size:14.5px}
+.creed ul.dots li::before{background:var(--gold-deep)}
+
 /* ---------- 外連按鈕 ---------- */
 .linkbtns{display:grid;gap:10px;margin-top:14px}
 @media(min-width:520px){.linkbtns{grid-template-columns:1fr 1fr}}
@@ -858,13 +881,211 @@ a.linkbtn em{display:block;font-style:normal;font-size:12.5px;font-weight:500;co
   </section>
 
   <section class="view" id="s3" aria-label="現場帶領">
-    <span class="eyebrow">③ 現場帶領</span>
+    <span class="eyebrow">階段 3・聚會進行中</span>
     <h1 class="big">他不是「看一場主日」，<br>是「參與一場主日」。</h1>
-    <div class="todo">
-      <span class="tag">還在做・第 4 片</span>
-      <h3>這一區會有</h3>
-      <p>當天流程時間表、開始前十分鐘的開場、一起敬拜、一起領受、一起連結的三層提問題庫、為他禱告、Host 現場守則。</p>
-    </div>
+    <p class="lead">Watch Party 是一個讓人聚在一起、<b>一起敬拜、一起領受、一起連結</b>的時間。這三件事都需要你帶——<b>你投入的程度，會直接決定現場的溫度。</b></p>
+
+    <div class="tools"><button class="expand-all" data-scope="s3">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>
+      <span>全部展開</span>
+    </button></div>
+
+    <details class="item" open>
+      <summary>
+        <span class="ix">3-1</span>
+        <span class="hd">
+          <b>當天流程時間表</b>
+          <span class="do">照這張表跑，先選你這場是哪一堂。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <div class="seg" id="segTime" role="group" aria-label="選擇你的場次">
+          <button data-set="0" aria-pressed="true">9:30AM 場</button>
+          <button data-set="1" aria-pressed="false">11:30AM 場</button>
+          <button data-set="2" aria-pressed="false">2PM 場</button>
+        </div>
+        <div class="tl" id="timeline">
+          <div class="tl-row">
+            <div class="tl-t"><span class="t" data-t0="8:30AM" data-t1="10:30AM" data-t2="1PM">8:30AM</span><em>開始前 60 分鐘</em></div>
+            <div class="tl-c">設備測試：螢幕、音響、網路、燈光<em>可用前一堂主日實測</em></div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-t"><span class="t" data-t0="9:00AM" data-t1="11:00AM" data-t2="1:30PM">9:00AM</span><em>開始前 30 分鐘</em></div>
+            <div class="tl-c">開放入場、播放輕音樂、熱情迎接、關心近況<em>預備咖啡、小點心</em></div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-t"><span class="t" data-t0="9:20AM" data-t1="11:20AM" data-t2="1:50PM">9:20AM</span><em>開始前 10 分鐘</em></div>
+            <div class="tl-c">主持人簡單開場、介紹流程、對焦<em>怎麼講見 3-2</em></div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-t"><span class="t" data-t0="9:30AM" data-t1="11:30AM" data-t2="2PM">9:30AM</span><em>主日開始</em></div>
+            <div class="tl-c">加入線上主日：敬拜、講道、禱告<em>你的角色見 3-3、3-4</em></div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-t"><span class="t">主日結束後</span><em>20-30 分鐘</em></div>
+            <div class="tl-c">分享時間：三層提問、為他禱告，並給出下一步<em>見 3-5、3-6，以及「下一步」那一區</em></div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">3-2</span>
+        <span class="hd">
+          <b>開始前十分鐘的開場</b>
+          <span class="do">用兩三分鐘說明等一下會發生什麼事。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p><b>新朋友最大的不安是「我不知道等一下要幹嘛」。</b>你花兩分鐘講清楚流程，他接下來兩小時都會自在很多。</p>
+        <h4>要講的三件事</h4>
+        <p><b>① 等一下會發生什麼事</b>——用白話解釋每一段，不要只報名詞：</p>
+        <ul class="dots">
+          <li><b>敬拜</b>：我們透過歌唱來讚美神，也預備自己的心</li>
+          <li><b>講道</b>：牧師會分享一些話，幫助我們更認識神的心意</li>
+          <li><b>禱告</b>：就是跟上帝說話</li>
+          <li>然後我們會留一段時間一起聊聊</li>
+        </ul>
+        <p><b>② 敬拜時可以站起來一起唱</b>，但不勉強。</p>
+        <p><b>③ 中間想去洗手間、想拿東西吃都可以</b>，不用拘束。</p>
+        <p class="snip-note">順便營造氣氛：謝謝大家今天來、簡單自我介紹一輪（如果人不多）。</p>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">3-3</span>
+        <span class="hd">
+          <b>一起敬拜</b>
+          <span class="do">把音量開夠大，然後你自己第一個投入。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p><b>這不是播放音樂，而是一起把焦點轉向神。</b></p>
+        <h4>現場音量要足夠</h4>
+        <p>這件事非常重要：音量要大到<b>讓人不會清楚聽見旁邊人的歌聲</b>。聲音太小，每個人都聽得見自己和鄰座微弱的聲音，就會尷尬、不敢開口。足夠的音量反而讓人放鬆、敢唱。</p>
+        <h4>你自己要先投入</h4>
+        <p>如果你很小聲、很保留，現場的人也不敢開口。當你願意大聲唱、真實地敬拜，大家自然會跟上。<b>不需要唱得完美</b>——新朋友不會評價你的歌聲，但會看見你敬拜神的心。</p>
+        <h4>鼓勵用肢體回應神</h4>
+        <p>站立、舉手，用自己習慣的方式。這些動作不是表演，是幫助我們把心轉向神，也會把整個 Watch Party 帶進更深的敬拜。</p>
+        <div class="verse">詩篇 81:10｜你要大大張口，我就給你充滿。</div>
+        <div class="verse">詩篇 100:1-5｜普天下當向耶和華歡呼！你們當樂意事奉耶和華，當來向他歌唱！你們當曉得耶和華是神！我們是他造的，也是屬他的；我們是他的民，也是他草場的羊。當稱謝進入他的門；當讚美進入他的院。當感謝他，稱頌他的名！</div>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">3-4</span>
+        <span class="hd">
+          <b>一起領受</b>
+          <span class="do">帶頭放下手機，並在講員說到重點時自然地回應。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p><b>這不是一起看螢幕，而是一起聽神的話。</b></p>
+        <h4>一起專注</h4>
+        <p>放下手機，把會影響你的外務全部放下。讓環境成為幫手：座位可以舒服，但不要舒服到會睡著；燈光不要太暗。一群人一起專注，本身就會彼此扶持。</p>
+        <h4>Host 特別注意</h4>
+        <p><b>主日進行中，不要忙著煮東西、倒水、收東西。</b>你一起身，全場的注意力就跟著跑掉了。所有雜事在主日開始前做完，開始後你就坐下來，跟大家一起領受。</p>
+        <h4>一起回應——你是 Front Row Support</h4>
+        <p>你不只是坐著看，你是氣氛的帶領者。當講員分享到重點、或現場有鼓勵歡呼時，自然地拍手、說「Yes」「阿們」。這些簡單的動作能把飄走的注意力拉回來，讓人<b>不只是「看一場主日」，而是真正「參與一場主日」</b>。</p>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">3-5</span>
+        <span class="hd">
+          <b>一起連結：三層提問</b>
+          <span class="do">主日結束後留 20-30 分鐘，用三層問題把對話帶深。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p><b>讓關係在主日後繼續發生。</b>這 20-30 分鐘往往比前面兩小時更關鍵——但關鍵在<b>問對問題</b>。由淺入深，不要一開口就問信仰。</p>
+        <p>如果人數較多，可以分成 3-5 人的小圈圈，每圈有一位服事夥伴帶。</p>
+
+        <div class="snip">
+          <div class="snip-h"><span>第一層｜輕鬆認識</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <ul class="dots snip-list">
+            <li>你今天第一次來嗎？覺得還習慣嗎？</li>
+            <li>你是怎麼認識這個 Watch Party 的？</li>
+            <li>最近生活主要在忙些什麼？</li>
+          </ul>
+        </div>
+
+        <div class="snip">
+          <div class="snip-h"><span>第二層｜分享感受</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <ul class="dots snip-list">
+            <li>今天信息中，有哪一句話或哪個部分讓你印象比較深？</li>
+            <li>今天敬拜、信息或現場氛圍，有沒有讓你特別有感的地方？</li>
+            <li>你覺得今天的內容，和你最近的生活有什麼連結嗎？</li>
+          </ul>
+        </div>
+
+        <div class="snip">
+          <div class="snip-h"><span>第三層｜關心與下一步</span><button class="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lb">複製</span></button></div>
+          <ul class="dots snip-list">
+            <li>最近有沒有什麼壓力、挑戰或需要，是你正在面對的？</li>
+            <li>有什麼事情，是你希望我們可以為你禱告的？</li>
+            <li>你會想更認識信仰、教會，或下次再來參加看看嗎？</li>
+            <li>下次如果還有 Watch Party，我可以再邀請你嗎？</li>
+          </ul>
+        </div>
+
+        <p class="snip-note">第三層問完，接著就是為他禱告（3-6），然後給下一步。</p>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">3-6</span>
+        <span class="hd">
+          <b>為他禱告</b>
+          <span class="do">在了解他的狀況之後，開口為他祝福禱告。至少讓每個人得到一個祝禱。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <p><b>順序很重要：先聽，再問，才禱告。</b>不要一開口就說「我來為你禱告」——先透過第三層問題了解他的狀況，知道他正在面對什麼，禱告才有針對性，他也才會感受到被聽見。</p>
+        <p><b>這部分需要我們的勇敢。</b>為人禱告常常是最讓人卻步的一步，但也正是福音進入一個人生命的關鍵時刻。當我們真心關心、勇敢開口，事情就會發生。</p>
+        <h4>禱告的四個要點</h4>
+        <ul class="dots">
+          <li>先讚美神，為他的生命感謝神</li>
+          <li>內容以<b>安慰、造就、勸勉</b>為主，<b>不給指示性的話語</b>（不要說「你應該換工作」「你要跟誰講什麼」）</li>
+          <li>求神親自動工，而不是我們來解決他的問題</li>
+          <li>以「奉耶穌的名禱告，阿們」結束</li>
+        </ul>
+        <p class="snip-note">如果對方婉拒禱告，也完全沒關係：「好的，願神祝福你！」就可以了。</p>
+      </div>
+    </details>
+
+    <details class="item">
+      <summary>
+        <span class="ix">3-7</span>
+        <span class="hd">
+          <b>Host 現場守則</b>
+          <span class="do">記住這五件事，現場就穩了。</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="body">
+        <div class="creed">
+          <ul class="dots">
+            <li><b>音量開夠大</b>——大到讓人不會清楚聽見旁邊人的歌聲</li>
+            <li><b>你先投入</b>——你多敢唱，大家就多敢唱</li>
+            <li><b>主日進行中不要離席做事</b>——雜事在開始前做完</li>
+            <li><b>當 Front Row Support</b>——拍手、回應、把氣氛帶起來</li>
+            <li><b>記得多拍幾張照片</b>——會後要回傳給團隊</li>
+          </ul>
+        </div>
+      </div>
+    </details>
   </section>
 
   <section class="view" id="s4" aria-label="給出下一步">
@@ -1079,6 +1300,24 @@ a.linkbtn em{display:block;font-style:normal;font-size:12.5px;font-weight:500;co
       btn.querySelector("span").textContent = anyClosed ? "全部收合" : "全部展開";
     });
   });
+
+  /* ---- 場次時間切換（流程表） ---- */
+  var seg = document.getElementById("segTime");
+  if(seg){
+    var segBtns = seg.querySelectorAll("button");
+    Array.prototype.forEach.call(segBtns, function(b){
+      b.addEventListener("click", function(){
+        var set = b.dataset.set;
+        Array.prototype.forEach.call(segBtns, function(x){
+          x.setAttribute("aria-pressed", String(x === b));
+        });
+        Array.prototype.forEach.call(document.querySelectorAll("#timeline .t"), function(t){
+          var v = t.getAttribute("data-t" + set);
+          if(v){ t.textContent = v; }
+        });
+      });
+    });
+  }
 
   /* ---- 可勾選清單（狀態存在這支手機的瀏覽器裡） ---- */
   var CK_KEY = "gnpb.checks";
