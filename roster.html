@@ -52,6 +52,15 @@
   .actions button:hover{border-color:var(--gold);box-shadow:0 8px 18px rgba(60,55,45,.08)}
   .actions button .icon{width:16px;height:16px}
 
+  .pbcard{display:flex;align-items:center;gap:12px;background:var(--paper);border:1.5px solid var(--gold);border-radius:16px;padding:13px 15px;margin-top:14px;text-decoration:none;color:var(--ink);box-shadow:0 10px 24px rgba(60,55,45,.08);transition:transform .15s,box-shadow .15s}
+  .pbcard:hover{transform:translateY(-1px);box-shadow:0 14px 28px rgba(244,180,0,.28)}
+  .pbcard .ic{width:38px;height:38px;flex:none;border-radius:12px;background:var(--gold-tint);display:flex;align-items:center;justify-content:center}
+  .pbcard .ic .icon{width:19px;height:19px;color:var(--gold-deep)}
+  .pbcard .tt{flex:1;min-width:0}
+  .pbcard .tt b{display:block;font-size:14px;font-weight:900;line-height:1.4}
+  .pbcard .tt span{display:block;font-size:12px;color:var(--muted);line-height:1.5}
+  .pbcard .go .icon{width:17px;height:17px;color:var(--gray-deep)}
+
   .reminder{display:flex;gap:9px;align-items:flex-start;font-size:12.5px;color:var(--ink-soft);background:var(--gold-tint);border-radius:12px;padding:12px 14px;margin-top:14px;line-height:1.6}
   .reminder .icon{width:16px;height:16px;color:var(--gold-deep);margin-top:2px}
 
@@ -196,6 +205,12 @@
     const reminder=E('div',{class:'reminder'},[icon('info',16),
       E('div',{text:(multi?'名額是每一週各自計算的。人數限制可按上面「改名額」自己調整（套用到每一週），會即時反映到地圖，也會通知我們。':'名額有變動嗎？人數限制可以直接按上面「改名額」自己調整，會即時反映到地圖，也會通知我們。')})]);
 
+    const pbcard=E('a',{class:'pbcard',href:'./playbook.html',target:'_blank',rel:'noopener'},[
+      E('div',{class:'ic'},[icon('book-open',19)]),
+      E('div',{class:'tt'},[E('b',{text:'Host Play Book'}),E('span',{text:'聯繫、場地、現場流程一站看完'})]),
+      E('div',{class:'go'},[icon('chevron-right',17)])
+    ]);
+
     const sec=E('div',{class:'sec'},[E('div',{class:'wrap'},[countCard])]);
     const wrapInner=sec.firstChild;
 
@@ -217,6 +232,7 @@
     }
 
     wrapInner.appendChild(actions);
+    wrapInner.appendChild(pbcard);
     wrapInner.appendChild(reminder);
 
     if(!ppl.length){
