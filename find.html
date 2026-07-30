@@ -394,7 +394,19 @@
         open:x.open,full:x.full,thumb:x.thumb,formUrl:x.formUrl||''};
     });
   }
-  function paint(){sortByArea();render(LOCS);buildMarkers();}
+  // 深連結 ?loc=<HostID>：限動海報 QR 掃進來直接開那一場的報名視窗
+  // （SWR 會 paint 兩次——先快取再最新——所以只認第一次，關掉後不再彈出）
+  let deepId=new URLSearchParams(location.search).get('loc')||'';
+  function openDeepLink(){
+    if(!deepId)return;
+    const l=LOCS.find(x=>String(x.id)===deepId);
+    if(!l)return;                     // 找不到就當一般地圖頁，不干擾
+    deepId='';
+    highlight(l.id,true);             // 沒開放／額滿／截止時 openModal 會自己擋掉，只留高亮
+    // 自訂表單的場次不自動 window.open（非使用者手勢會被擋掉，變成沒反應），留高亮讓他點按鈕
+    if(!l.formUrl)openModal(l.id);
+  }
+  function paint(){sortByArea();render(LOCS);buildMarkers();openDeepLink();}
   function loadData(){
     if(!GAS_URL){LOCS=DEMO;paint();return;}
     // 1) 先用上次快取即時顯示（真實近況資料，秒開），背景再抓最新覆蓋
