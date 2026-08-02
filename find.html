@@ -397,6 +397,13 @@
   // 深連結 ?loc=<HostID>：限動海報 QR 掃進來直接開那一場的報名視窗
   // （SWR 會 paint 兩次——先快取再最新——所以只認第一次，關掉後不再彈出）
   let deepId=new URLSearchParams(location.search).get('loc')||'';
+  // 來源標記 ?src=（email 邀請信帶）：記一次點擊 + 報名時一起送進 Sheet
+  // 沒帶 src 就完全不做事，既有 QR／連結行為不變
+  const SRC=(new URLSearchParams(location.search).get('src')||'').replace(/[^A-Za-z0-9_-]/g,'').slice(0,24);
+  if(SRC&&GAS_URL){
+    // 獨立的一支請求，不影響主資料載入；失敗也無所謂
+    fetch(GAS_URL+'?hit='+encodeURIComponent(SRC)+'&loc='+encodeURIComponent(deepId)).catch(()=>{});
+  }
   function openDeepLink(){
     if(!deepId)return;
     const l=LOCS.find(x=>String(x.id)===deepId);
@@ -523,7 +530,7 @@
     if(!val('f-name')||!val('f-email')){alert('請至少填寫名字和 Email');return;}
     const pickerOn=document.getElementById('m-weeks-field').style.display!=='none';
     if(pickerOn&&selWeeks.length===0){alert('請至少選一個你要參加的週次');return;}
-    const payload={sessionId:current.id,weeks:selWeeks.slice(),name:val('f-name'),email:val('f-email'),phone:val('f-phone'),people:val('f-people'),inviter:val('f-inviter'),message:val('f-message')};
+    const payload={sessionId:current.id,weeks:selWeeks.slice(),name:val('f-name'),email:val('f-email'),phone:val('f-phone'),people:val('f-people'),inviter:val('f-inviter'),message:val('f-message'),src:SRC};
     if(!GAS_URL){showDone();return;}
     submitting=true;
     const btn=document.getElementById('f-submit');btn.disabled=true;btn.textContent='送出中…';
