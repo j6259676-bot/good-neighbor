@@ -307,17 +307,17 @@
 
   // 示意資料（GAS_URL 留空時顯示）
   const DEMO=[
-    {id:1, name:"新店・總部周邊", area:"新北市・新店區", lat:24.9675, lng:121.5419, week:"8/23"},
-    {id:2, name:"新竹場", area:"新竹市", lat:24.8047, lng:120.9714, week:"8/16"},
-    {id:3, name:"台南場", area:"台南市・東區", lat:22.9908, lng:120.2133, week:"8/30"},
-    {id:4, name:"高雄場", area:"高雄市・苓雅區", lat:22.6273, lng:120.3014, week:"8/23"},
-    {id:5, name:"宜蘭場", area:"宜蘭縣・羅東", lat:24.6772, lng:121.7668, week:"9/6"},
-    {id:6, name:"台東場", area:"台東縣・台東市", lat:22.7583, lng:121.1444, week:"8/16"},
-    {id:7, name:"澎湖場", area:"澎湖縣・馬公", lat:23.5712, lng:119.5793, week:"8/30"},
-    {id:8, name:"檳城場", area:"馬來西亞・檳城", lat:5.4141, lng:100.3288, week:"8/23"},
-    {id:9, name:"怡保場", area:"馬來西亞・怡保", lat:4.5975, lng:101.0901, week:"9/6"},
-    {id:10, name:"加州場", area:"美國・洛杉磯", lat:34.0522, lng:-118.2437, week:"8/16"},
-    {id:11, name:"愛丁堡場", area:"英國・愛丁堡", lat:55.9533, lng:-3.1883, week:"8/30"},
+    {id:"demo1", open:true, name:"新店・總部周邊", area:"新北市・新店區", lat:24.9675, lng:121.5419, week:"8/23"},
+    {id:"demo2", open:true, name:"新竹場", area:"新竹市", lat:24.8047, lng:120.9714, week:"8/16"},
+    {id:"demo3", open:true, name:"台南場", area:"台南市・東區", lat:22.9908, lng:120.2133, week:"8/30"},
+    {id:"demo4", open:true, name:"高雄場", area:"高雄市・苓雅區", lat:22.6273, lng:120.3014, week:"8/23"},
+    {id:"demo5", open:true, name:"宜蘭場", area:"宜蘭縣・羅東", lat:24.6772, lng:121.7668, week:"9/6"},
+    {id:"demo6", open:true, name:"台東場", area:"台東縣・台東市", lat:22.7583, lng:121.1444, week:"8/16"},
+    {id:"demo7", open:true, name:"澎湖場", area:"澎湖縣・馬公", lat:23.5712, lng:119.5793, week:"8/30"},
+    {id:"demo8", open:true, name:"檳城場", area:"馬來西亞・檳城", lat:5.4141, lng:100.3288, week:"8/23"},
+    {id:"demo9", open:true, name:"怡保場", area:"馬來西亞・怡保", lat:4.5975, lng:101.0901, week:"9/6"},
+    {id:"demo10", open:true, name:"加州場", area:"美國・洛杉磯", lat:34.0522, lng:-118.2437, week:"8/16"},
+    {id:"demo11", open:true, name:"愛丁堡場", area:"英國・愛丁堡", lat:55.9533, lng:-3.1883, week:"8/30"},
   ];
   let LOCS = DEMO;
 
@@ -369,7 +369,8 @@
       const p=document.createElement('p');
       p.textContent=[l.area,(l.week?l.week+' 主日':''),(l.time?l.time+'（'+(l.tz||'當地時間')+'）':'')].filter(Boolean).join(' ・ ');
       const b=document.createElement('button');
-      if(l.open===false){b.textContent='此場無對外開放';b.disabled=true;b.className='disabled';}
+      // 一律正面表列：只有明確 open===true 才算開放。少了欄位、資料怪怪的都當不開放。
+      if(l.open!==true){b.textContent='此場無對外開放';b.disabled=true;b.className='disabled';}
       else if(l.allExpired===true){b.textContent='報名已截止';b.disabled=true;b.className='disabled';}
       else if(l.full===true){b.textContent='已額滿';b.disabled=true;b.className='disabled';}
       else if(l.formUrl){b.textContent='前往報名';b.addEventListener('click',()=>window.open(l.formUrl,'_blank','noopener'));} // 方案 A：host 自訂表單直接跳轉
@@ -380,7 +381,9 @@
     });
   }
   // 載入場次：有 GAS_URL 吃 Sheet 即時資料，否則示意資料
-  const CACHE_KEY='gn_locations_v1';
+  // v2：v1 的快取沒有時效，可能留著已經被改成「不公開」的舊狀態 → 換 key 一次性淘汰
+  const CACHE_KEY='gn_locations_v2';
+  const CACHE_TTL=6*60*60*1000;   // 快取只用來秒開；超過 6 小時就寧可等真資料
   function normLocs(list){
     return list.map(x=>{
       const ws=Array.isArray(x.weekStatus)?x.weekStatus:[];
@@ -414,23 +417,39 @@
     if(!l.formUrl)openModal(l.id);
   }
   function paint(){sortByArea();render(LOCS);buildMarkers();openDeepLink();}
+  // 讀不到真實場次時顯示的錯誤狀態。
+  // ⚠️ 這裡絕對不能退回 DEMO：2026-08-05 就是因為連線失敗時畫出示意場次，
+  //    使用者點了「新竹場」送出，示意資料的數字 id 被後端當成列號，
+  //    報名被寫進台南南區這個不公開的場次。假資料不能長得像可以報名。
+  function showLoadError(){
+    LOCS=[];
+    const list=document.getElementById('list');
+    document.getElementById('count').textContent='0';
+    list.replaceChildren();
+    const e=document.createElement('div');e.className='empty';
+    e.textContent='暫時讀不到場次資料，請稍後重新整理頁面再試一次。';
+    list.appendChild(e);
+    buildMarkers();
+  }
   function loadData(){
-    if(!GAS_URL){LOCS=DEMO;paint();return;}
+    if(!GAS_URL){LOCS=DEMO;paint();return;}   // 本機預覽用；線上一定有 GAS_URL
     // 1) 先用上次快取即時顯示（真實近況資料，秒開），背景再抓最新覆蓋
     let hadCache=false;
     try{
       const c=JSON.parse(localStorage.getItem(CACHE_KEY)||'null');
-      if(c&&Array.isArray(c)&&c.length){LOCS=c;hadCache=true;paint();}
+      if(c&&Array.isArray(c.locs)&&c.locs.length&&(Date.now()-(c.t||0))<CACHE_TTL){
+        LOCS=c.locs;hadCache=true;paint();
+      }
     }catch(e){}
     // 2) 背景抓最新
     fetch(GAS_URL+(GAS_URL.indexOf('?')<0?'?':'&')+'t='+Date.now()).then(r=>r.json()).then(d=>{
       if(d&&d.ok&&Array.isArray(d.locations)){
         // 連上 Sheet 就用真實資料（含空陣列＝目前無公開場次）
         LOCS=normLocs(d.locations);
-        try{localStorage.setItem(CACHE_KEY,JSON.stringify(LOCS));}catch(e){}
+        try{localStorage.setItem(CACHE_KEY,JSON.stringify({t:Date.now(),locs:LOCS}));}catch(e){}
         paint();
-      }else if(!hadCache){LOCS=DEMO;paint();} // 沒快取又連線失敗才退回示意資料；有快取就維持不覆蓋
-    }).catch(()=>{if(!hadCache){LOCS=DEMO;paint();}});
+      }else if(!hadCache){showLoadError();}   // 有快取就維持不覆蓋，沒有就誠實說讀不到
+    }).catch(()=>{if(!hadCache){showLoadError();}});
   }
 
   function highlight(id,fly){
@@ -446,7 +465,7 @@
     list.replaceChildren();
     if(!items.length){const e=document.createElement('div');e.className='empty';e.textContent='找不到符合的地點 — 換個關鍵字試試';list.appendChild(e);return;}
     items.forEach(l=>{
-      const closed=(l.open===false), expired=(l.allExpired===true), full=(l.full===true);
+      const closed=(l.open!==true), expired=(l.allExpired===true), full=(l.full===true);
       const row=document.createElement('div');row.className='loc'+((closed||expired||full)?' dim':'');row.dataset.id=l.id;
       row.addEventListener('click',()=>highlight(l.id,true));
       const thumb=document.createElement('div');thumb.className='thumb';
@@ -502,7 +521,8 @@
   }
   function openModal(id){
     current=LOCS.find(l=>l.id===id);
-    if(!current||current.open===false||current.allExpired===true||current.full===true)return; // 無對外開放／截止／額滿不開表單
+    // 正面表列：只有明確開放的場次才開表單。後端還會再擋一次（唯一可信的閘門）。
+    if(!current||current.open!==true||current.allExpired===true||current.full===true)return;
     if(current.formUrl){window.open(current.formUrl,'_blank','noopener');return;} // 方案 A：host 自訂表單直接跳轉
     document.getElementById('m-name').textContent=current.name;
     const t=current.time?current.time+'（'+(current.tz||'當地時間')+'）':'';
@@ -530,6 +550,12 @@
     if(!val('f-name')||!val('f-email')){alert('請至少填寫名字和 Email');return;}
     const pickerOn=document.getElementById('m-weeks-field').style.display!=='none';
     if(pickerOn&&selWeeks.length===0){alert('請至少選一個你要參加的週次');return;}
+    // 送出前用「當下最新的 LOCS」再確認一次：表單可能是在背景更新前開的，
+    // 也絕不能把離線示意資料送到後端（2026-08-05 事故的核心）。
+    const live=LOCS.find(l=>l.id===current.id);
+    if(!live||live.open!==true||live.allExpired===true||String(current.id).indexOf('demo')===0){
+      alert('這場目前沒有開放報名，請重新整理頁面後改選其他場次。');closeModal();loadData();return;
+    }
     const payload={sessionId:current.id,weeks:selWeeks.slice(),name:val('f-name'),email:val('f-email'),phone:val('f-phone'),people:val('f-people'),inviter:val('f-inviter'),message:val('f-message'),src:SRC};
     if(!GAS_URL){showDone();return;}
     submitting=true;
@@ -537,9 +563,22 @@
     let settled=false;
     const finish=fn=>{if(settled)return;settled=true;submitting=false;clearTimeout(to);fn();};
     // 卡住保險：GAS 後端通常已收到並寄信，逾時就直接顯示完成，避免使用者卡在「送出中…」
-    const to=setTimeout(()=>finish(()=>showDone()),8000);
+    const to=setTimeout(()=>finish(()=>showDone()),15000);
     fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
       .then(r=>r.json()).then(d=>{
+        // 後端明確拒絕 → 一定要說出來。以前不管回什麼都顯示「報名完成」，
+        // 被擋掉的人會以為自己報名成功了。
+        if(d&&d.ok===false){
+          const MSG={
+            'not open':'這場目前沒有對外開放報名，請改選其他場次。',
+            'expired':'這場的報名時間已經結束了，請改選其他場次。',
+            'session not found':'場次資料剛剛有更新，請重新整理頁面後再試一次。',
+            'bad email':'Email 格式看起來不太對，請再確認一次。',
+            'busy':'系統正忙，請等幾秒後再送出一次。'
+          };
+          finish(()=>{alert(MSG[d.error]||'送出沒有成功，請重新整理頁面後再試一次。');resetSubmit();loadData();});
+          return;
+        }
         // 選的週全部額滿（沒任何成功）→ 提示改選、重載最新額度
         if(d&&Array.isArray(d.full)&&d.full.length&&(!d.joined||!d.joined.length)){finish(()=>{alert('你選的週次剛好額滿了，請改選其他週或其他場次');resetSubmit();loadData();});return;}
         finish(()=>showDone(d)); // 含 duplicate（重複送出後端會擋，仍視為成功）
